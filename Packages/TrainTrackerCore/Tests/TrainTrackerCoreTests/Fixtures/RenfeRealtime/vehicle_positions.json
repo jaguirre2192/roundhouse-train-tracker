@@ -1,0 +1,13 @@
+{
+  "header": {"timestamp": "1784574845"},
+  "entity": [
+    {
+      "vehicle": {
+        "trip": {"tripId": "3098L23573C1"},
+        "timestamp": "1784574845",
+        "stopId": "51003",
+        "vehicle": {"id": "23573", "label": "C1-23573-PLATF.(8)"}
+      }
+    }
+  ]
+}

@@ -1,0 +1,28 @@
+{
+  "compilerOptions": {
+    "target": "ES2023",
+    "module": "NodeNext",
+    "moduleResolution": "NodeNext",
+    "outDir": "dist",
+    "rootDir": ".",
+    "strict": true,
+    "noUncheckedIndexedAccess": true,
+    "exactOptionalPropertyTypes": true,
+    "esModuleInterop": true,
+    "forceConsistentCasingInFileNames": true,
+    "skipLibCheck": true,
+    "types": ["node", "vitest/globals"]
+  },
+  "include": ["src", "tests"],
+  "exclude": [
+    "src/cloudflare",
+    "src/gmail/gmail-repository.ts",
+    "src/gmail/gmail-service.ts",
+    "src/gmail/*-store.ts",
+    "src/auth/auth-repository.ts",
+    "src/auth/auth-service.ts",
+    "src/forwarding/forwarding-repository.ts",
+    "src/forwarding/forwarding-service.ts",
+    "worker-tests"
+  ]
+}

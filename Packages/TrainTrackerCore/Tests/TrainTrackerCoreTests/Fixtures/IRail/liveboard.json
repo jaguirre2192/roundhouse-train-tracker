@@ -1,0 +1,13 @@
+{
+  "timestamp": "1784574841",
+  "departures": {
+    "departure": [
+      {
+        "time": "1784575200",
+        "vehicle": "BE.NMBS.IC1234",
+        "vehicleinfo": {"shortname": "IC 1234", "number": "1234"},
+        "platform": "5"
+      }
+    ]
+  }
+}

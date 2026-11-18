@@ -1,0 +1,23 @@
+{
+  "itineraries": [
+    {
+      "id": "cross-border-fixture",
+      "startTime": "2026-07-21T08:02:00Z",
+      "endTime": "2026-07-21T16:10:00Z",
+      "duration": 29280,
+      "transfers": 0,
+      "legs": [
+        {
+          "mode": "HIGHSPEED_RAIL",
+          "from": {"name":"Berlin Hbf","stopId":"de-test-berlin-hbf","lat":52.525,"lon":13.369},
+          "to": {"name":"Paris Est","stopId":"fr-test-paris-est","lat":48.877,"lon":2.359},
+          "startTime": "2026-07-21T08:02:00Z",
+          "endTime": "2026-07-21T16:10:00Z",
+          "tripId": "europe-9572",
+          "displayName": "ICE 9572",
+          "agencyName": "European Rail"
+        }
+      ]
+    }
+  ]
+}

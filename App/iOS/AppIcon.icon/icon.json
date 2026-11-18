@@ -1,0 +1,179 @@
+{
+  "fill": {
+    "linear-gradient": [
+      "srgb:0.90196,0.94118,0.94902,1.00000",
+      "srgb:0.74902,0.83922,0.86667,1.00000"
+    ]
+  },
+  "fill-specializations": [
+    {
+      "appearance": "dark",
+      "value": {
+        "linear-gradient": [
+          "srgb:0.10588,0.18039,0.20784,1.00000",
+          "srgb:0.04314,0.08235,0.09804,1.00000"
+        ]
+      }
+    }
+  ],
+  "groups": [
+    {
+      "name": "Details",
+      "layers": [
+        {
+          "image-name": "09-Live.svg",
+          "name": "09-Live",
+          "fill-specializations": [
+            {
+              "appearance": "tinted",
+              "value": {
+                "solid": "srgb:1.00000,1.00000,1.00000,1.00000"
+              }
+            }
+          ]
+        },
+        {
+          "image-name": "08-LiveRing.svg",
+          "name": "08-LiveRing",
+          "fill-specializations": [
+            {
+              "appearance": "dark",
+              "value": {
+                "solid": "srgb:0.07059,0.18824,0.23137,1.00000"
+              }
+            },
+            {
+              "appearance": "tinted",
+              "value": {
+                "solid": "srgb:0.12000,0.12000,0.12000,1.00000"
+              }
+            }
+          ]
+        },
+        {
+          "image-name": "07-Destination.svg",
+          "name": "07-Destination",
+          "fill-specializations": [
+            {
+              "appearance": "tinted",
+              "value": {
+                "solid": "srgb:0.90000,0.90000,0.90000,1.00000"
+              }
+            }
+          ]
+        },
+        {
+          "image-name": "06-Labels.svg",
+          "name": "06-Labels",
+          "fill-specializations": [
+            {
+              "appearance": "tinted",
+              "value": {
+                "solid": "srgb:0.55000,0.55000,0.55000,1.00000"
+              }
+            }
+          ]
+        },
+        {
+          "image-name": "05-Codes.svg",
+          "name": "05-Codes",
+          "fill-specializations": [
+            {
+              "appearance": "tinted",
+              "value": {
+                "solid": "srgb:0.90000,0.90000,0.90000,1.00000"
+              }
+            }
+          ]
+        },
+        {
+          "image-name": "04-Travelled.svg",
+          "name": "04-Travelled",
+          "fill-specializations": [
+            {
+              "appearance": "dark",
+              "value": {
+                "solid": "srgb:0.37255,0.68627,0.74510,1.00000"
+              }
+            },
+            {
+              "appearance": "tinted",
+              "value": {
+                "solid": "srgb:0.70000,0.70000,0.70000,1.00000"
+              }
+            }
+          ]
+        },
+        {
+          "image-name": "03-Ahead.svg",
+          "name": "03-Ahead",
+          "fill-specializations": [
+            {
+              "appearance": "tinted",
+              "value": {
+                "solid": "srgb:0.40000,0.40000,0.40000,1.00000"
+              }
+            }
+          ]
+        },
+        {
+          "image-name": "02-Perforation.svg",
+          "name": "02-Perforation",
+          "fill-specializations": [
+            {
+              "appearance": "tinted",
+              "value": {
+                "solid": "srgb:0.45000,0.45000,0.45000,1.00000"
+              }
+            }
+          ]
+        }
+      ],
+      "shadow": {
+        "kind": "neutral",
+        "opacity": 0.2
+      },
+      "translucency": {
+        "enabled": false,
+        "value": 0
+      }
+    },
+    {
+      "name": "Ticket",
+      "layers": [
+        {
+          "image-name": "01-Paper.svg",
+          "name": "01-Paper",
+          "fill-specializations": [
+            {
+              "appearance": "dark",
+              "value": {
+                "solid": "srgb:0.11765,0.33333,0.40000,1.00000"
+              }
+            },
+            {
+              "appearance": "tinted",
+              "value": {
+                "solid": "srgb:0.12000,0.12000,0.12000,1.00000"
+              }
+            }
+          ]
+        }
+      ],
+      "shadow": {
+        "kind": "layer-color",
+        "opacity": 0.45
+      },
+      "translucency": {
+        "enabled": true,
+        "value": 0.12
+      }
+    }
+  ],
+  "supported-platforms": {
+    "circles": [
+      "watchOS"
+    ],
+    "squares": "shared"
+  }
+}

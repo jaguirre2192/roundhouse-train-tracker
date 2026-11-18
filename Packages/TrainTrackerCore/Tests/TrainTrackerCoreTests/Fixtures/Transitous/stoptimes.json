@@ -1,0 +1,35 @@
+{
+  "place": {
+    "name": "Berlin Hbf",
+    "stopId": "de-test-berlin-hbf",
+    "lat": 52.525,
+    "lon": 13.369,
+    "tz": "Europe/Berlin"
+  },
+  "stopTimes": [
+    {
+      "place": {
+        "name": "Berlin Hbf",
+        "stopId": "de-test-berlin-hbf",
+        "lat": 52.525,
+        "lon": 13.369,
+        "tz": "Europe/Berlin",
+        "departure": "2026-07-21T08:02:00Z",
+        "scheduledDeparture": "2026-07-21T08:00:00Z",
+        "scheduledTrack": "7",
+        "track": "8",
+        "cancelled": false
+      },
+      "mode": "HIGHSPEED_RAIL",
+      "realTime": true,
+      "headsign": "Paris Est",
+      "agencyName": "European Rail",
+      "tripId": "europe-9572",
+      "routeShortName": "ICE",
+      "tripShortName": "9572",
+      "displayName": "ICE 9572",
+      "cancelled": false,
+      "tripCancelled": false
+    }
+  ]
+}

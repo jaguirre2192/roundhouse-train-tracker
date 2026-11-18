@@ -1,0 +1,1856 @@
+{
+  "schemaVersion": 1,
+  "cases": [
+    {
+      "name": "too-early-until-exact-hour-boundary",
+      "input": {
+        "referenceDate": 1799996399,
+        "lastSuccessfulCheck": 1799996399,
+        "refreshFailed": false,
+        "boardingStationID": null,
+        "alightingStationID": null,
+        "stationTimeZones": {
+          "eu:test:A": "Europe/London",
+          "eu:test:B": "Europe/London",
+          "eu:test:C": "Europe/London"
+        },
+        "trip": {
+          "id": "eu:test:train",
+          "source": "test",
+          "stops": [
+            {
+              "stationID": "eu:test:A",
+              "stationName": "Origin",
+              "sequence": 1,
+              "scheduledDeparture": 1800000000,
+              "plannedPlatform": "2",
+              "isCancelled": false,
+              "isPassed": false
+            },
+            {
+              "stationID": "eu:test:B",
+              "stationName": "Middle",
+              "sequence": 2,
+              "scheduledArrival": 1800001800,
+              "scheduledDeparture": 1800002100,
+              "plannedPlatform": "4",
+              "isCancelled": false,
+              "isPassed": false
+            },
+            {
+              "stationID": "eu:test:C",
+              "stationName": "Destination",
+              "sequence": 3,
+              "scheduledArrival": 1800003600,
+              "isCancelled": false,
+              "isPassed": false
+            }
+          ]
+        }
+      },
+      "expected": {
+        "state": {
+          "schemaVersion": 1,
+          "phase": "upcoming",
+          "focusName": "Origin",
+          "eventTime": 1800000000,
+          "timeZoneIdentifier": "Europe/London",
+          "timingBasis": "scheduled",
+          "platform": "2",
+          "platformBasis": "scheduled",
+          "platformChanged": false,
+          "delayMinutes": null,
+          "checkedAt": 1799996399,
+          "validUntil": 1799996400,
+          "isStopCancelled": false
+        },
+        "eligibility": "tooEarly",
+        "eligibleAt": 1799996400,
+        "nextTransitionDate": 1799996400,
+        "shouldEnd": false
+      }
+    },
+    {
+      "name": "eligible-at-exact-hour-boundary",
+      "input": {
+        "referenceDate": 1799996400,
+        "lastSuccessfulCheck": 1799996400,
+        "refreshFailed": false,
+        "boardingStationID": null,
+        "alightingStationID": null,
+        "stationTimeZones": {
+          "eu:test:A": "Europe/London",
+          "eu:test:B": "Europe/London",
+          "eu:test:C": "Europe/London"
+        },
+        "trip": {
+          "id": "eu:test:train",
+          "source": "test",
+          "stops": [
+            {
+              "stationID": "eu:test:A",
+              "stationName": "Origin",
+              "sequence": 1,
+              "scheduledDeparture": 1800000000,
+              "plannedPlatform": "2",
+              "isCancelled": false,
+              "isPassed": false
+            },
+            {
+              "stationID": "eu:test:B",
+              "stationName": "Middle",
+              "sequence": 2,
+              "scheduledArrival": 1800001800,
+              "scheduledDeparture": 1800002100,
+              "plannedPlatform": "4",
+              "isCancelled": false,
+              "isPassed": false
+            },
+            {
+              "stationID": "eu:test:C",
+              "stationName": "Destination",
+              "sequence": 3,
+              "scheduledArrival": 1800003600,
+              "isCancelled": false,
+              "isPassed": false
+            }
+          ]
+        }
+      },
+      "expected": {
+        "state": {
+          "schemaVersion": 1,
+          "phase": "upcoming",
+          "focusName": "Origin",
+          "eventTime": 1800000000,
+          "timeZoneIdentifier": "Europe/London",
+          "timingBasis": "scheduled",
+          "platform": "2",
+          "platformBasis": "scheduled",
+          "platformChanged": false,
+          "delayMinutes": null,
+          "checkedAt": 1799996400,
+          "validUntil": 1799996700,
+          "isStopCancelled": false
+        },
+        "eligibility": "available",
+        "eligibleAt": null,
+        "nextTransitionDate": 1799998200,
+        "shouldEnd": false
+      }
+    },
+    {
+      "name": "departure-soon-at-exact-half-hour-boundary",
+      "input": {
+        "referenceDate": 1799998200,
+        "lastSuccessfulCheck": 1799998200,
+        "refreshFailed": false,
+        "boardingStationID": null,
+        "alightingStationID": null,
+        "stationTimeZones": {
+          "eu:test:A": "Europe/London",
+          "eu:test:B": "Europe/London",
+          "eu:test:C": "Europe/London"
+        },
+        "trip": {
+          "id": "eu:test:train",
+          "source": "test",
+          "stops": [
+            {
+              "stationID": "eu:test:A",
+              "stationName": "Origin",
+              "sequence": 1,
+              "scheduledDeparture": 1800000000,
+              "plannedPlatform": "2",
+              "isCancelled": false,
+              "isPassed": false
+            },
+            {
+              "stationID": "eu:test:B",
+              "stationName": "Middle",
+              "sequence": 2,
+              "scheduledArrival": 1800001800,
+              "scheduledDeparture": 1800002100,
+              "plannedPlatform": "4",
+              "isCancelled": false,
+              "isPassed": false
+            },
+            {
+              "stationID": "eu:test:C",
+              "stationName": "Destination",
+              "sequence": 3,
+              "scheduledArrival": 1800003600,
+              "isCancelled": false,
+              "isPassed": false
+            }
+          ]
+        }
+      },
+      "expected": {
+        "state": {
+          "schemaVersion": 1,
+          "phase": "departureSoon",
+          "focusName": "Origin",
+          "eventTime": 1800000000,
+          "timeZoneIdentifier": "Europe/London",
+          "timingBasis": "scheduled",
+          "platform": "2",
+          "platformBasis": "scheduled",
+          "platformChanged": false,
+          "delayMinutes": null,
+          "checkedAt": 1799998200,
+          "validUntil": 1799998500,
+          "isStopCancelled": false
+        },
+        "eligibility": "available",
+        "eligibleAt": null,
+        "nextTransitionDate": 1800000000,
+        "shouldEnd": false
+      }
+    },
+    {
+      "name": "underway-uses-next-arrival-at-departure-boundary",
+      "input": {
+        "referenceDate": 1800000000,
+        "lastSuccessfulCheck": 1800000000,
+        "refreshFailed": false,
+        "boardingStationID": null,
+        "alightingStationID": null,
+        "stationTimeZones": {
+          "eu:test:A": "Europe/London",
+          "eu:test:B": "Europe/London",
+          "eu:test:C": "Europe/London"
+        },
+        "trip": {
+          "id": "eu:test:train",
+          "source": "test",
+          "stops": [
+            {
+              "stationID": "eu:test:A",
+              "stationName": "Origin",
+              "sequence": 1,
+              "scheduledDeparture": 1800000000,
+              "plannedPlatform": "2",
+              "isCancelled": false,
+              "isPassed": false
+            },
+            {
+              "stationID": "eu:test:B",
+              "stationName": "Middle",
+              "sequence": 2,
+              "scheduledArrival": 1800001800,
+              "scheduledDeparture": 1800002100,
+              "plannedPlatform": "4",
+              "isCancelled": false,
+              "isPassed": false
+            },
+            {
+              "stationID": "eu:test:C",
+              "stationName": "Destination",
+              "sequence": 3,
+              "scheduledArrival": 1800003600,
+              "isCancelled": false,
+              "isPassed": false
+            }
+          ]
+        }
+      },
+      "expected": {
+        "state": {
+          "schemaVersion": 1,
+          "phase": "underway",
+          "focusName": "Middle",
+          "eventTime": 1800001800,
+          "timeZoneIdentifier": "Europe/London",
+          "timingBasis": "scheduled",
+          "platform": "4",
+          "platformBasis": "scheduled",
+          "platformChanged": false,
+          "delayMinutes": null,
+          "checkedAt": 1800000000,
+          "validUntil": 1800000300,
+          "isStopCancelled": false
+        },
+        "eligibility": "available",
+        "eligibleAt": null,
+        "nextTransitionDate": 1800002100,
+        "shouldEnd": false
+      }
+    },
+    {
+      "name": "dwell-keeps-arrival-focus-without-confirming-arrival",
+      "input": {
+        "referenceDate": 1800001950,
+        "lastSuccessfulCheck": 1800001950,
+        "refreshFailed": false,
+        "boardingStationID": null,
+        "alightingStationID": null,
+        "stationTimeZones": {
+          "eu:test:A": "Europe/London",
+          "eu:test:B": "Europe/London",
+          "eu:test:C": "Europe/London"
+        },
+        "trip": {
+          "id": "eu:test:train",
+          "source": "test",
+          "stops": [
+            {
+              "stationID": "eu:test:A",
+              "stationName": "Origin",
+              "sequence": 1,
+              "scheduledDeparture": 1800000000,
+              "plannedPlatform": "2",
+              "isCancelled": false,
+              "isPassed": false
+            },
+            {
+              "stationID": "eu:test:B",
+              "stationName": "Middle",
+              "sequence": 2,
+              "scheduledArrival": 1800001800,
+              "scheduledDeparture": 1800002100,
+              "plannedPlatform": "4",
+              "isCancelled": false,
+              "isPassed": false
+            },
+            {
+              "stationID": "eu:test:C",
+              "stationName": "Destination",
+              "sequence": 3,
+              "scheduledArrival": 1800003600,
+              "isCancelled": false,
+              "isPassed": false
+            }
+          ]
+        }
+      },
+      "expected": {
+        "state": {
+          "schemaVersion": 1,
+          "phase": "underway",
+          "focusName": "Middle",
+          "eventTime": 1800001800,
+          "timeZoneIdentifier": "Europe/London",
+          "timingBasis": "scheduled",
+          "platform": "4",
+          "platformBasis": "scheduled",
+          "platformChanged": false,
+          "delayMinutes": null,
+          "checkedAt": 1800001950,
+          "validUntil": 1800002100,
+          "isStopCancelled": false
+        },
+        "eligibility": "available",
+        "eligibleAt": null,
+        "nextTransitionDate": 1800002100,
+        "shouldEnd": false
+      }
+    },
+    {
+      "name": "focus-advances-at-dwell-end",
+      "input": {
+        "referenceDate": 1800002100,
+        "lastSuccessfulCheck": 1800002100,
+        "refreshFailed": false,
+        "boardingStationID": null,
+        "alightingStationID": null,
+        "stationTimeZones": {
+          "eu:test:A": "Europe/London",
+          "eu:test:B": "Europe/London",
+          "eu:test:C": "Europe/London"
+        },
+        "trip": {
+          "id": "eu:test:train",
+          "source": "test",
+          "stops": [
+            {
+              "stationID": "eu:test:A",
+              "stationName": "Origin",
+              "sequence": 1,
+              "scheduledDeparture": 1800000000,
+              "plannedPlatform": "2",
+              "isCancelled": false,
+              "isPassed": false
+            },
+            {
+              "stationID": "eu:test:B",
+              "stationName": "Middle",
+              "sequence": 2,
+              "scheduledArrival": 1800001800,
+              "scheduledDeparture": 1800002100,
+              "plannedPlatform": "4",
+              "isCancelled": false,
+              "isPassed": false
+            },
+            {
+              "stationID": "eu:test:C",
+              "stationName": "Destination",
+              "sequence": 3,
+              "scheduledArrival": 1800003600,
+              "isCancelled": false,
+              "isPassed": false
+            }
+          ]
+        }
+      },
+      "expected": {
+        "state": {
+          "schemaVersion": 1,
+          "phase": "underway",
+          "focusName": "Destination",
+          "eventTime": 1800003600,
+          "timeZoneIdentifier": "Europe/London",
+          "timingBasis": "scheduled",
+          "platform": null,
+          "platformBasis": "unavailable",
+          "platformChanged": false,
+          "delayMinutes": null,
+          "checkedAt": 1800002100,
+          "validUntil": 1800002400,
+          "isStopCancelled": false
+        },
+        "eligibility": "available",
+        "eligibleAt": null,
+        "nextTransitionDate": 1800003600,
+        "shouldEnd": false
+      }
+    },
+    {
+      "name": "elapsed-arrival-without-observation-is-unavailable",
+      "input": {
+        "referenceDate": 1800003600,
+        "lastSuccessfulCheck": 1800003600,
+        "refreshFailed": false,
+        "boardingStationID": null,
+        "alightingStationID": null,
+        "stationTimeZones": {
+          "eu:test:A": "Europe/London",
+          "eu:test:B": "Europe/London",
+          "eu:test:C": "Europe/London"
+        },
+        "trip": {
+          "id": "eu:test:train",
+          "source": "test",
+          "stops": [
+            {
+              "stationID": "eu:test:A",
+              "stationName": "Origin",
+              "sequence": 1,
+              "scheduledDeparture": 1800000000,
+              "plannedPlatform": "2",
+              "isCancelled": false,
+              "isPassed": false
+            },
+            {
+              "stationID": "eu:test:B",
+              "stationName": "Middle",
+              "sequence": 2,
+              "scheduledArrival": 1800001800,
+              "scheduledDeparture": 1800002100,
+              "plannedPlatform": "4",
+              "isCancelled": false,
+              "isPassed": false
+            },
+            {
+              "stationID": "eu:test:C",
+              "stationName": "Destination",
+              "sequence": 3,
+              "scheduledArrival": 1800003600,
+              "isCancelled": false,
+              "isPassed": false
+            }
+          ]
+        }
+      },
+      "expected": {
+        "state": {
+          "schemaVersion": 1,
+          "phase": "unavailable",
+          "focusName": "Journey details unavailable",
+          "eventTime": null,
+          "timeZoneIdentifier": null,
+          "timingBasis": "unavailable",
+          "platform": null,
+          "platformBasis": "unavailable",
+          "platformChanged": false,
+          "delayMinutes": null,
+          "checkedAt": 1800003600,
+          "validUntil": 1800003600,
+          "isStopCancelled": false
+        },
+        "eligibility": "unavailable",
+        "eligibleAt": null,
+        "nextTransitionDate": null,
+        "shouldEnd": false
+      }
+    },
+    {
+      "name": "fresh-http-check-does-not-confirm-arrival",
+      "input": {
+        "referenceDate": 1800005400,
+        "lastSuccessfulCheck": 1800005400,
+        "refreshFailed": false,
+        "boardingStationID": null,
+        "alightingStationID": null,
+        "stationTimeZones": {
+          "eu:test:A": "Europe/London",
+          "eu:test:B": "Europe/London",
+          "eu:test:C": "Europe/London"
+        },
+        "trip": {
+          "id": "eu:test:train",
+          "source": "test",
+          "stops": [
+            {
+              "stationID": "eu:test:A",
+              "stationName": "Origin",
+              "sequence": 1,
+              "scheduledDeparture": 1800000000,
+              "plannedPlatform": "2",
+              "isCancelled": false,
+              "isPassed": false
+            },
+            {
+              "stationID": "eu:test:B",
+              "stationName": "Middle",
+              "sequence": 2,
+              "scheduledArrival": 1800001800,
+              "scheduledDeparture": 1800002100,
+              "plannedPlatform": "4",
+              "isCancelled": false,
+              "isPassed": false
+            },
+            {
+              "stationID": "eu:test:C",
+              "stationName": "Destination",
+              "sequence": 3,
+              "scheduledArrival": 1800003600,
+              "isCancelled": false,
+              "isPassed": false
+            }
+          ]
+        }
+      },
+      "expected": {
+        "state": {
+          "schemaVersion": 1,
+          "phase": "unavailable",
+          "focusName": "Journey details unavailable",
+          "eventTime": null,
+          "timeZoneIdentifier": null,
+          "timingBasis": "unavailable",
+          "platform": null,
+          "platformBasis": "unavailable",
+          "platformChanged": false,
+          "delayMinutes": null,
+          "checkedAt": 1800005400,
+          "validUntil": 1800005400,
+          "isStopCancelled": false
+        },
+        "eligibility": "unavailable",
+        "eligibleAt": null,
+        "nextTransitionDate": null,
+        "shouldEnd": false
+      }
+    },
+    {
+      "name": "stale-ended-window-does-not-end",
+      "input": {
+        "referenceDate": 1800005400,
+        "lastSuccessfulCheck": 1800005000,
+        "refreshFailed": false,
+        "boardingStationID": null,
+        "alightingStationID": null,
+        "stationTimeZones": {
+          "eu:test:A": "Europe/London",
+          "eu:test:B": "Europe/London",
+          "eu:test:C": "Europe/London"
+        },
+        "trip": {
+          "id": "eu:test:train",
+          "source": "test",
+          "stops": [
+            {
+              "stationID": "eu:test:A",
+              "stationName": "Origin",
+              "sequence": 1,
+              "scheduledDeparture": 1800000000,
+              "plannedPlatform": "2",
+              "isCancelled": false,
+              "isPassed": false
+            },
+            {
+              "stationID": "eu:test:B",
+              "stationName": "Middle",
+              "sequence": 2,
+              "scheduledArrival": 1800001800,
+              "scheduledDeparture": 1800002100,
+              "plannedPlatform": "4",
+              "isCancelled": false,
+              "isPassed": false
+            },
+            {
+              "stationID": "eu:test:C",
+              "stationName": "Destination",
+              "sequence": 3,
+              "scheduledArrival": 1800003600,
+              "isCancelled": false,
+              "isPassed": false
+            }
+          ]
+        }
+      },
+      "expected": {
+        "state": {
+          "schemaVersion": 1,
+          "phase": "unavailable",
+          "focusName": "Journey details unavailable",
+          "eventTime": null,
+          "timeZoneIdentifier": null,
+          "timingBasis": "unavailable",
+          "platform": null,
+          "platformBasis": "unavailable",
+          "platformChanged": false,
+          "delayMinutes": null,
+          "checkedAt": 1800005000,
+          "validUntil": 1800005300,
+          "isStopCancelled": false
+        },
+        "eligibility": "unavailable",
+        "eligibleAt": null,
+        "nextTransitionDate": null,
+        "shouldEnd": false
+      }
+    },
+    {
+      "name": "freshness-expires-at-exact-five-minute-boundary",
+      "input": {
+        "referenceDate": 1800005400,
+        "lastSuccessfulCheck": 1800005100,
+        "refreshFailed": false,
+        "boardingStationID": null,
+        "alightingStationID": null,
+        "stationTimeZones": {
+          "eu:test:A": "Europe/London",
+          "eu:test:B": "Europe/London",
+          "eu:test:C": "Europe/London"
+        },
+        "trip": {
+          "id": "eu:test:train",
+          "source": "test",
+          "stops": [
+            {
+              "stationID": "eu:test:A",
+              "stationName": "Origin",
+              "sequence": 1,
+              "scheduledDeparture": 1800000000,
+              "plannedPlatform": "2",
+              "isCancelled": false,
+              "isPassed": false
+            },
+            {
+              "stationID": "eu:test:B",
+              "stationName": "Middle",
+              "sequence": 2,
+              "scheduledArrival": 1800001800,
+              "scheduledDeparture": 1800002100,
+              "plannedPlatform": "4",
+              "isCancelled": false,
+              "isPassed": false
+            },
+            {
+              "stationID": "eu:test:C",
+              "stationName": "Destination",
+              "sequence": 3,
+              "scheduledArrival": 1800003600,
+              "isCancelled": false,
+              "isPassed": false
+            }
+          ]
+        }
+      },
+      "expected": {
+        "state": {
+          "schemaVersion": 1,
+          "phase": "unavailable",
+          "focusName": "Journey details unavailable",
+          "eventTime": null,
+          "timeZoneIdentifier": null,
+          "timingBasis": "unavailable",
+          "platform": null,
+          "platformBasis": "unavailable",
+          "platformChanged": false,
+          "delayMinutes": null,
+          "checkedAt": 1800005100,
+          "validUntil": 1800005400,
+          "isStopCancelled": false
+        },
+        "eligibility": "unavailable",
+        "eligibleAt": null,
+        "nextTransitionDate": null,
+        "shouldEnd": false
+      }
+    },
+    {
+      "name": "failed-refresh-retains-check-and-does-not-end",
+      "input": {
+        "referenceDate": 1800005400,
+        "lastSuccessfulCheck": 1800005350,
+        "refreshFailed": true,
+        "boardingStationID": null,
+        "alightingStationID": null,
+        "stationTimeZones": {
+          "eu:test:A": "Europe/London",
+          "eu:test:B": "Europe/London",
+          "eu:test:C": "Europe/London"
+        },
+        "trip": {
+          "id": "eu:test:train",
+          "source": "test",
+          "stops": [
+            {
+              "stationID": "eu:test:A",
+              "stationName": "Origin",
+              "sequence": 1,
+              "scheduledDeparture": 1800000000,
+              "plannedPlatform": "2",
+              "isCancelled": false,
+              "isPassed": false
+            },
+            {
+              "stationID": "eu:test:B",
+              "stationName": "Middle",
+              "sequence": 2,
+              "scheduledArrival": 1800001800,
+              "scheduledDeparture": 1800002100,
+              "plannedPlatform": "4",
+              "isCancelled": false,
+              "isPassed": false
+            },
+            {
+              "stationID": "eu:test:C",
+              "stationName": "Destination",
+              "sequence": 3,
+              "scheduledArrival": 1800003600,
+              "isCancelled": false,
+              "isPassed": false
+            }
+          ]
+        }
+      },
+      "expected": {
+        "state": {
+          "schemaVersion": 1,
+          "phase": "unavailable",
+          "focusName": "Journey details unavailable",
+          "eventTime": null,
+          "timeZoneIdentifier": null,
+          "timingBasis": "unavailable",
+          "platform": null,
+          "platformBasis": "unavailable",
+          "platformChanged": false,
+          "delayMinutes": null,
+          "checkedAt": 1800005350,
+          "validUntil": 1800005400,
+          "isStopCancelled": false
+        },
+        "eligibility": "unavailable",
+        "eligibleAt": null,
+        "nextTransitionDate": null,
+        "shouldEnd": false
+      }
+    },
+    {
+      "name": "missing-successful-check-does-not-end",
+      "input": {
+        "referenceDate": 1800005400,
+        "lastSuccessfulCheck": null,
+        "refreshFailed": false,
+        "boardingStationID": null,
+        "alightingStationID": null,
+        "stationTimeZones": {
+          "eu:test:A": "Europe/London",
+          "eu:test:B": "Europe/London",
+          "eu:test:C": "Europe/London"
+        },
+        "trip": {
+          "id": "eu:test:train",
+          "source": "test",
+          "stops": [
+            {
+              "stationID": "eu:test:A",
+              "stationName": "Origin",
+              "sequence": 1,
+              "scheduledDeparture": 1800000000,
+              "plannedPlatform": "2",
+              "isCancelled": false,
+              "isPassed": false
+            },
+            {
+              "stationID": "eu:test:B",
+              "stationName": "Middle",
+              "sequence": 2,
+              "scheduledArrival": 1800001800,
+              "scheduledDeparture": 1800002100,
+              "plannedPlatform": "4",
+              "isCancelled": false,
+              "isPassed": false
+            },
+            {
+              "stationID": "eu:test:C",
+              "stationName": "Destination",
+              "sequence": 3,
+              "scheduledArrival": 1800003600,
+              "isCancelled": false,
+              "isPassed": false
+            }
+          ]
+        }
+      },
+      "expected": {
+        "state": {
+          "schemaVersion": 1,
+          "phase": "unavailable",
+          "focusName": "Journey details unavailable",
+          "eventTime": null,
+          "timeZoneIdentifier": null,
+          "timingBasis": "unavailable",
+          "platform": null,
+          "platformBasis": "unavailable",
+          "platformChanged": false,
+          "delayMinutes": null,
+          "checkedAt": null,
+          "validUntil": 1800005400,
+          "isStopCancelled": false
+        },
+        "eligibility": "unavailable",
+        "eligibleAt": null,
+        "nextTransitionDate": null,
+        "shouldEnd": false
+      }
+    },
+    {
+      "name": "future-check-is-rejected",
+      "input": {
+        "referenceDate": 1799998200,
+        "lastSuccessfulCheck": 1799998210,
+        "refreshFailed": false,
+        "boardingStationID": null,
+        "alightingStationID": null,
+        "stationTimeZones": {
+          "eu:test:A": "Europe/London",
+          "eu:test:B": "Europe/London",
+          "eu:test:C": "Europe/London"
+        },
+        "trip": {
+          "id": "eu:test:train",
+          "source": "test",
+          "stops": [
+            {
+              "stationID": "eu:test:A",
+              "stationName": "Origin",
+              "sequence": 1,
+              "scheduledDeparture": 1800000000,
+              "plannedPlatform": "2",
+              "isCancelled": false,
+              "isPassed": false
+            },
+            {
+              "stationID": "eu:test:B",
+              "stationName": "Middle",
+              "sequence": 2,
+              "scheduledArrival": 1800001800,
+              "scheduledDeparture": 1800002100,
+              "plannedPlatform": "4",
+              "isCancelled": false,
+              "isPassed": false
+            },
+            {
+              "stationID": "eu:test:C",
+              "stationName": "Destination",
+              "sequence": 3,
+              "scheduledArrival": 1800003600,
+              "isCancelled": false,
+              "isPassed": false
+            }
+          ]
+        }
+      },
+      "expected": {
+        "state": {
+          "schemaVersion": 1,
+          "phase": "departureSoon",
+          "focusName": "Origin",
+          "eventTime": 1800000000,
+          "timeZoneIdentifier": "Europe/London",
+          "timingBasis": "scheduled",
+          "platform": "2",
+          "platformBasis": "scheduled",
+          "platformChanged": false,
+          "delayMinutes": null,
+          "checkedAt": null,
+          "validUntil": 1799998200,
+          "isStopCancelled": false
+        },
+        "eligibility": "available",
+        "eligibleAt": null,
+        "nextTransitionDate": 1800000000,
+        "shouldEnd": false
+      }
+    },
+    {
+      "name": "provider-passed-flags-do-not-advance-phase",
+      "input": {
+        "referenceDate": 1799998200,
+        "lastSuccessfulCheck": 1799998200,
+        "refreshFailed": false,
+        "boardingStationID": null,
+        "alightingStationID": null,
+        "stationTimeZones": {
+          "eu:test:A": "Europe/London",
+          "eu:test:B": "Europe/London",
+          "eu:test:C": "Europe/London"
+        },
+        "trip": {
+          "id": "eu:test:train",
+          "source": "test",
+          "stops": [
+            {
+              "stationID": "eu:test:A",
+              "stationName": "Origin",
+              "sequence": 1,
+              "scheduledDeparture": 1800000000,
+              "plannedPlatform": "2",
+              "isCancelled": false,
+              "isPassed": true
+            },
+            {
+              "stationID": "eu:test:B",
+              "stationName": "Middle",
+              "sequence": 2,
+              "scheduledArrival": 1800001800,
+              "scheduledDeparture": 1800002100,
+              "plannedPlatform": "4",
+              "isCancelled": false,
+              "isPassed": true
+            },
+            {
+              "stationID": "eu:test:C",
+              "stationName": "Destination",
+              "sequence": 3,
+              "scheduledArrival": 1800003600,
+              "isCancelled": false,
+              "isPassed": true
+            }
+          ]
+        }
+      },
+      "expected": {
+        "state": {
+          "schemaVersion": 1,
+          "phase": "departureSoon",
+          "focusName": "Origin",
+          "eventTime": 1800000000,
+          "timeZoneIdentifier": "Europe/London",
+          "timingBasis": "scheduled",
+          "platform": "2",
+          "platformBasis": "scheduled",
+          "platformChanged": false,
+          "delayMinutes": null,
+          "checkedAt": 1799998200,
+          "validUntil": 1799998500,
+          "isStopCancelled": false
+        },
+        "eligibility": "available",
+        "eligibleAt": null,
+        "nextTransitionDate": 1800000000,
+        "shouldEnd": false
+      }
+    },
+    {
+      "name": "boarding-call-cancelled-does-not-select-another-origin",
+      "input": {
+        "referenceDate": 1799998200,
+        "lastSuccessfulCheck": 1799998200,
+        "refreshFailed": false,
+        "boardingStationID": null,
+        "alightingStationID": null,
+        "stationTimeZones": {
+          "eu:test:A": "Europe/London",
+          "eu:test:B": "Europe/London",
+          "eu:test:C": "Europe/London"
+        },
+        "trip": {
+          "id": "eu:test:train",
+          "source": "test",
+          "stops": [
+            {
+              "stationID": "eu:test:A",
+              "stationName": "Origin",
+              "sequence": 1,
+              "scheduledDeparture": 1800000000,
+              "plannedPlatform": "2",
+              "isCancelled": true,
+              "isPassed": false
+            },
+            {
+              "stationID": "eu:test:B",
+              "stationName": "Middle",
+              "sequence": 2,
+              "scheduledArrival": 1800001800,
+              "scheduledDeparture": 1800002100,
+              "plannedPlatform": "4",
+              "isCancelled": false,
+              "isPassed": false
+            },
+            {
+              "stationID": "eu:test:C",
+              "stationName": "Destination",
+              "sequence": 3,
+              "scheduledArrival": 1800003600,
+              "isCancelled": false,
+              "isPassed": false
+            }
+          ]
+        }
+      },
+      "expected": {
+        "state": {
+          "schemaVersion": 1,
+          "phase": "cancelled",
+          "focusName": "Origin",
+          "eventTime": 1800000000,
+          "timeZoneIdentifier": "Europe/London",
+          "timingBasis": "scheduled",
+          "platform": "2",
+          "platformBasis": "scheduled",
+          "platformChanged": false,
+          "delayMinutes": null,
+          "checkedAt": 1799998200,
+          "validUntil": 1799998500,
+          "isStopCancelled": true
+        },
+        "eligibility": "cancelled",
+        "eligibleAt": null,
+        "nextTransitionDate": null,
+        "shouldEnd": true
+      }
+    },
+    {
+      "name": "alighting-call-cancelled-focuses-selected-destination",
+      "input": {
+        "referenceDate": 1800000900,
+        "lastSuccessfulCheck": 1800000900,
+        "refreshFailed": false,
+        "boardingStationID": null,
+        "alightingStationID": null,
+        "stationTimeZones": {
+          "eu:test:A": "Europe/London",
+          "eu:test:B": "Europe/London",
+          "eu:test:C": "Europe/London"
+        },
+        "trip": {
+          "id": "eu:test:train",
+          "source": "test",
+          "stops": [
+            {
+              "stationID": "eu:test:A",
+              "stationName": "Origin",
+              "sequence": 1,
+              "scheduledDeparture": 1800000000,
+              "plannedPlatform": "2",
+              "isCancelled": false,
+              "isPassed": false
+            },
+            {
+              "stationID": "eu:test:B",
+              "stationName": "Middle",
+              "sequence": 2,
+              "scheduledArrival": 1800001800,
+              "scheduledDeparture": 1800002100,
+              "plannedPlatform": "4",
+              "isCancelled": false,
+              "isPassed": false
+            },
+            {
+              "stationID": "eu:test:C",
+              "stationName": "Destination",
+              "sequence": 3,
+              "scheduledArrival": 1800003600,
+              "isCancelled": true,
+              "isPassed": false
+            }
+          ]
+        }
+      },
+      "expected": {
+        "state": {
+          "schemaVersion": 1,
+          "phase": "cancelled",
+          "focusName": "Destination",
+          "eventTime": 1800003600,
+          "timeZoneIdentifier": "Europe/London",
+          "timingBasis": "scheduled",
+          "platform": null,
+          "platformBasis": "unavailable",
+          "platformChanged": false,
+          "delayMinutes": null,
+          "checkedAt": 1800000900,
+          "validUntil": 1800001200,
+          "isStopCancelled": true
+        },
+        "eligibility": "cancelled",
+        "eligibleAt": null,
+        "nextTransitionDate": null,
+        "shouldEnd": true
+      }
+    },
+    {
+      "name": "all-selected-calls-cancelled-is-service-cancellation",
+      "input": {
+        "referenceDate": 1799998200,
+        "lastSuccessfulCheck": 1799998200,
+        "refreshFailed": false,
+        "boardingStationID": null,
+        "alightingStationID": null,
+        "stationTimeZones": {
+          "eu:test:A": "Europe/London",
+          "eu:test:B": "Europe/London",
+          "eu:test:C": "Europe/London"
+        },
+        "trip": {
+          "id": "eu:test:train",
+          "source": "test",
+          "stops": [
+            {
+              "stationID": "eu:test:A",
+              "stationName": "Origin",
+              "sequence": 1,
+              "scheduledDeparture": 1800000000,
+              "plannedPlatform": "2",
+              "isCancelled": true,
+              "isPassed": false
+            },
+            {
+              "stationID": "eu:test:B",
+              "stationName": "Middle",
+              "sequence": 2,
+              "scheduledArrival": 1800001800,
+              "scheduledDeparture": 1800002100,
+              "plannedPlatform": "4",
+              "isCancelled": true,
+              "isPassed": false
+            },
+            {
+              "stationID": "eu:test:C",
+              "stationName": "Destination",
+              "sequence": 3,
+              "scheduledArrival": 1800003600,
+              "isCancelled": true,
+              "isPassed": false
+            }
+          ]
+        }
+      },
+      "expected": {
+        "state": {
+          "schemaVersion": 1,
+          "phase": "cancelled",
+          "focusName": "Origin",
+          "eventTime": 1800000000,
+          "timeZoneIdentifier": "Europe/London",
+          "timingBasis": "scheduled",
+          "platform": "2",
+          "platformBasis": "scheduled",
+          "platformChanged": false,
+          "delayMinutes": null,
+          "checkedAt": 1799998200,
+          "validUntil": 1799998500,
+          "isStopCancelled": false
+        },
+        "eligibility": "cancelled",
+        "eligibleAt": null,
+        "nextTransitionDate": null,
+        "shouldEnd": true
+      }
+    },
+    {
+      "name": "cancelled-intermediate-call-is-skipped",
+      "input": {
+        "referenceDate": 1800000900,
+        "lastSuccessfulCheck": 1800000900,
+        "refreshFailed": false,
+        "boardingStationID": null,
+        "alightingStationID": null,
+        "stationTimeZones": {
+          "eu:test:A": "Europe/London",
+          "eu:test:B": "Europe/London",
+          "eu:test:C": "Europe/London"
+        },
+        "trip": {
+          "id": "eu:test:train",
+          "source": "test",
+          "stops": [
+            {
+              "stationID": "eu:test:A",
+              "stationName": "Origin",
+              "sequence": 1,
+              "scheduledDeparture": 1800000000,
+              "plannedPlatform": "2",
+              "isCancelled": false,
+              "isPassed": false
+            },
+            {
+              "stationID": "eu:test:B",
+              "stationName": "Middle",
+              "sequence": 2,
+              "scheduledArrival": 1800001800,
+              "scheduledDeparture": 1800002100,
+              "plannedPlatform": "4",
+              "isCancelled": true,
+              "isPassed": false
+            },
+            {
+              "stationID": "eu:test:C",
+              "stationName": "Destination",
+              "sequence": 3,
+              "scheduledArrival": 1800003600,
+              "isCancelled": false,
+              "isPassed": false
+            }
+          ]
+        }
+      },
+      "expected": {
+        "state": {
+          "schemaVersion": 1,
+          "phase": "underway",
+          "focusName": "Destination",
+          "eventTime": 1800003600,
+          "timeZoneIdentifier": "Europe/London",
+          "timingBasis": "scheduled",
+          "platform": null,
+          "platformBasis": "unavailable",
+          "platformChanged": false,
+          "delayMinutes": null,
+          "checkedAt": 1800000900,
+          "validUntil": 1800001200,
+          "isStopCancelled": false
+        },
+        "eligibility": "available",
+        "eligibleAt": null,
+        "nextTransitionDate": 1800003600,
+        "shouldEnd": false
+      }
+    },
+    {
+      "name": "selected-boarding-uses-its-own-departure",
+      "input": {
+        "referenceDate": 1800001200,
+        "lastSuccessfulCheck": 1800001200,
+        "refreshFailed": false,
+        "boardingStationID": "eu:test:B",
+        "alightingStationID": "eu:test:C",
+        "stationTimeZones": {
+          "eu:test:A": "Europe/London",
+          "eu:test:B": "Europe/London",
+          "eu:test:C": "Europe/London"
+        },
+        "trip": {
+          "id": "eu:test:train",
+          "source": "test",
+          "stops": [
+            {
+              "stationID": "eu:test:A",
+              "stationName": "Origin",
+              "sequence": 1,
+              "scheduledDeparture": 1800000000,
+              "plannedPlatform": "2",
+              "isCancelled": false,
+              "isPassed": false
+            },
+            {
+              "stationID": "eu:test:B",
+              "stationName": "Middle",
+              "sequence": 2,
+              "scheduledArrival": 1800001800,
+              "scheduledDeparture": 1800002100,
+              "plannedPlatform": "4",
+              "isCancelled": false,
+              "isPassed": false
+            },
+            {
+              "stationID": "eu:test:C",
+              "stationName": "Destination",
+              "sequence": 3,
+              "scheduledArrival": 1800003600,
+              "isCancelled": false,
+              "isPassed": false
+            }
+          ]
+        }
+      },
+      "expected": {
+        "state": {
+          "schemaVersion": 1,
+          "phase": "departureSoon",
+          "focusName": "Middle",
+          "eventTime": 1800002100,
+          "timeZoneIdentifier": "Europe/London",
+          "timingBasis": "scheduled",
+          "platform": "4",
+          "platformBasis": "scheduled",
+          "platformChanged": false,
+          "delayMinutes": null,
+          "checkedAt": 1800001200,
+          "validUntil": 1800001500,
+          "isStopCancelled": false
+        },
+        "eligibility": "available",
+        "eligibleAt": null,
+        "nextTransitionDate": 1800002100,
+        "shouldEnd": false
+      }
+    },
+    {
+      "name": "invalid-selection-remains-unavailable-without-ending",
+      "input": {
+        "referenceDate": 1800000900,
+        "lastSuccessfulCheck": 1800000900,
+        "refreshFailed": false,
+        "boardingStationID": "eu:test:missing",
+        "alightingStationID": null,
+        "stationTimeZones": {
+          "eu:test:A": "Europe/London",
+          "eu:test:B": "Europe/London",
+          "eu:test:C": "Europe/London"
+        },
+        "trip": {
+          "id": "eu:test:train",
+          "source": "test",
+          "stops": [
+            {
+              "stationID": "eu:test:A",
+              "stationName": "Origin",
+              "sequence": 1,
+              "scheduledDeparture": 1800000000,
+              "plannedPlatform": "2",
+              "isCancelled": false,
+              "isPassed": false
+            },
+            {
+              "stationID": "eu:test:B",
+              "stationName": "Middle",
+              "sequence": 2,
+              "scheduledArrival": 1800001800,
+              "scheduledDeparture": 1800002100,
+              "plannedPlatform": "4",
+              "isCancelled": false,
+              "isPassed": false
+            },
+            {
+              "stationID": "eu:test:C",
+              "stationName": "Destination",
+              "sequence": 3,
+              "scheduledArrival": 1800003600,
+              "isCancelled": false,
+              "isPassed": false
+            }
+          ]
+        }
+      },
+      "expected": {
+        "state": {
+          "schemaVersion": 1,
+          "phase": "unavailable",
+          "focusName": "Journey details unavailable",
+          "eventTime": null,
+          "timeZoneIdentifier": null,
+          "timingBasis": "unavailable",
+          "platform": null,
+          "platformBasis": "unavailable",
+          "platformChanged": false,
+          "delayMinutes": null,
+          "checkedAt": 1800000900,
+          "validUntil": 1800001200,
+          "isStopCancelled": false
+        },
+        "eligibility": "unavailable",
+        "eligibleAt": null,
+        "nextTransitionDate": null,
+        "shouldEnd": false
+      }
+    },
+    {
+      "name": "missing-times-remain-unavailable-without-ending",
+      "input": {
+        "referenceDate": 1800000900,
+        "lastSuccessfulCheck": 1800000900,
+        "refreshFailed": false,
+        "boardingStationID": null,
+        "alightingStationID": null,
+        "stationTimeZones": {
+          "eu:test:A": "Europe/London",
+          "eu:test:B": "Europe/London",
+          "eu:test:C": "Europe/London"
+        },
+        "trip": {
+          "id": "eu:test:train",
+          "source": "test",
+          "stops": [
+            {
+              "stationID": "eu:test:A",
+              "stationName": "Origin",
+              "sequence": 1
+            },
+            {
+              "stationID": "eu:test:C",
+              "stationName": "Destination",
+              "sequence": 2
+            }
+          ]
+        }
+      },
+      "expected": {
+        "state": {
+          "schemaVersion": 1,
+          "phase": "unavailable",
+          "focusName": "Journey details unavailable",
+          "eventTime": null,
+          "timeZoneIdentifier": null,
+          "timingBasis": "unavailable",
+          "platform": null,
+          "platformBasis": "unavailable",
+          "platformChanged": false,
+          "delayMinutes": null,
+          "checkedAt": 1800000900,
+          "validUntil": 1800001200,
+          "isStopCancelled": false
+        },
+        "eligibility": "unavailable",
+        "eligibleAt": null,
+        "nextTransitionDate": null,
+        "shouldEnd": false
+      }
+    },
+    {
+      "name": "event-basis-delay-and-reported-platform-match-focused-arrival",
+      "input": {
+        "referenceDate": 1800000900,
+        "lastSuccessfulCheck": 1800000900,
+        "refreshFailed": false,
+        "boardingStationID": null,
+        "alightingStationID": null,
+        "stationTimeZones": {
+          "eu:test:A": "Europe/London",
+          "eu:test:B": "Europe/London",
+          "eu:test:C": "Europe/London"
+        },
+        "trip": {
+          "id": "eu:test:train",
+          "source": "test",
+          "stops": [
+            {
+              "stationID": "eu:test:A",
+              "stationName": "Origin",
+              "sequence": 1,
+              "scheduledDeparture": 1800000000,
+              "plannedPlatform": "2",
+              "isCancelled": false,
+              "isPassed": false,
+              "expectedDeparture": 1800000600
+            },
+            {
+              "stationID": "eu:test:B",
+              "stationName": "Middle",
+              "sequence": 2,
+              "scheduledArrival": 1800001800,
+              "scheduledDeparture": 1800002100,
+              "plannedPlatform": "4",
+              "isCancelled": false,
+              "isPassed": false,
+              "expectedArrival": 1800001920,
+              "expectedDeparture": 1800002160,
+              "expectedPlatform": "6"
+            },
+            {
+              "stationID": "eu:test:C",
+              "stationName": "Destination",
+              "sequence": 3,
+              "scheduledArrival": 1800003600,
+              "isCancelled": false,
+              "isPassed": false,
+              "expectedArrival": 1800004200
+            }
+          ]
+        }
+      },
+      "expected": {
+        "state": {
+          "schemaVersion": 1,
+          "phase": "underway",
+          "focusName": "Middle",
+          "eventTime": 1800001920,
+          "timeZoneIdentifier": "Europe/London",
+          "timingBasis": "estimated",
+          "platform": "6",
+          "platformBasis": "reported",
+          "platformChanged": true,
+          "delayMinutes": 2,
+          "checkedAt": 1800000900,
+          "validUntil": 1800001200,
+          "isStopCancelled": false
+        },
+        "eligibility": "available",
+        "eligibleAt": null,
+        "nextTransitionDate": 1800002160,
+        "shouldEnd": false
+      }
+    },
+    {
+      "name": "unrelated-estimates-do-not-mark-focused-arrival-estimated",
+      "input": {
+        "referenceDate": 1800000900,
+        "lastSuccessfulCheck": 1800000900,
+        "refreshFailed": false,
+        "boardingStationID": null,
+        "alightingStationID": null,
+        "stationTimeZones": {
+          "eu:test:A": "Europe/London",
+          "eu:test:B": "Europe/London",
+          "eu:test:C": "Europe/London"
+        },
+        "trip": {
+          "id": "eu:test:train",
+          "source": "test",
+          "stops": [
+            {
+              "stationID": "eu:test:A",
+              "stationName": "Origin",
+              "sequence": 1,
+              "scheduledDeparture": 1800000000,
+              "plannedPlatform": "2",
+              "isCancelled": false,
+              "isPassed": false,
+              "expectedDeparture": 1800000600
+            },
+            {
+              "stationID": "eu:test:B",
+              "stationName": "Middle",
+              "sequence": 2,
+              "scheduledArrival": 1800001800,
+              "scheduledDeparture": 1800002100,
+              "plannedPlatform": "4",
+              "isCancelled": false,
+              "isPassed": false
+            },
+            {
+              "stationID": "eu:test:C",
+              "stationName": "Destination",
+              "sequence": 3,
+              "scheduledArrival": 1800003600,
+              "isCancelled": false,
+              "isPassed": false,
+              "expectedArrival": 1800004200
+            }
+          ]
+        }
+      },
+      "expected": {
+        "state": {
+          "schemaVersion": 1,
+          "phase": "underway",
+          "focusName": "Middle",
+          "eventTime": 1800001800,
+          "timeZoneIdentifier": "Europe/London",
+          "timingBasis": "scheduled",
+          "platform": "4",
+          "platformBasis": "scheduled",
+          "platformChanged": false,
+          "delayMinutes": null,
+          "checkedAt": 1800000900,
+          "validUntil": 1800001200,
+          "isStopCancelled": false
+        },
+        "eligibility": "available",
+        "eligibleAt": null,
+        "nextTransitionDate": 1800002100,
+        "shouldEnd": false
+      }
+    },
+    {
+      "name": "negative-delay-truncates-toward-zero",
+      "input": {
+        "referenceDate": 1799998200,
+        "lastSuccessfulCheck": 1799998200,
+        "refreshFailed": false,
+        "boardingStationID": null,
+        "alightingStationID": null,
+        "stationTimeZones": {
+          "eu:test:A": "Europe/London",
+          "eu:test:B": "Europe/London",
+          "eu:test:C": "Europe/London"
+        },
+        "trip": {
+          "id": "eu:test:train",
+          "source": "test",
+          "stops": [
+            {
+              "stationID": "eu:test:A",
+              "stationName": "Origin",
+              "sequence": 1,
+              "scheduledDeparture": 1800000000,
+              "plannedPlatform": "2",
+              "isCancelled": false,
+              "isPassed": false,
+              "expectedDeparture": 1799999911
+            },
+            {
+              "stationID": "eu:test:B",
+              "stationName": "Middle",
+              "sequence": 2,
+              "scheduledArrival": 1800001800,
+              "scheduledDeparture": 1800002100,
+              "plannedPlatform": "4",
+              "isCancelled": false,
+              "isPassed": false
+            },
+            {
+              "stationID": "eu:test:C",
+              "stationName": "Destination",
+              "sequence": 3,
+              "scheduledArrival": 1800003600,
+              "isCancelled": false,
+              "isPassed": false
+            }
+          ]
+        }
+      },
+      "expected": {
+        "state": {
+          "schemaVersion": 1,
+          "phase": "departureSoon",
+          "focusName": "Origin",
+          "eventTime": 1799999911,
+          "timeZoneIdentifier": "Europe/London",
+          "timingBasis": "estimated",
+          "platform": "2",
+          "platformBasis": "scheduled",
+          "platformChanged": false,
+          "delayMinutes": -1,
+          "checkedAt": 1799998200,
+          "validUntil": 1799998500,
+          "isStopCancelled": false
+        },
+        "eligibility": "available",
+        "eligibleAt": null,
+        "nextTransitionDate": 1799999911,
+        "shouldEnd": false
+      }
+    },
+    {
+      "name": "delay-never-pairs-unlike-events",
+      "input": {
+        "referenceDate": 1799998200,
+        "lastSuccessfulCheck": 1799998200,
+        "refreshFailed": false,
+        "boardingStationID": null,
+        "alightingStationID": null,
+        "stationTimeZones": {
+          "eu:test:A": "Europe/London",
+          "eu:test:B": "Europe/London",
+          "eu:test:C": "Europe/London"
+        },
+        "trip": {
+          "id": "eu:test:train",
+          "source": "test",
+          "stops": [
+            {
+              "stationID": "eu:test:A",
+              "stationName": "Origin",
+              "sequence": 1,
+              "plannedPlatform": "2",
+              "isCancelled": false,
+              "isPassed": false,
+              "expectedDeparture": 1800000000,
+              "scheduledArrival": 1799999880
+            },
+            {
+              "stationID": "eu:test:B",
+              "stationName": "Middle",
+              "sequence": 2,
+              "scheduledArrival": 1800001800,
+              "scheduledDeparture": 1800002100,
+              "plannedPlatform": "4",
+              "isCancelled": false,
+              "isPassed": false
+            },
+            {
+              "stationID": "eu:test:C",
+              "stationName": "Destination",
+              "sequence": 3,
+              "scheduledArrival": 1800003600,
+              "isCancelled": false,
+              "isPassed": false
+            }
+          ]
+        }
+      },
+      "expected": {
+        "state": {
+          "schemaVersion": 1,
+          "phase": "departureSoon",
+          "focusName": "Origin",
+          "eventTime": 1800000000,
+          "timeZoneIdentifier": "Europe/London",
+          "timingBasis": "estimated",
+          "platform": "2",
+          "platformBasis": "scheduled",
+          "platformChanged": false,
+          "delayMinutes": null,
+          "checkedAt": 1799998200,
+          "validUntil": 1799998500,
+          "isStopCancelled": false
+        },
+        "eligibility": "available",
+        "eligibleAt": null,
+        "nextTransitionDate": 1800000000,
+        "shouldEnd": false
+      }
+    },
+    {
+      "name": "unknown-zone-remains-unknown",
+      "input": {
+        "referenceDate": 1800002100,
+        "lastSuccessfulCheck": 1800002100,
+        "refreshFailed": false,
+        "boardingStationID": null,
+        "alightingStationID": null,
+        "stationTimeZones": {},
+        "trip": {
+          "id": "eu:test:train",
+          "source": "test",
+          "stops": [
+            {
+              "stationID": "eu:test:A",
+              "stationName": "Origin",
+              "sequence": 1,
+              "scheduledDeparture": 1800000000,
+              "plannedPlatform": "2",
+              "isCancelled": false,
+              "isPassed": false
+            },
+            {
+              "stationID": "eu:test:B",
+              "stationName": "Middle",
+              "sequence": 2,
+              "scheduledArrival": 1800001800,
+              "scheduledDeparture": 1800002100,
+              "plannedPlatform": "4",
+              "isCancelled": false,
+              "isPassed": false
+            },
+            {
+              "stationID": "eu:test:C",
+              "stationName": "Destination",
+              "sequence": 3,
+              "scheduledArrival": 1800003600,
+              "isCancelled": false,
+              "isPassed": false
+            }
+          ]
+        }
+      },
+      "expected": {
+        "state": {
+          "schemaVersion": 1,
+          "phase": "underway",
+          "focusName": "Destination",
+          "eventTime": 1800003600,
+          "timeZoneIdentifier": null,
+          "timingBasis": "scheduled",
+          "platform": null,
+          "platformBasis": "unavailable",
+          "platformChanged": false,
+          "delayMinutes": null,
+          "checkedAt": 1800002100,
+          "validUntil": 1800002400,
+          "isStopCancelled": false
+        },
+        "eligibility": "available",
+        "eligibleAt": null,
+        "nextTransitionDate": 1800003600,
+        "shouldEnd": false
+      }
+    },
+    {
+      "name": "focus-station-zone-controls-time-across-zones",
+      "input": {
+        "referenceDate": 1800002100,
+        "lastSuccessfulCheck": 1800002100,
+        "refreshFailed": false,
+        "boardingStationID": null,
+        "alightingStationID": null,
+        "stationTimeZones": {
+          "eu:test:A": "Europe/London",
+          "eu:test:B": "Europe/Paris",
+          "eu:test:C": "America/New_York"
+        },
+        "trip": {
+          "id": "eu:test:train",
+          "source": "test",
+          "stops": [
+            {
+              "stationID": "eu:test:A",
+              "stationName": "Origin",
+              "sequence": 1,
+              "scheduledDeparture": 1800000000,
+              "plannedPlatform": "2",
+              "isCancelled": false,
+              "isPassed": false
+            },
+            {
+              "stationID": "eu:test:B",
+              "stationName": "Middle",
+              "sequence": 2,
+              "scheduledArrival": 1800001800,
+              "scheduledDeparture": 1800002100,
+              "plannedPlatform": "4",
+              "isCancelled": false,
+              "isPassed": false
+            },
+            {
+              "stationID": "eu:test:C",
+              "stationName": "Destination",
+              "sequence": 3,
+              "scheduledArrival": 1800003600,
+              "isCancelled": false,
+              "isPassed": false
+            }
+          ]
+        }
+      },
+      "expected": {
+        "state": {
+          "schemaVersion": 1,
+          "phase": "underway",
+          "focusName": "Destination",
+          "eventTime": 1800003600,
+          "timeZoneIdentifier": "America/New_York",
+          "timingBasis": "scheduled",
+          "platform": null,
+          "platformBasis": "unavailable",
+          "platformChanged": false,
+          "delayMinutes": null,
+          "checkedAt": 1800002100,
+          "validUntil": 1800002400,
+          "isStopCancelled": false
+        },
+        "eligibility": "available",
+        "eligibleAt": null,
+        "nextTransitionDate": 1800003600,
+        "shouldEnd": false
+      }
+    }
+  ]
+}

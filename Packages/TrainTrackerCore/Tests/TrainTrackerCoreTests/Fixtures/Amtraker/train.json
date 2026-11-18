@@ -1,0 +1,42 @@
+{
+  "171": [
+    {
+      "trainID": "171-20",
+      "trainNum": "171",
+      "routeName": "Northeast Regional",
+      "provider": "Amtrak",
+      "lat": 40.222,
+      "lon": -74.750,
+      "heading": "SW",
+      "updatedAt": "2026-07-20T13:38:27-04:00",
+      "lastValTS": "2026-07-20T13:38:10-04:00",
+      "destName": "Philadelphia",
+      "trainState": "Active",
+      "stations": [
+        {
+          "name": "New York Penn",
+          "code": "NYP",
+          "tz": "America/New_York",
+          "schArr": "2026-07-20T12:00:00-04:00",
+          "schDep": "2026-07-20T12:05:00-04:00",
+          "arr": "2026-07-20T12:04:00-04:00",
+          "dep": "2026-07-20T12:10:00-04:00",
+          "status": "Departed",
+          "platform": "9"
+        },
+        {
+          "name": "Philadelphia 30th Street",
+          "code": "PHL",
+          "tz": "America/New_York",
+          "schArr": "2026-07-20T14:00:00-04:00",
+          "schDep": "2026-07-20T14:05:00-04:00",
+          "arr": "2026-07-20T14:07:00-04:00",
+          "dep": "2026-07-20T14:12:00-04:00",
+          "status": "Enroute",
+          "platform": "4"
+        }
+      ],
+      "alerts": [{"message": "A short service update."}]
+    }
+  ]
+}

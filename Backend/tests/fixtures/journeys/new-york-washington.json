@@ -1,0 +1,166 @@
+{
+  "previousPageCursor": "EARLIER|1784894400",
+  "nextPageCursor": "LATER|1784899740",
+  "itineraries": [
+    {
+      "id": "provider-acela-2109",
+      "startTime": "2026-07-24T12:25:00Z",
+      "endTime": "2026-07-24T15:27:00Z",
+      "duration": 10920,
+      "transfers": 0,
+      "legs": [
+        {
+          "mode": "REGIONAL_RAIL",
+          "routeType": 2,
+          "from": {
+            "name": "New York Moynihan Train Hall at Penn Station",
+            "stopId": "us-Amtrak_NYP",
+            "lat": 40.750328,
+            "lon": -73.99446,
+            "tz": "America/New_York",
+            "departure": "2026-07-24T12:25:00Z",
+            "scheduledDeparture": "2026-07-24T12:20:00Z",
+            "scheduledTrack": "8",
+            "track": "9",
+            "cancelled": false
+          },
+          "to": {
+            "name": "Washington Union Station",
+            "stopId": "us-Amtrak_WAS",
+            "lat": 38.897438,
+            "lon": -77.006126,
+            "tz": "America/New_York",
+            "arrival": "2026-07-24T15:27:00Z",
+            "scheduledArrival": "2026-07-24T15:22:00Z",
+            "scheduledTrack": null,
+            "track": null,
+            "cancelled": false
+          },
+          "startTime": "2026-07-24T12:25:00Z",
+          "endTime": "2026-07-24T15:27:00Z",
+          "scheduledStartTime": "2026-07-24T12:20:00Z",
+          "scheduledEndTime": "2026-07-24T15:22:00Z",
+          "duration": 10920,
+          "realTime": true,
+          "headsign": "Washington",
+          "agencyName": "Amtrak",
+          "tripId": "20260724_08:20_us-Amtrak_285229",
+          "routeShortName": "Acela",
+          "tripShortName": "2109",
+          "displayName": "Acela 2109",
+          "cancelled": false,
+          "intermediateStops": [
+            {
+              "name": "Philadelphia 30th Street Station",
+              "stopId": "us-Amtrak_PHL",
+              "lat": 39.955615,
+              "lon": -75.181042,
+              "tz": "America/New_York",
+              "arrival": "2026-07-24T13:34:00Z",
+              "departure": "2026-07-24T13:36:00Z",
+              "scheduledArrival": "2026-07-24T13:29:00Z",
+              "scheduledDeparture": "2026-07-24T13:31:00Z",
+              "scheduledTrack": "5",
+              "track": "6",
+              "cancelled": false
+            },
+            {
+              "name": "Baltimore Penn Station",
+              "stopId": "us-Amtrak_BAL",
+              "lat": 39.307302,
+              "lon": -76.615688,
+              "tz": "America/New_York",
+              "arrival": "2026-07-24T14:46:00Z",
+              "departure": "2026-07-24T14:47:00Z",
+              "scheduledArrival": "2026-07-24T14:41:00Z",
+              "scheduledDeparture": "2026-07-24T14:42:00Z",
+              "scheduledTrack": null,
+              "track": null,
+              "cancelled": false
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "provider-northeast-regional-141",
+      "startTime": "2026-07-24T12:23:00Z",
+      "endTime": "2026-07-24T15:41:00Z",
+      "duration": 11880,
+      "transfers": 0,
+      "legs": [
+        {
+          "mode": "REGIONAL_RAIL",
+          "routeType": 2,
+          "from": {
+            "name": "New York Moynihan Train Hall at Penn Station",
+            "stopId": "us-Amtrak_NYP",
+            "lat": 40.750328,
+            "lon": -73.99446,
+            "tz": "America/New_York",
+            "departure": "2026-07-24T12:23:00Z",
+            "scheduledDeparture": "2026-07-24T12:23:00Z",
+            "scheduledTrack": null,
+            "track": null,
+            "cancelled": false
+          },
+          "to": {
+            "name": "Washington Union Station",
+            "stopId": "us-Amtrak_WAS",
+            "lat": 38.897438,
+            "lon": -77.006126,
+            "tz": "America/New_York",
+            "arrival": "2026-07-24T15:41:00Z",
+            "scheduledArrival": "2026-07-24T15:41:00Z",
+            "scheduledTrack": null,
+            "track": null,
+            "cancelled": false
+          },
+          "startTime": "2026-07-24T12:23:00Z",
+          "endTime": "2026-07-24T15:41:00Z",
+          "scheduledStartTime": "2026-07-24T12:23:00Z",
+          "scheduledEndTime": "2026-07-24T15:41:00Z",
+          "duration": 11880,
+          "realTime": false,
+          "headsign": "Washington",
+          "agencyName": "Amtrak",
+          "tripId": "20260724_04:10_us-Amtrak_285217",
+          "routeShortName": "Northeast Regional",
+          "tripShortName": "141",
+          "displayName": "Northeast Regional 141",
+          "cancelled": false,
+          "intermediateStops": [
+            {
+              "name": "Philadelphia 30th Street Station",
+              "stopId": "us-Amtrak_PHL",
+              "lat": 39.955615,
+              "lon": -75.181042,
+              "tz": "America/New_York",
+              "arrival": "2026-07-24T13:46:00Z",
+              "departure": "2026-07-24T13:49:00Z",
+              "scheduledArrival": "2026-07-24T13:46:00Z",
+              "scheduledDeparture": "2026-07-24T13:49:00Z",
+              "scheduledTrack": null,
+              "track": null,
+              "cancelled": false
+            },
+            {
+              "name": "Baltimore Penn Station",
+              "stopId": "us-Amtrak_BAL",
+              "lat": 39.307302,
+              "lon": -76.615688,
+              "tz": "America/New_York",
+              "arrival": "2026-07-24T14:58:00Z",
+              "departure": "2026-07-24T15:00:00Z",
+              "scheduledArrival": "2026-07-24T14:58:00Z",
+              "scheduledDeparture": "2026-07-24T15:00:00Z",
+              "scheduledTrack": null,
+              "track": null,
+              "cancelled": false
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,30 @@
+{
+  "$schema": "./node_modules/wrangler/config-schema.json",
+  "name": "roundhouse-local-rail-maintenance",
+  "main": "src/cloudflare/rail-maintenance-worker.ts",
+  "compatibility_date": "2026-07-20",
+  "compatibility_flags": [
+    "nodejs_compat"
+  ],
+  "workers_dev": false,
+  "durable_objects": {
+    "bindings": [
+      {
+        "name": "RAIL_MAINTENANCE",
+        "class_name": "RailMaintenance"
+      }
+    ]
+  },
+  "migrations": [
+    {
+      "tag": "v1",
+      "new_sqlite_classes": [
+        "RailMaintenance"
+      ]
+    }
+  ],
+  "observability": {
+    "enabled": false
+  },
+  "vars": {}
+}

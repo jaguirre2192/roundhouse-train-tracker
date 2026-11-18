@@ -1,0 +1,12 @@
+[
+  {
+    "type": "STOP",
+    "name": "Berlin Hbf",
+    "id": "de-test-berlin-hbf",
+    "lat": 52.525,
+    "lon": 13.369,
+    "country": "DE",
+    "tz": "Europe/Berlin",
+    "modes": ["HIGHSPEED_RAIL", "LONG_DISTANCE"]
+  }
+]

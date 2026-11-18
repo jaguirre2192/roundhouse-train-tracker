@@ -1,0 +1,223 @@
+{
+  "previousPageCursor": "EARLIER|1784872800",
+  "nextPageCursor": "LATER|1784879760",
+  "itineraries": [
+    {
+      "id": "provider-direct-paris-amsterdam",
+      "startTime": "2026-07-24T06:25:00Z",
+      "endTime": "2026-07-24T10:14:00Z",
+      "duration": 13740,
+      "transfers": 0,
+      "legs": [
+        {
+          "mode": "HIGHSPEED_RAIL",
+          "routeType": 101,
+          "from": {
+            "name": "Paris-Nord",
+            "stopId": "fr-eurostar_paris_nord",
+            "parentId": "fr-eurostar_paris_nord_station_area",
+            "lat": 48.880947,
+            "lon": 2.355314,
+            "tz": "Europe/Paris",
+            "departure": "2026-07-24T06:25:00Z",
+            "scheduledDeparture": "2026-07-24T06:25:00Z",
+            "scheduledTrack": "7",
+            "track": "7",
+            "cancelled": false
+          },
+          "to": {
+            "name": "Amsterdam Centraal",
+            "stopId": "fr-eurostar_amsterdam_centraal",
+            "parentId": "fr-eurostar_amsterdam_centraal_station_area",
+            "lat": 52.379128,
+            "lon": 4.900272,
+            "tz": "Europe/Amsterdam",
+            "arrival": "2026-07-24T10:14:00Z",
+            "scheduledArrival": "2026-07-24T10:14:00Z",
+            "scheduledTrack": "15b",
+            "track": "15b",
+            "cancelled": false
+          },
+          "startTime": "2026-07-24T06:25:00Z",
+          "endTime": "2026-07-24T10:14:00Z",
+          "scheduledStartTime": "2026-07-24T06:25:00Z",
+          "scheduledEndTime": "2026-07-24T10:14:00Z",
+          "duration": 13740,
+          "realTime": false,
+          "headsign": "Amsterdam Centraal",
+          "agencyName": "Eurostar",
+          "tripId": "20260724_08:25_fr-eurostar_9315",
+          "routeShortName": "Eurostar",
+          "tripShortName": "9315",
+          "displayName": "Eurostar 9315",
+          "cancelled": false,
+          "intermediateStops": [
+            {
+              "name": "Bruxelles-Midi",
+              "stopId": "fr-eurostar_bruxelles_midi_3",
+              "parentId": "fr-eurostar_bruxelles_midi_station_area",
+              "lat": 50.835373,
+              "lon": 4.335695,
+              "tz": "Europe/Brussels",
+              "arrival": "2026-07-24T07:47:00Z",
+              "departure": "2026-07-24T07:53:00Z",
+              "scheduledArrival": "2026-07-24T07:47:00Z",
+              "scheduledDeparture": "2026-07-24T07:53:00Z",
+              "scheduledTrack": "3",
+              "track": "3",
+              "cancelled": false
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "provider-connection-paris-amsterdam",
+      "startTime": "2026-07-24T06:28:00Z",
+      "endTime": "2026-07-24T11:20:00Z",
+      "duration": 17520,
+      "transfers": 1,
+      "legs": [
+        {
+          "mode": "HIGHSPEED_RAIL",
+          "routeType": 101,
+          "from": {
+            "name": "Paris-Nord",
+            "stopId": "fr-eurostar_paris_nord",
+            "parentId": "fr-eurostar_paris_nord_station_area",
+            "lat": 48.880947,
+            "lon": 2.355314,
+            "tz": "Europe/Paris",
+            "departure": "2026-07-24T06:28:00Z",
+            "scheduledDeparture": "2026-07-24T06:25:00Z",
+            "scheduledTrack": "7",
+            "track": "8",
+            "cancelled": false
+          },
+          "to": {
+            "name": "Bruxelles-Midi",
+            "stopId": "fr-eurostar_bruxelles_midi_3",
+            "parentId": "fr-eurostar_bruxelles_midi_station_area",
+            "lat": 50.835373,
+            "lon": 4.335695,
+            "tz": "Europe/Brussels",
+            "arrival": "2026-07-24T07:50:00Z",
+            "scheduledArrival": "2026-07-24T07:47:00Z",
+            "scheduledTrack": "3",
+            "track": "4",
+            "cancelled": false
+          },
+          "startTime": "2026-07-24T06:28:00Z",
+          "endTime": "2026-07-24T07:50:00Z",
+          "scheduledStartTime": "2026-07-24T06:25:00Z",
+          "scheduledEndTime": "2026-07-24T07:47:00Z",
+          "duration": 4920,
+          "realTime": true,
+          "headsign": "Bruxelles-Midi",
+          "agencyName": "Eurostar",
+          "tripId": "20260724_08:25_fr-eurostar_9315",
+          "routeShortName": "Eurostar",
+          "tripShortName": "9315",
+          "displayName": "Eurostar 9315",
+          "cancelled": false,
+          "intermediateStops": []
+        },
+        {
+          "mode": "WALK",
+          "routeType": null,
+          "from": {
+            "name": "Bruxelles-Midi",
+            "stopId": "fr-eurostar_bruxelles_midi_3",
+            "parentId": "brussels-midi",
+            "lat": 50.835373,
+            "lon": 4.335695,
+            "tz": "Europe/Brussels"
+          },
+          "to": {
+            "name": "Bruxelles-Midi",
+            "stopId": "be-sncb_bruxelles_midi",
+            "parentId": "brussels-midi",
+            "lat": 50.8354,
+            "lon": 4.3357,
+            "tz": "Europe/Brussels"
+          },
+          "startTime": "2026-07-24T07:50:00Z",
+          "endTime": "2026-07-24T07:53:00Z",
+          "scheduledStartTime": "2026-07-24T07:50:00Z",
+          "scheduledEndTime": "2026-07-24T07:53:00Z",
+          "duration": 180,
+          "distance": 120,
+          "realTime": false,
+          "headsign": null,
+          "agencyName": null,
+          "tripId": null,
+          "routeShortName": null,
+          "tripShortName": null,
+          "displayName": null,
+          "cancelled": null,
+          "intermediateStops": null
+        },
+        {
+          "mode": "LONG_DISTANCE",
+          "routeType": 102,
+          "from": {
+            "name": "Bruxelles-Midi",
+            "stopId": "be-sncb_bruxelles_midi",
+            "parentId": "brussels-midi",
+            "lat": 50.8354,
+            "lon": 4.3357,
+            "tz": "Europe/Brussels",
+            "departure": "2026-07-24T08:22:00Z",
+            "scheduledDeparture": "2026-07-24T08:22:00Z",
+            "scheduledTrack": "12",
+            "track": "12",
+            "cancelled": false
+          },
+          "to": {
+            "name": "Amsterdam Centraal",
+            "stopId": "nl-openov_amsterdam_centraal",
+            "parentId": "amsterdam-centraal",
+            "lat": 52.379387,
+            "lon": 4.8997,
+            "tz": "Europe/Amsterdam",
+            "arrival": "2026-07-24T11:20:00Z",
+            "scheduledArrival": "2026-07-24T11:20:00Z",
+            "scheduledTrack": "13b",
+            "track": "13b",
+            "cancelled": false
+          },
+          "startTime": "2026-07-24T08:22:00Z",
+          "endTime": "2026-07-24T11:20:00Z",
+          "scheduledStartTime": "2026-07-24T08:22:00Z",
+          "scheduledEndTime": "2026-07-24T11:20:00Z",
+          "duration": 10680,
+          "realTime": false,
+          "headsign": "Amsterdam Centraal",
+          "agencyName": "NS International",
+          "tripId": "20260724_be-sncb_ic_9231",
+          "routeShortName": "Eurocity Direct",
+          "tripShortName": "9231",
+          "displayName": "Eurocity Direct 9231",
+          "cancelled": false,
+          "intermediateStops": [
+            {
+              "name": "Rotterdam Centraal",
+              "stopId": "nl-openov_rotterdam_centraal",
+              "parentId": "rotterdam-centraal",
+              "lat": 51.923676,
+              "lon": 4.470496,
+              "tz": "Europe/Amsterdam",
+              "arrival": "2026-07-24T10:38:00Z",
+              "departure": "2026-07-24T10:43:00Z",
+              "scheduledArrival": "2026-07-24T10:38:00Z",
+              "scheduledDeparture": "2026-07-24T10:43:00Z",
+              "scheduledTrack": "7",
+              "track": "7",
+              "cancelled": false
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,24 @@
+{
+  "identifier": "RoundhouseTips",
+  "nonRenewingSubscriptions": [],
+  "products": [
+    {
+      "displayPrice": "0.99",
+      "familyShareable": false,
+      "internalID": "751101",
+      "localizations": [
+        {
+          "description": "Help cover hosting and keep Roundhouse free.",
+          "displayName": "Hosting Tip",
+          "locale": "en_US"
+        }
+      ],
+      "productID": "com.jorgeaguirre.TrainTracker.tip.hosting",
+      "referenceName": "Roundhouse Hosting Tip",
+      "type": "Consumable"
+    }
+  ],
+  "settings": {"_askToBuyEnabled": false, "_disableDialogs": false, "_locale": "en_US", "_storefront": "USA"},
+  "subscriptionGroups": [],
+  "version": {"major": 6, "minor": 3}
+}

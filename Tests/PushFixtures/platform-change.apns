@@ -1,0 +1,16 @@
+{
+  "Simulator Target Bundle": "com.jorgeaguirre.TrainTracker",
+  "aps": {
+    "alert": {
+      "title": "Track changed at New York Penn",
+      "body": "Northeast Regional 171 now departs from track 9 (was 8)."
+    },
+    "sound": "default",
+    "interruption-level": "time-sensitive",
+    "thread-id": "us:amtraker:171-20"
+  },
+  "tripID": "us:amtraker:171-20",
+  "eventID": "simulator-platform-change",
+  "eventKind": "platform-change",
+  "stopID": "us:amtraker:NYP"
+}

@@ -1,0 +1,52 @@
+[
+  {
+    "type": "STOP",
+    "name": "NEW YORK PENN STATION",
+    "id": "us-Amtrak_NYP",
+    "lat": 40.7506,
+    "lon": -73.9935,
+    "country": "US",
+    "tz": "America/New_York",
+    "modes": ["HIGHSPEED_RAIL", "LONG_DISTANCE", "REGIONAL_RAIL"]
+  },
+  {
+    "type": "STOP",
+    "name": "East New York",
+    "id": "us-ny-LIRR_50",
+    "lat": 40.6758,
+    "lon": -73.9028,
+    "country": "US",
+    "tz": "America/New_York",
+    "modes": ["REGIONAL_RAIL"]
+  },
+  {
+    "type": "STOP",
+    "name": "New York",
+    "id": "ca-Viarail_120",
+    "lat": 40.7128,
+    "lon": -74.006,
+    "country": "US",
+    "tz": "America/New_York",
+    "modes": ["LONG_DISTANCE"]
+  },
+  {
+    "type": "STOP",
+    "name": "NEWARK PENN STATION",
+    "id": "us-NJ-Transit-Rail_107",
+    "lat": 40.7347,
+    "lon": -74.164,
+    "country": "US",
+    "tz": "America/New_York",
+    "modes": ["REGIONAL_RAIL"]
+  },
+  {
+    "type": "STOP",
+    "name": "Penne",
+    "id": "fr-mainline_penne",
+    "lat": 44.0794,
+    "lon": 0.2044,
+    "country": "FR",
+    "tz": "Europe/Paris",
+    "modes": ["REGIONAL_RAIL"]
+  }
+]

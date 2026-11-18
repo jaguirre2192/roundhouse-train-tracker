@@ -1,0 +1,22 @@
+{
+  "NYP": {
+    "name": "New York Penn",
+    "code": "NYP",
+    "tz": "America/New_York",
+    "lat": 40.751,
+    "lon": -73.996,
+    "city": "New York",
+    "state": "NY",
+    "trains": ["171-20"]
+  },
+  "PHL": {
+    "name": "Philadelphia 30th Street",
+    "code": "PHL",
+    "tz": "America/New_York",
+    "lat": 39.956,
+    "lon": -75.182,
+    "city": "Philadelphia",
+    "state": "PA",
+    "trains": ["171-20"]
+  }
+}

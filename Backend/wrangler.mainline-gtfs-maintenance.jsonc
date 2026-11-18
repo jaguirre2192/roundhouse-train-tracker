@@ -1,0 +1,30 @@
+{
+  "$schema": "./node_modules/wrangler/config-schema.json",
+  "name": "roundhouse-local-mainline-gtfs-maintenance",
+  "main": "src/cloudflare/mainline-gtfs-maintenance-worker.ts",
+  "compatibility_date": "2026-07-20",
+  "compatibility_flags": [
+    "nodejs_compat"
+  ],
+  "workers_dev": false,
+  "durable_objects": {
+    "bindings": [
+      {
+        "name": "GTFS_MAINTENANCE",
+        "class_name": "MainlineGTFSMaintenance"
+      }
+    ]
+  },
+  "migrations": [
+    {
+      "tag": "v1",
+      "new_sqlite_classes": [
+        "MainlineGTFSMaintenance"
+      ]
+    }
+  ],
+  "observability": {
+    "enabled": false
+  },
+  "vars": {}
+}

@@ -1,0 +1,182 @@
+name: TrainTracker
+options:
+  bundleIdPrefix: com.jorgeaguirre
+  deploymentTarget:
+    iOS: "18.0"
+  developmentLanguage: en
+  xcodeVersion: "26.0"
+  createIntermediateGroups: true
+
+settings:
+  base:
+    SWIFT_VERSION: "6.0"
+    SWIFT_STRICT_CONCURRENCY: complete
+    CLANG_ENABLE_MODULES: YES
+    ENABLE_USER_SCRIPT_SANDBOXING: YES
+    CODE_SIGN_STYLE: Automatic
+    MARKETING_VERSION: "1.8.3"
+    CURRENT_PROJECT_VERSION: 38
+
+packages:
+  TrainTrackerCore:
+    path: Packages/TrainTrackerCore
+
+targets:
+  TrainTracker:
+    type: application
+    platform: iOS
+    sources:
+      - path: App/Shared
+      - path: App/LiveActivityExtension
+        excludes:
+          - Info.plist
+          - TrainTrackerLiveActivityBundle.swift
+          - TrainTrackerLiveActivityExtension.entitlements
+      - path: App/iOS
+        excludes:
+          - Info.plist
+    dependencies:
+      - package: TrainTrackerCore
+      - target: TrainTrackerShareExtension
+        embed: true
+      - target: TrainTrackerLiveActivityExtension
+        embed: true
+      - target: TrainTrackerWatch
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.jorgeaguirre.TrainTracker
+        PRODUCT_MODULE_NAME: TrainTracker
+        CODE_SIGN_ENTITLEMENTS: App/iOS/TrainTracker.entitlements
+        GENERATE_INFOPLIST_FILE: NO
+        INFOPLIST_FILE: App/iOS/Info.plist
+        ROUNDHOUSE_SANDBOX_ACCOUNT_URL: ""
+        TRAIN_TRACKER_API_BASE_URL: "http://127.0.0.1:8787"
+        ASSETCATALOG_COMPILER_APPICON_NAME: AppIcon
+        TARGETED_DEVICE_FAMILY: "1,2"
+        SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD: YES
+        SUPPORTS_MACCATALYST: NO
+        SWIFT_EMIT_LOC_STRINGS: YES
+      configs:
+        Debug:
+          TRAIN_TRACKER_APNS_ENVIRONMENT: sandbox
+        Release:
+          TRAIN_TRACKER_APNS_ENVIRONMENT: production
+    scheme:
+      testTargets:
+        - TrainTrackerTests
+
+  TrainTrackerShareExtension:
+    type: app-extension
+    platform: iOS
+    sources:
+      - path: App/ShareExtension
+      - path: App/Shared/ShareImport
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.jorgeaguirre.TrainTracker.ShareExtension
+        PRODUCT_MODULE_NAME: TrainTrackerShareExtension
+        CODE_SIGN_ENTITLEMENTS: App/ShareExtension/TrainTrackerShareExtension.entitlements
+        GENERATE_INFOPLIST_FILE: NO
+        INFOPLIST_FILE: App/ShareExtension/Info.plist
+        TARGETED_DEVICE_FAMILY: "1,2"
+        SKIP_INSTALL: YES
+        SUPPORTS_MACCATALYST: NO
+
+  TrainTrackerLiveActivityExtension:
+    type: app-extension
+    platform: iOS
+    sources:
+      - path: App/LiveActivityExtension
+        excludes:
+          - Info.plist
+          - TrainTrackerLiveActivityExtension.entitlements
+      - path: App/Shared/LiveActivities/TrainJourneyAttributes.swift
+      - path: App/Shared/Design/TrainTrackerSymbol.swift
+      - path: App/Shared/Symbols.xcassets
+    dependencies:
+      - package: TrainTrackerCore
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.jorgeaguirre.TrainTracker.LiveActivity
+        PRODUCT_MODULE_NAME: TrainTrackerLiveActivityExtension
+        CODE_SIGN_ENTITLEMENTS: App/LiveActivityExtension/TrainTrackerLiveActivityExtension.entitlements
+        GENERATE_INFOPLIST_FILE: NO
+        INFOPLIST_FILE: App/LiveActivityExtension/Info.plist
+        TARGETED_DEVICE_FAMILY: "1,2"
+        SKIP_INSTALL: YES
+        SUPPORTS_MACCATALYST: NO
+        APPLICATION_EXTENSION_API_ONLY: YES
+
+  # The Apple Watch companion: the next-stop countdown and the switch for the phone's wake
+  # alert. Embedded in the iOS app; it shows what the phone last sent (App/Shared/Watch).
+  TrainTrackerWatch:
+    type: application
+    platform: watchOS
+    deploymentTarget: "11.0"
+    sources:
+      - path: App/Watch
+      - path: App/Shared/Design/TrainTrackerSymbol.swift
+      - path: App/Shared/Symbols.xcassets
+      - path: App/iOS/AppIcon.icon
+    dependencies:
+      - package: TrainTrackerCore
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.jorgeaguirre.TrainTracker.watchkitapp
+        PRODUCT_MODULE_NAME: TrainTrackerWatch
+        GENERATE_INFOPLIST_FILE: YES
+        INFOPLIST_KEY_CFBundleDisplayName: Roundhouse
+        INFOPLIST_KEY_WKApplication: YES
+        INFOPLIST_KEY_WKCompanionAppBundleIdentifier: com.jorgeaguirre.TrainTracker
+        ASSETCATALOG_COMPILER_APPICON_NAME: AppIcon
+        ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME: AccentColor
+        TARGETED_DEVICE_FAMILY: "4"
+        SKIP_INSTALL: YES
+        SWIFT_EMIT_LOC_STRINGS: YES
+
+  TrainTrackerTests:
+    type: bundle.unit-test
+    platform: iOS
+    sources:
+      - path: Tests/TrainTrackerAppTests
+      - path: StoreKit/RoundhouseTips.storekit
+        buildPhase: resources
+    dependencies:
+      - target: TrainTracker
+    settings:
+      base:
+        GENERATE_INFOPLIST_FILE: YES
+
+  TrainTrackerTicketUITests:
+    type: bundle.ui-testing
+    platform: iOS
+    sources:
+      - path: Tests/TrainTrackerTicketUITests
+      - path: StoreKit/RoundhouseTips.storekit
+        buildPhase: resources
+    dependencies:
+      - target: TrainTracker
+    settings:
+      base:
+        GENERATE_INFOPLIST_FILE: YES
+
+schemes:
+  TrainTrackerReliabilityLive:
+    build:
+      targets:
+        TrainTracker: all
+        TrainTrackerTests: [test]
+    test:
+      environmentVariables:
+        RUN_LIVE_TRAIN_TRACKER_TESTS: "1"
+        TRAIN_TRACKER_LIVE_BASE_URL: "http://127.0.0.1:8791"
+      targets:
+        - TrainTrackerTests
+  TrainTrackerTicketsQA:
+    build:
+      targets:
+        TrainTracker: all
+        TrainTrackerTicketUITests: [test]
+    test:
+      targets:
+        - TrainTrackerTicketUITests

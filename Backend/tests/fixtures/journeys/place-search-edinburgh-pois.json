@@ -1,0 +1,72 @@
+[
+  {
+    "type": "PLACE",
+    "name": "Edinburgh",
+    "id": "node/[17898859]",
+    "lat": 55.9533456,
+    "lon": -3.1883749,
+    "country": "GB",
+    "tz": "Europe/London",
+    "category": "place_6"
+  },
+  {
+    "type": "STOP",
+    "name": "Edinburgh Waverley",
+    "id": "gb-mainline_edinburgh-waverley",
+    "lat": 55.9524,
+    "lon": -3.1882,
+    "country": "GB",
+    "tz": "Europe/London",
+    "modes": ["LONG_DISTANCE", "REGIONAL_RAIL"]
+  },
+  {
+    "type": "PLACE",
+    "name": "Edinburgh Thai",
+    "id": "node/[4680650784]",
+    "lat": 55.9432054,
+    "lon": -3.2039518,
+    "country": "GB",
+    "tz": "Europe/London",
+    "category": "massage_14"
+  },
+  {
+    "type": "PLACE",
+    "name": "Edinburgh Audi",
+    "id": "way/[4885967]",
+    "lat": 55.9218793,
+    "lon": -3.2994251,
+    "country": "GB",
+    "tz": "Europe/London",
+    "category": "purple_car"
+  },
+  {
+    "type": "PLACE",
+    "name": "Edinburgh Books",
+    "id": "node/[634851819]",
+    "lat": 55.9460448,
+    "lon": -3.2015976,
+    "country": "GB",
+    "tz": "Europe/London",
+    "category": "books_16"
+  },
+  {
+    "type": "PLACE",
+    "name": "Edinburgh Gifts",
+    "id": "node/[1977957768]",
+    "lat": 55.9514425,
+    "lon": -3.2010226,
+    "country": "GB",
+    "tz": "Europe/London",
+    "category": "shop_other_16"
+  },
+  {
+    "type": "PLACE",
+    "name": "IKEA Edinburgh",
+    "id": "way/[4449957]",
+    "lat": 55.8805189,
+    "lon": -3.1692063,
+    "country": "GB",
+    "tz": "Europe/London",
+    "category": "furniture_16"
+  }
+]

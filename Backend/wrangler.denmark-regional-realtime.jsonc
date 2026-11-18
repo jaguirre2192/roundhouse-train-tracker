@@ -1,0 +1,33 @@
+{
+  "$schema": "./node_modules/wrangler/config-schema.json",
+  "name": "roundhouse-local-denmark-regional-realtime",
+  "main": "src/cloudflare/denmark-realtime-worker.ts",
+  "compatibility_date": "2026-07-20",
+  "compatibility_flags": [
+    "nodejs_compat"
+  ],
+  "workers_dev": false,
+  "durable_objects": {
+    "bindings": [
+      {
+        "name": "DENMARK_REALTIME",
+        "class_name": "DenmarkRealtime"
+      }
+    ]
+  },
+  "migrations": [
+    {
+      "tag": "v1",
+      "new_sqlite_classes": [
+        "DenmarkRealtime"
+      ]
+    }
+  ],
+  "observability": {
+    "enabled": false
+  },
+  "vars": {},
+  "alias": {
+    "kerberos": "./src/providers/denmark-servicebus-no-kerberos.ts"
+  }
+}

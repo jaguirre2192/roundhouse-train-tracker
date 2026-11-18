@@ -1,0 +1,53 @@
+{
+  "id": "fixture-itinerary",
+  "startTime": "2026-07-21T08:02:00Z",
+  "endTime": "2026-07-21T16:10:00Z",
+  "duration": 29280,
+  "transfers": 0,
+  "legs": [
+    {
+      "mode": "HIGHSPEED_RAIL",
+      "from": {
+        "name": "Berlin Hbf",
+        "stopId": "de-test-berlin-hbf",
+        "lat": 52.525,
+        "lon": 13.369,
+        "departure": "2026-07-21T08:02:00Z",
+        "scheduledDeparture": "2026-07-21T08:00:00Z",
+        "scheduledTrack": "7",
+        "track": "8",
+        "cancelled": false
+      },
+      "to": {
+        "name": "Paris Est",
+        "stopId": "fr-test-paris-est",
+        "lat": 48.877,
+        "lon": 2.359,
+        "arrival": "2026-07-21T16:10:00Z",
+        "scheduledArrival": "2026-07-21T16:05:00Z",
+        "scheduledTrack": "4",
+        "track": "4",
+        "cancelled": false
+      },
+      "duration": 29280,
+      "startTime": "2026-07-21T08:02:00Z",
+      "endTime": "2026-07-21T16:10:00Z",
+      "scheduledStartTime": "2026-07-21T08:00:00Z",
+      "scheduledEndTime": "2026-07-21T16:05:00Z",
+      "realTime": true,
+      "headsign": "Paris Est",
+      "agencyName": "European Rail",
+      "tripId": "europe-9572",
+      "routeShortName": "ICE",
+      "tripShortName": "9572",
+      "displayName": "ICE 9572",
+      "cancelled": false,
+      "intermediateStops": [],
+      "legGeometry": {
+        "points": "_p~iF~ps|U_ulLnnqC_mqNvxq`@",
+        "precision": 5,
+        "length": 3
+      }
+    }
+  ]
+}

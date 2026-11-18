@@ -1,0 +1,349 @@
+{
+  "itineraries": [
+    {
+      "id": "accepted-eurocity-direct",
+      "startTime": "2026-07-24T10:00:00Z",
+      "endTime": "2026-07-24T12:08:00Z",
+      "duration": 7680,
+      "transfers": 0,
+      "legs": [
+        {
+          "mode": "LONG_DISTANCE",
+          "routeType": 102,
+          "from": {
+            "name": "Amsterdam Centraal",
+            "stopId": "nl-openov_amsterdam_centraal",
+            "parentId": "amsterdam-centraal",
+            "lat": 52.379387,
+            "lon": 4.8997,
+            "tz": "Europe/Amsterdam",
+            "departure": "2026-07-24T10:00:00Z",
+            "scheduledDeparture": "2026-07-24T09:58:00Z",
+            "track": "13b",
+            "scheduledTrack": "13b",
+            "cancelled": false
+          },
+          "to": {
+            "name": "Bruxelles-Midi",
+            "stopId": "be-sncb_bruxelles_midi",
+            "parentId": "brussels-midi",
+            "lat": 50.8354,
+            "lon": 4.3357,
+            "tz": "Europe/Brussels",
+            "arrival": "2026-07-24T12:08:00Z",
+            "scheduledArrival": "2026-07-24T12:06:00Z",
+            "track": "5",
+            "scheduledTrack": "5",
+            "cancelled": false
+          },
+          "startTime": "2026-07-24T10:00:00Z",
+          "endTime": "2026-07-24T12:08:00Z",
+          "duration": 7680,
+          "tripId": "20260724_nl-openov_ic_9228",
+          "agencyName": "NS International",
+          "routeShortName": "Eurocity Direct",
+          "tripShortName": "9228",
+          "displayName": "Eurocity Direct 9228",
+          "headsign": "Bruxelles-Midi",
+          "realTime": true,
+          "cancelled": false
+        }
+      ]
+    },
+    {
+      "id": "reject-urban-rer",
+      "startTime": "2026-07-24T08:10:00Z",
+      "endTime": "2026-07-24T08:14:00Z",
+      "duration": 240,
+      "transfers": 0,
+      "legs": [
+        {
+          "mode": "REGIONAL_RAIL",
+          "routeType": 109,
+          "from": {
+            "name": "Paris Gare du Nord",
+            "stopId": "fr-idf_ratp_GDN",
+            "parentId": "paris-gare-du-nord",
+            "lat": 48.8809,
+            "lon": 2.3553,
+            "tz": "Europe/Paris",
+            "departure": "2026-07-24T08:10:00Z",
+            "scheduledDeparture": "2026-07-24T08:10:00Z",
+            "track": "42",
+            "scheduledTrack": "42"
+          },
+          "to": {
+            "name": "Châtelet–Les Halles",
+            "stopId": "fr-idf_ratp_CHA",
+            "parentId": "chatelet-les-halles",
+            "lat": 48.8619,
+            "lon": 2.3469,
+            "tz": "Europe/Paris",
+            "arrival": "2026-07-24T08:14:00Z",
+            "scheduledArrival": "2026-07-24T08:14:00Z",
+            "track": "2",
+            "scheduledTrack": "2"
+          },
+          "startTime": "2026-07-24T08:10:00Z",
+          "endTime": "2026-07-24T08:14:00Z",
+          "duration": 240,
+          "tripId": "20260724_fr-idf_rer-b_0810",
+          "agencyName": "RATP",
+          "routeShortName": "RER B",
+          "displayName": "RER B",
+          "headsign": "Saint-Rémy-lès-Chevreuse",
+          "realTime": false,
+          "cancelled": false
+        }
+      ]
+    },
+    {
+      "id": "reject-bus-only",
+      "startTime": "2026-07-24T08:20:00Z",
+      "endTime": "2026-07-24T08:56:00Z",
+      "duration": 2160,
+      "transfers": 0,
+      "legs": [
+        {
+          "mode": "BUS",
+          "routeType": 3,
+          "from": {
+            "name": "Paris Gare du Nord",
+            "stopId": "fr-idf_ratp_gare-du-nord-bus",
+            "parentId": "paris-gare-du-nord",
+            "lat": 48.8807,
+            "lon": 2.3549,
+            "tz": "Europe/Paris",
+            "departure": "2026-07-24T08:20:00Z",
+            "scheduledDeparture": "2026-07-24T08:20:00Z"
+          },
+          "to": {
+            "name": "Paris Gare de Lyon",
+            "stopId": "fr-idf_ratp_gare-de-lyon-bus",
+            "parentId": "paris-gare-de-lyon",
+            "lat": 48.8443,
+            "lon": 2.3739,
+            "tz": "Europe/Paris",
+            "arrival": "2026-07-24T08:56:00Z",
+            "scheduledArrival": "2026-07-24T08:56:00Z"
+          },
+          "startTime": "2026-07-24T08:20:00Z",
+          "endTime": "2026-07-24T08:56:00Z",
+          "duration": 2160,
+          "tripId": "20260724_fr-idf_bus_91_0820",
+          "agencyName": "RATP",
+          "routeShortName": "91",
+          "displayName": "Bus 91",
+          "headsign": "Gare Montparnasse",
+          "realTime": false,
+          "cancelled": false
+        }
+      ]
+    },
+    {
+      "id": "reject-long-walk",
+      "startTime": "2026-07-24T09:00:00Z",
+      "endTime": "2026-07-24T09:42:00Z",
+      "duration": 2520,
+      "transfers": 0,
+      "legs": [
+        {
+          "mode": "WALK",
+          "routeType": null,
+          "from": {
+            "name": "Paris Gare du Nord",
+            "stopId": "fr-idf_sncf_paris-nord",
+            "parentId": "paris-gare-du-nord",
+            "lat": 48.8809,
+            "lon": 2.3553,
+            "tz": "Europe/Paris"
+          },
+          "to": {
+            "name": "Paris Gare de Lyon",
+            "stopId": "fr-idf_sncf_paris-gare-de-lyon",
+            "parentId": "paris-gare-de-lyon",
+            "lat": 48.8443,
+            "lon": 2.3739,
+            "tz": "Europe/Paris"
+          },
+          "startTime": "2026-07-24T09:00:00Z",
+          "endTime": "2026-07-24T09:42:00Z",
+          "duration": 2520,
+          "distance": 6200,
+          "realTime": false
+        }
+      ]
+    },
+    {
+      "id": "drop-zero-distance-alias-walk",
+      "startTime": "2026-07-24T12:08:00Z",
+      "endTime": "2026-07-24T12:08:00Z",
+      "duration": 0,
+      "transfers": 0,
+      "legs": [
+        {
+          "mode": "WALK",
+          "routeType": null,
+          "from": {
+            "name": "Bruxelles-Midi",
+            "stopId": "fr-eurostar_bruxelles_midi_3",
+            "parentId": "brussels-midi",
+            "lat": 50.835373,
+            "lon": 4.335695,
+            "tz": "Europe/Brussels"
+          },
+          "to": {
+            "name": "Brussel-Zuid",
+            "stopId": "be-sncb_bruxelles_midi",
+            "parentId": "brussels-midi",
+            "lat": 50.835373,
+            "lon": 4.335695,
+            "tz": "Europe/Brussels"
+          },
+          "startTime": "2026-07-24T12:08:00Z",
+          "endTime": "2026-07-24T12:08:00Z",
+          "duration": 0,
+          "distance": 0,
+          "realTime": false
+        }
+      ]
+    },
+    {
+      "id": "merge-adjacent-same-trip",
+      "startTime": "2026-07-24T06:30:00Z",
+      "endTime": "2026-07-24T08:10:00Z",
+      "duration": 6000,
+      "transfers": 1,
+      "legs": [
+        {
+          "mode": "LONG_DISTANCE",
+          "routeType": 102,
+          "from": {
+            "name": "Amsterdam Centraal",
+            "stopId": "nl-openov_amsterdam_centraal",
+            "parentId": "amsterdam-centraal",
+            "lat": 52.379387,
+            "lon": 4.8997,
+            "tz": "Europe/Amsterdam",
+            "departure": "2026-07-24T06:30:00Z",
+            "scheduledDeparture": "2026-07-24T06:30:00Z",
+            "track": "5b",
+            "scheduledTrack": "5b"
+          },
+          "to": {
+            "name": "Utrecht Centraal",
+            "stopId": "nl-openov_utrecht_centraal",
+            "parentId": "utrecht-centraal",
+            "lat": 52.0893,
+            "lon": 5.1102,
+            "tz": "Europe/Amsterdam",
+            "arrival": "2026-07-24T06:57:00Z",
+            "scheduledArrival": "2026-07-24T06:57:00Z",
+            "track": "19",
+            "scheduledTrack": "19"
+          },
+          "startTime": "2026-07-24T06:30:00Z",
+          "endTime": "2026-07-24T06:57:00Z",
+          "duration": 1620,
+          "tripId": "20260724_nl-openov_ic_3025",
+          "agencyName": "NS",
+          "routeShortName": "Intercity",
+          "tripShortName": "3025",
+          "displayName": "Intercity 3025",
+          "headsign": "Nijmegen",
+          "realTime": false,
+          "cancelled": false
+        },
+        {
+          "mode": "LONG_DISTANCE",
+          "routeType": 102,
+          "from": {
+            "name": "Utrecht Centraal",
+            "stopId": "nl-openov_utrecht_centraal",
+            "parentId": "utrecht-centraal",
+            "lat": 52.0893,
+            "lon": 5.1102,
+            "tz": "Europe/Amsterdam",
+            "departure": "2026-07-24T06:59:00Z",
+            "scheduledDeparture": "2026-07-24T06:59:00Z",
+            "track": "19",
+            "scheduledTrack": "19"
+          },
+          "to": {
+            "name": "Arnhem Centraal",
+            "stopId": "nl-openov_arnhem_centraal",
+            "parentId": "arnhem-centraal",
+            "lat": 51.9849,
+            "lon": 5.9006,
+            "tz": "Europe/Amsterdam",
+            "arrival": "2026-07-24T08:10:00Z",
+            "scheduledArrival": "2026-07-24T08:10:00Z",
+            "track": "8",
+            "scheduledTrack": "8"
+          },
+          "startTime": "2026-07-24T06:59:00Z",
+          "endTime": "2026-07-24T08:10:00Z",
+          "duration": 4260,
+          "tripId": "20260724_nl-openov_ic_3025",
+          "agencyName": "NS",
+          "routeShortName": "Intercity",
+          "tripShortName": "3025",
+          "displayName": "Intercity 3025",
+          "headsign": "Nijmegen",
+          "realTime": false,
+          "cancelled": false
+        }
+      ]
+    },
+    {
+      "id": "duplicate-accepted-eurocity-direct",
+      "startTime": "2026-07-24T10:00:00Z",
+      "endTime": "2026-07-24T12:08:00Z",
+      "duration": 7680,
+      "transfers": 0,
+      "legs": [
+        {
+          "mode": "LONG_DISTANCE",
+          "routeType": 102,
+          "from": {
+            "name": "Amsterdam Centraal",
+            "stopId": "nl-openov_amsterdam_centraal",
+            "parentId": "amsterdam-centraal",
+            "lat": 52.379387,
+            "lon": 4.8997,
+            "tz": "Europe/Amsterdam",
+            "departure": "2026-07-24T10:00:00Z",
+            "scheduledDeparture": "2026-07-24T09:58:00Z",
+            "track": "13b",
+            "scheduledTrack": "13b",
+            "cancelled": false
+          },
+          "to": {
+            "name": "Bruxelles-Midi",
+            "stopId": "be-sncb_bruxelles_midi",
+            "parentId": "brussels-midi",
+            "lat": 50.8354,
+            "lon": 4.3357,
+            "tz": "Europe/Brussels",
+            "arrival": "2026-07-24T12:08:00Z",
+            "scheduledArrival": "2026-07-24T12:06:00Z",
+            "track": "5",
+            "scheduledTrack": "5",
+            "cancelled": false
+          },
+          "startTime": "2026-07-24T10:00:00Z",
+          "endTime": "2026-07-24T12:08:00Z",
+          "duration": 7680,
+          "tripId": "20260724_nl-openov_ic_9228",
+          "agencyName": "NS International",
+          "routeShortName": "Eurocity Direct",
+          "tripShortName": "9228",
+          "displayName": "Eurocity Direct 9228",
+          "headsign": "Bruxelles-Midi",
+          "realTime": true,
+          "cancelled": false
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,53 @@
+[
+  {
+    "type": "PLACE",
+    "name": "Paris",
+    "id": "node/[17807753]",
+    "lat": 48.853495,
+    "lon": 2.348392,
+    "country": "FR",
+    "tz": "Europe/Paris",
+    "category": "place_6",
+    "modes": null
+  },
+  {
+    "type": "STOP",
+    "name": "Paris-Nord",
+    "id": "de-DELFI_000008700014",
+    "lat": 48.88089,
+    "lon": 2.354931,
+    "country": "FR",
+    "tz": "Europe/Paris",
+    "modes": ["HIGHSPEED_RAIL", "NIGHT_RAIL"]
+  },
+  {
+    "type": "STOP",
+    "name": "Paris Est",
+    "id": "ch-opentransportdataswiss26_Parent8711300",
+    "lat": 48.87698,
+    "lon": 2.35912,
+    "country": "FR",
+    "tz": "Europe/Paris",
+    "modes": ["HIGHSPEED_RAIL", "LONG_DISTANCE", "REGIONAL_RAIL"]
+  },
+  {
+    "type": "STOP",
+    "name": "Paris Gare de Lyon",
+    "id": "ch-opentransportdataswiss26_Parent8768600",
+    "lat": 48.84484,
+    "lon": 2.374068,
+    "country": "FR",
+    "tz": "Europe/Paris",
+    "modes": ["HIGHSPEED_RAIL", "REGIONAL_RAIL"]
+  },
+  {
+    "type": "STOP",
+    "name": "Paris Austerlitz",
+    "id": "ch-opentransportdataswiss26_Parent8754700",
+    "lat": 48.841026,
+    "lon": 2.366396,
+    "country": "FR",
+    "tz": "Europe/Paris",
+    "modes": ["LONG_DISTANCE", "REGIONAL_RAIL"]
+  }
+]

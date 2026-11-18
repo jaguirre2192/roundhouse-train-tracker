@@ -1,0 +1,45 @@
+{
+  "$schema": "./node_modules/wrangler/config-schema.json",
+  "name": "roundhouse-local-api",
+  "main": "src/cloudflare/index.ts",
+  "compatibility_date": "2026-07-20",
+  "compatibility_flags": [
+    "nodejs_compat"
+  ],
+  "workers_dev": false,
+  "durable_objects": {
+    "bindings": [
+      {
+        "name": "WATCHER",
+        "class_name": "TrainTrackerWatcher"
+      }
+    ]
+  },
+  "migrations": [
+    {
+      "tag": "v1",
+      "new_sqlite_classes": [
+        "TrainTrackerWatcher"
+      ]
+    }
+  ],
+  "ratelimits": [
+    {
+      "name": "GOOGLE_AUTH_START_RATE_LIMIT",
+      "namespace_id": "1",
+      "simple": {
+        "limit": 20,
+        "period": 60
+      }
+    }
+  ],
+  "vars": {
+    "APNS_MODE": "dry-run",
+    "TICKET_FORWARDING_DOMAIN": "tickets.example.invalid",
+    "NORTH_AMERICAN_INTERCITY_GTFS_GEOMETRY_OPERATORS": "via",
+    "AMTRAK_NTAD_ROUTE_GEOMETRY_ENABLED": "true"
+  },
+  "observability": {
+    "enabled": false
+  }
+}

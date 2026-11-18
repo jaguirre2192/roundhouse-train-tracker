@@ -1,0 +1,62 @@
+[
+  {
+    "type": "PLACE",
+    "name": "Paris",
+    "id": "node/[17807753]",
+    "lat": 48.8534951,
+    "lon": 2.3483915,
+    "country": "FR",
+    "tz": "Europe/Paris",
+    "category": "place_6"
+  },
+  {
+    "type": "PLACE",
+    "name": "Paris",
+    "id": "node/[17807753]",
+    "lat": 48.8644291,
+    "lon": 2.3303145,
+    "country": "FR",
+    "tz": "Europe/Paris",
+    "category": "place_6"
+  },
+  {
+    "type": "STOP",
+    "name": "Paris Gare du Nord",
+    "id": "fr-mainline_paris-nord",
+    "lat": 48.8809,
+    "lon": 2.3553,
+    "country": "FR",
+    "tz": "Europe/Paris",
+    "modes": ["HIGHSPEED_RAIL", "LONG_DISTANCE"]
+  },
+  {
+    "type": "PLACE",
+    "name": "Amsterdam",
+    "id": "node/[268396336]",
+    "lat": 52.3730796,
+    "lon": 4.8924534,
+    "country": "NL",
+    "tz": "Europe/Amsterdam",
+    "category": "place_6"
+  },
+  {
+    "type": "PLACE",
+    "name": "Amsterdam",
+    "id": "node/[268396336]",
+    "lat": 52.3722558,
+    "lon": 4.8949746,
+    "country": "NL",
+    "tz": "Europe/Amsterdam",
+    "category": "place_6"
+  },
+  {
+    "type": "STOP",
+    "name": "Amsterdam Centraal",
+    "id": "nl-mainline_amsterdam-centraal",
+    "lat": 52.3791,
+    "lon": 4.9003,
+    "country": "NL",
+    "tz": "Europe/Amsterdam",
+    "modes": ["HIGHSPEED_RAIL", "LONG_DISTANCE", "REGIONAL_RAIL"]
+  }
+]

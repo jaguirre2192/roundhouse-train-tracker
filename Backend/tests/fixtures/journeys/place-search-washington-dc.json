@@ -1,0 +1,32 @@
+[
+  {
+    "type": "PLACE",
+    "name": "Washington DC",
+    "id": "node/washington-dc",
+    "lat": 38.9072,
+    "lon": -77.0369,
+    "country": "US",
+    "tz": "America/New_York",
+    "category": "place_6"
+  },
+  {
+    "type": "STOP",
+    "name": "Union Station, Washington, DC",
+    "id": "us-Amtrak_WAS",
+    "lat": 38.8971,
+    "lon": -77.0064,
+    "country": "US",
+    "tz": "America/New_York",
+    "modes": ["HIGHSPEED_RAIL", "LONG_DISTANCE", "REGIONAL_RAIL"]
+  },
+  {
+    "type": "STOP",
+    "name": "WASHINGTON JUNCTION",
+    "id": "us-mainline_washington-junction",
+    "lat": 39.3212,
+    "lon": -77.7283,
+    "country": "US",
+    "tz": "America/New_York",
+    "modes": ["REGIONAL_RAIL"]
+  }
+]

@@ -1,0 +1,23 @@
+{
+  "compilerOptions": {
+    "target": "ES2023",
+    "module": "ESNext",
+    "moduleResolution": "Bundler",
+    "strict": true,
+    "noUncheckedIndexedAccess": true,
+    "exactOptionalPropertyTypes": true,
+    "noEmit": true,
+    "skipLibCheck": true,
+    "types": ["node"]
+  },
+  "include": [
+    "worker-configuration.d.ts",
+    "src/cloudflare",
+    "src/apns/payload.ts",
+    "src/apns/transport.ts",
+    "src/db/repository.ts",
+    "src/domain",
+    "src/providers",
+    "src/worker/watcher-cycle.ts"
+  ]
+}

@@ -1,0 +1,353 @@
+{
+  "generatedAt": "2026-07-21T19:00:00-07:00",
+  "expiresAt": "2026-07-21T19:10:00-07:00",
+  "options": [
+    {
+      "id": "option-paris-amsterdam-direct",
+      "fingerprint": "journey-fingerprint-v1-paris-amsterdam-9315",
+      "startTime": "2026-07-24T08:25:00+02:00",
+      "endTime": "2026-07-24T12:14:00+02:00",
+      "duration": 13740,
+      "transferCount": 0,
+      "segments": [
+        {
+          "id": "segment-eurostar-9315",
+          "kind": "rail",
+          "rail": {
+            "tripId": "eu:transitous:20260724-fr-eurostar-9315",
+            "serviceDate": "2026-07-24",
+            "operatorName": "Eurostar",
+            "product": "Eurostar",
+            "trainNumber": "9315",
+            "trainName": "Eurostar 9315",
+            "from": {
+              "place": {
+                "id": "eu:transitous:fr-paris-nord",
+                "kind": "station",
+                "displayName": "Paris Gare du Nord",
+                "context": "Paris, France",
+                "countryCode": "FR",
+                "timeZoneIdentifier": "Europe/Paris",
+                "location": { "latitude": 48.880947, "longitude": 2.355314 },
+                "eligibleModes": ["highSpeedRail", "nightRail"],
+                "attributions": ["Transitous", "OpenStreetMap contributors"]
+              },
+              "city": {
+                "id": "eu:transitous:fr-paris",
+                "kind": "city",
+                "displayName": "Paris",
+                "context": "Île-de-France, France",
+                "countryCode": "FR",
+                "timeZoneIdentifier": "Europe/Paris",
+                "location": { "latitude": 48.853495, "longitude": 2.348392 },
+                "eligibleModes": ["highSpeedRail", "longDistanceRail", "nightRail", "regionalRail"],
+                "attributions": ["Transitous", "OpenStreetMap contributors"]
+              },
+              "scheduledArrival": null,
+              "scheduledDeparture": "2026-07-24T08:25:00+02:00",
+              "expectedArrival": null,
+              "expectedDeparture": "2026-07-24T08:28:00+02:00",
+              "plannedPlatform": "7",
+              "expectedPlatform": "8",
+              "isCancelled": false
+            },
+            "to": {
+              "place": {
+                "id": "eu:transitous:nl-amsterdam-centraal",
+                "kind": "station",
+                "displayName": "Amsterdam Centraal",
+                "context": "Amsterdam, Netherlands",
+                "countryCode": "NL",
+                "timeZoneIdentifier": "Europe/Amsterdam",
+                "location": { "latitude": 52.379128, "longitude": 4.900272 },
+                "eligibleModes": ["highSpeedRail", "longDistanceRail", "regionalRail"],
+                "attributions": ["Transitous", "OpenStreetMap contributors"]
+              },
+              "city": {
+                "id": "eu:transitous:nl-amsterdam",
+                "kind": "city",
+                "displayName": "Amsterdam",
+                "context": "North Holland, Netherlands",
+                "countryCode": "NL",
+                "timeZoneIdentifier": "Europe/Amsterdam",
+                "location": { "latitude": 52.3676, "longitude": 4.9041 },
+                "eligibleModes": ["highSpeedRail", "longDistanceRail", "regionalRail"],
+                "attributions": ["Transitous", "OpenStreetMap contributors"]
+              },
+              "scheduledArrival": "2026-07-24T12:14:00+02:00",
+              "scheduledDeparture": null,
+              "expectedArrival": "2026-07-24T12:17:00+02:00",
+              "expectedDeparture": null,
+              "plannedPlatform": "15b",
+              "expectedPlatform": "15b",
+              "isCancelled": false
+            },
+            "intermediateCalls": [
+              {
+                "place": {
+                  "id": "eu:transitous:be-bruxelles-midi",
+                  "kind": "station",
+                  "displayName": "Bruxelles-Midi",
+                  "context": "Brussels, Belgium",
+                  "countryCode": "BE",
+                  "timeZoneIdentifier": "Europe/Brussels",
+                  "location": { "latitude": 50.835373, "longitude": 4.335695 },
+                  "eligibleModes": ["highSpeedRail", "longDistanceRail", "regionalRail"],
+                  "attributions": ["Transitous", "OpenStreetMap contributors"]
+                },
+                "city": {
+                  "id": "eu:transitous:be-brussels",
+                  "kind": "city",
+                  "displayName": "Brussels",
+                  "context": "Brussels-Capital, Belgium",
+                  "countryCode": "BE",
+                  "timeZoneIdentifier": "Europe/Brussels",
+                  "location": { "latitude": 50.8466, "longitude": 4.3528 },
+                  "eligibleModes": ["highSpeedRail", "longDistanceRail", "regionalRail"],
+                  "attributions": ["Transitous", "OpenStreetMap contributors"]
+                },
+                "scheduledArrival": "2026-07-24T09:47:00+02:00",
+                "scheduledDeparture": "2026-07-24T09:53:00+02:00",
+                "expectedArrival": "2026-07-24T09:50:00+02:00",
+                "expectedDeparture": "2026-07-24T09:56:00+02:00",
+                "plannedPlatform": "3",
+                "expectedPlatform": "4",
+                "isCancelled": false
+              }
+            ],
+            "isCancelled": false,
+            "isRealtime": true,
+            "isTrackable": true,
+            "untrackableReason": null
+          },
+          "walk": null
+        }
+      ],
+      "badges": ["direct", "fastest", "fewestChanges"],
+      "trackability": {
+        "trackableRailSegments": 1,
+        "totalRailSegments": 1
+      },
+      "realtimeFreshness": "2026-07-21T18:59:30-07:00",
+      "attributions": ["Transitous", "OpenStreetMap contributors"],
+      "trackingToken": "journey-tracking-v1.fixture.paris-amsterdam-9315.signature"
+    },
+    {
+      "id": "option-paris-vienna-overnight",
+      "fingerprint": "journey-fingerprint-v1-paris-vienna-overnight",
+      "startTime": "2026-07-24T21:55:00+02:00",
+      "endTime": "2026-07-25T08:19:00+02:00",
+      "duration": 37440,
+      "transferCount": 1,
+      "segments": [
+        {
+          "id": "segment-tgv-9579",
+          "kind": "rail",
+          "rail": {
+            "tripId": "eu:transitous:20260724-fr-sncf-9579",
+            "serviceDate": "2026-07-24",
+            "operatorName": "SNCF",
+            "product": "TGV INOUI",
+            "trainNumber": "9579",
+            "trainName": "TGV 9579",
+            "from": {
+              "place": {
+                "id": "eu:transitous:fr-paris-est",
+                "kind": "station",
+                "displayName": "Paris Gare de l'Est",
+                "context": "Paris, France",
+                "countryCode": "FR",
+                "timeZoneIdentifier": "Europe/Paris",
+                "location": { "latitude": 48.87698, "longitude": 2.35912 },
+                "eligibleModes": ["highSpeedRail", "longDistanceRail", "regionalRail"],
+                "attributions": ["Transitous", "OpenStreetMap contributors"]
+              },
+              "city": {
+                "id": "eu:transitous:fr-paris",
+                "kind": "city",
+                "displayName": "Paris",
+                "context": "Île-de-France, France",
+                "countryCode": "FR",
+                "timeZoneIdentifier": "Europe/Paris",
+                "location": { "latitude": 48.853495, "longitude": 2.348392 },
+                "eligibleModes": ["highSpeedRail", "longDistanceRail", "nightRail", "regionalRail"],
+                "attributions": ["Transitous", "OpenStreetMap contributors"]
+              },
+              "scheduledArrival": null,
+              "scheduledDeparture": "2026-07-24T21:55:00+02:00",
+              "expectedArrival": null,
+              "expectedDeparture": "2026-07-24T21:55:00+02:00",
+              "plannedPlatform": "6",
+              "expectedPlatform": "6",
+              "isCancelled": false
+            },
+            "to": {
+              "place": {
+                "id": "eu:transitous:de-stuttgart-hbf",
+                "kind": "station",
+                "displayName": "Stuttgart Hbf",
+                "context": "Stuttgart, Germany",
+                "countryCode": "DE",
+                "timeZoneIdentifier": "Europe/Berlin",
+                "location": { "latitude": 48.785, "longitude": 9.182 },
+                "eligibleModes": ["highSpeedRail", "longDistanceRail", "nightRail", "regionalRail"],
+                "attributions": ["Transitous", "OpenStreetMap contributors"]
+              },
+              "city": {
+                "id": "eu:transitous:de-stuttgart",
+                "kind": "city",
+                "displayName": "Stuttgart",
+                "context": "Baden-Württemberg, Germany",
+                "countryCode": "DE",
+                "timeZoneIdentifier": "Europe/Berlin",
+                "location": { "latitude": 48.7758, "longitude": 9.1829 },
+                "eligibleModes": ["highSpeedRail", "longDistanceRail", "nightRail", "regionalRail"],
+                "attributions": ["Transitous", "OpenStreetMap contributors"]
+              },
+              "scheduledArrival": "2026-07-24T23:47:00+02:00",
+              "scheduledDeparture": null,
+              "expectedArrival": "2026-07-24T23:47:00+02:00",
+              "expectedDeparture": null,
+              "plannedPlatform": "9",
+              "expectedPlatform": null,
+              "isCancelled": false
+            },
+            "intermediateCalls": [],
+            "isCancelled": false,
+            "isRealtime": false,
+            "isTrackable": true,
+            "untrackableReason": null
+          },
+          "walk": null
+        },
+        {
+          "id": "segment-stuttgart-transfer",
+          "kind": "walk",
+          "rail": null,
+          "walk": {
+            "from": {
+              "id": "eu:transitous:de-stuttgart-hbf",
+              "kind": "station",
+              "displayName": "Stuttgart Hbf",
+              "context": "Arrival platforms",
+              "countryCode": "DE",
+              "timeZoneIdentifier": "Europe/Berlin",
+              "location": { "latitude": 48.785, "longitude": 9.182 },
+              "eligibleModes": ["highSpeedRail", "longDistanceRail", "nightRail", "regionalRail"],
+              "attributions": ["Transitous", "OpenStreetMap contributors"]
+            },
+            "to": {
+              "id": "eu:transitous:de-stuttgart-hbf-night",
+              "kind": "station",
+              "displayName": "Stuttgart Hbf",
+              "context": "Night-train platforms",
+              "countryCode": "DE",
+              "timeZoneIdentifier": "Europe/Berlin",
+              "location": { "latitude": 48.785, "longitude": 9.182 },
+              "eligibleModes": ["nightRail"],
+              "attributions": ["Transitous", "OpenStreetMap contributors"]
+            },
+            "duration": 600,
+            "distance": 450,
+            "isStationChange": true
+          }
+        },
+        {
+          "id": "segment-nightjet-237",
+          "kind": "rail",
+          "rail": {
+            "tripId": null,
+            "serviceDate": "2026-07-25",
+            "operatorName": "ÖBB",
+            "product": "Nightjet",
+            "trainNumber": "NJ 237",
+            "trainName": "Nightjet 237",
+            "from": {
+              "place": {
+                "id": "eu:transitous:de-stuttgart-hbf-night",
+                "kind": "station",
+                "displayName": "Stuttgart Hbf",
+                "context": "Stuttgart, Germany",
+                "countryCode": "DE",
+                "timeZoneIdentifier": "Europe/Berlin",
+                "location": { "latitude": 48.785, "longitude": 9.182 },
+                "eligibleModes": ["nightRail"],
+                "attributions": ["Transitous", "OpenStreetMap contributors"]
+              },
+              "city": {
+                "id": "eu:transitous:de-stuttgart",
+                "kind": "city",
+                "displayName": "Stuttgart",
+                "context": "Baden-Württemberg, Germany",
+                "countryCode": "DE",
+                "timeZoneIdentifier": "Europe/Berlin",
+                "location": { "latitude": 48.7758, "longitude": 9.1829 },
+                "eligibleModes": ["highSpeedRail", "longDistanceRail", "nightRail", "regionalRail"],
+                "attributions": ["Transitous", "OpenStreetMap contributors"]
+              },
+              "scheduledArrival": null,
+              "scheduledDeparture": "2026-07-25T00:11:00+02:00",
+              "expectedArrival": null,
+              "expectedDeparture": "2026-07-25T00:26:00+02:00",
+              "plannedPlatform": "8",
+              "expectedPlatform": "10",
+              "isCancelled": true
+            },
+            "to": {
+              "place": {
+                "id": "eu:transitous:at-wien-hbf",
+                "kind": "station",
+                "displayName": "Wien Hauptbahnhof",
+                "context": "Vienna, Austria",
+                "countryCode": "AT",
+                "timeZoneIdentifier": "Europe/Vienna",
+                "location": { "latitude": 48.185, "longitude": 16.376 },
+                "eligibleModes": ["highSpeedRail", "longDistanceRail", "nightRail", "regionalRail"],
+                "attributions": ["Transitous", "OpenStreetMap contributors"]
+              },
+              "city": {
+                "id": "eu:transitous:at-vienna",
+                "kind": "city",
+                "displayName": "Vienna",
+                "context": "Austria",
+                "countryCode": "AT",
+                "timeZoneIdentifier": "Europe/Vienna",
+                "location": { "latitude": 48.2082, "longitude": 16.3738 },
+                "eligibleModes": ["highSpeedRail", "longDistanceRail", "nightRail", "regionalRail"],
+                "attributions": ["Transitous", "OpenStreetMap contributors"]
+              },
+              "scheduledArrival": "2026-07-25T08:19:00+02:00",
+              "scheduledDeparture": null,
+              "expectedArrival": null,
+              "expectedDeparture": null,
+              "plannedPlatform": null,
+              "expectedPlatform": null,
+              "isCancelled": true
+            },
+            "intermediateCalls": [],
+            "isCancelled": true,
+            "isRealtime": true,
+            "isTrackable": false,
+            "untrackableReason": "No stable train identity"
+          },
+          "walk": null
+        }
+      ],
+      "badges": [],
+      "trackability": {
+        "trackableRailSegments": 1,
+        "totalRailSegments": 2
+      },
+      "realtimeFreshness": "2026-07-21T18:58:00-07:00",
+      "attributions": ["Transitous", "OpenStreetMap contributors"],
+      "trackingToken": "journey-tracking-v1.fixture.paris-vienna-overnight.signature"
+    }
+  ],
+  "previousCursor": "journey-cursor-v1.fixture.previous.signature",
+  "nextCursor": "journey-cursor-v1.fixture.next.signature",
+  "warnings": [
+    "Realtime and platform coverage varies by rail segment.",
+    "The overnight option contains a station transfer and an untrackable rail segment."
+  ],
+  "attributions": ["Transitous", "OpenStreetMap contributors"]
+}
