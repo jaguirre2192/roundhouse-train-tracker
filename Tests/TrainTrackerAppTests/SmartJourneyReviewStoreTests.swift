@@ -171,17 +171,24 @@ final class SmartJourneyReviewStoreTests: XCTestCase {
         XCTAssertTrue(store.canBeginMatching)
     }
 
-    func testAllDayCalendarEventKeepsAllDayFlagAfterTimeIsChecked() {
+    func testAllDayCalendarEventKeepsAllDayFlagAfterTimeIsChecked() async throws {
         let suggestion = TicketRouteSuggestion(
             sourceDescription: "Travel", originGuess: "Paris", destinationGuess: "Amsterdam",
             departureDate: JourneySearchStoreFixtures.date("2026-07-24T10:00:00Z"), requiresDepartureTime: true,
             departureTimeZoneIdentifier: "Europe/Paris", calendarSource: CalendarJourneySource(eventKey: "e", revision: "r"),
             isAllDayEvent: true
         )
-        let store = makeStore(suggestion, client: ScriptedJourneySearchClient())
+        let client = ScriptedJourneySearchClient(places: [
+            .success([JourneySearchStoreFixtures.paris]), .success([JourneySearchStoreFixtures.amsterdam])
+        ])
+        let store = makeStore(suggestion, client: client)
         store.setTime(hour: 8, minute: 25)
         store.setTimeChecked(true)
-        XCTAssertEqual(store.makeRequest()?.calendarSource?.details?.isAllDay, true)
+        let request = try XCTUnwrap(store.makeRequest())
+        XCTAssertEqual(request.localCalendarTiming?.isAllDay, true)
+        let resolved = try await ImportedJourneyPrefill.resolve(request, using: client)
+        XCTAssertEqual(resolved.calendarSource?.details?.isAllDay, true)
+        XCTAssertEqual(resolved.calendarSource?.details?.departureDate, resolved.departureTime)
         XCTAssertEqual(store.suggestion.isAllDayEvent, true)
     }
 

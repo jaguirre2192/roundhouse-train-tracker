@@ -240,29 +240,10 @@ final class JourneyPlanLibrary {
         return plan
     }
 
-    /// Journeys saved before 2026-09-30 keyed one-off events by their start date. When such an
-    /// event is read again unchanged, move its journey to the stable key so later reschedules
-    /// stay linked. Events already moved before this ran cannot be recognised and stay as they are.
+    /// Adopt older one-off and floating recurrence identities while their Calendar event
+    /// can be recognised. Preserve the last reviewed revision so edits still require review.
     func adoptStableCalendarKeys(for candidates: [CalendarJourneyCandidate]) {
-        let currentKeys = Set(plans.compactMap { $0.calendarSource?.eventKey })
-        var remap: [String: String] = [:]
-        for candidate in candidates {
-            let legacy = candidate.snapshot.legacyImportSource.eventKey
-            let stable = candidate.snapshot.importSource.eventKey
-            if legacy != stable, currentKeys.contains(legacy), !currentKeys.contains(stable) {
-                remap[legacy] = stable
-            }
-        }
-        guard !remap.isEmpty, (try? requireHealthyStorage()) != nil else { return }
-        let updated = plans.map { plan -> TrackedJourneyPlan in
-            guard let source = plan.calendarSource, let stable = remap[source.eventKey] else { return plan }
-            return TrackedJourneyPlan(
-                id: plan.id, createdAt: plan.createdAt, origin: plan.origin, destination: plan.destination,
-                outbound: plan.outbound, returnDirection: plan.returnDirection,
-                preExistingChildTripIDs: plan.preExistingChildTripIDs,
-                calendarSource: CalendarJourneySource(eventKey: stable, revision: source.revision, details: source.details)
-            )
-        }
+        guard let updated = plansWithMigratedCalendarKeys(for: candidates), (try? requireHealthyStorage()) != nil else { return }
         do {
             try archive.save(updated)
             plans = updated

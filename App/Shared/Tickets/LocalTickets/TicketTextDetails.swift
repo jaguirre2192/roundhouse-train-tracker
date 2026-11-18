@@ -63,6 +63,13 @@ struct TicketWallClock: Codable, Hashable, Sendable {
         ))
     }
 
+    /// Calendar normalizes a skipped spring-forward hour into the following hour.
+    func exactTime(in timeZone: TimeZone) -> Date? {
+        guard hasTime, let instant = date(in: timeZone),
+              Self(date: instant, timeZone: timeZone, includesTime: true) == self else { return nil }
+        return instant
+    }
+
     static func calendar(_ timeZone: TimeZone) -> Calendar {
         var calendar = Calendar(identifier: .gregorian)
         calendar.timeZone = timeZone

@@ -47,6 +47,10 @@ struct CalendarSuggestionsSection: View {
         }
     }
 
+    private var importedEventKeys: Set<String> {
+        Set(planLibrary.plans.compactMap { $0.calendarSource?.eventKey })
+    }
+
     private var changedEvents: [CalendarJourneyCandidate] {
         store.changedSavedEvents(savedPlans: planLibrary.plans)
     }
@@ -60,7 +64,7 @@ struct CalendarSuggestionsSection: View {
             }
         }
         .sheet(isPresented: $showsOptions) {
-            CalendarImportOptionsView(store: store.importStore)
+            CalendarImportOptionsView(store: store.importStore, includingEventKeys: importedEventKeys)
         }
         // Changed or cancelled saved events are reviewed in the importer, which shows old and
         // new details side by side and offers removal for cancelled trips.
@@ -79,16 +83,18 @@ struct CalendarSuggestionsSection: View {
         }
         .onReceive(NotificationCenter.default.publisher(for: .EKEventStoreChanged)) { _ in
             guard scenePhase == .active else { return }
-            Task { await store.refresh() }
+            Task { await store.refresh(includingEventKeys: importedEventKeys) }
         }
         .onReceive(NotificationCenter.default.publisher(for: CalendarImportPreferences.didChange)) { _ in
             guard scenePhase == .active else { return }
-            Task { await store.refresh() }
+            Task { await store.refresh(includingEventKeys: importedEventKeys) }
         }
-        .task { if scenePhase == .active { await store.refreshIfStale() } }
+        .task(id: importedEventKeys) {
+            if scenePhase == .active { await store.refreshIfStale(includingEventKeys: importedEventKeys) }
+        }
         .onChange(of: scenePhase) { old, new in
             if new == .background { store.suspend() }
-            if old != .active && new == .active { Task { await store.refresh() } }
+            if old != .active && new == .active { Task { await store.refresh(includingEventKeys: importedEventKeys) } }
         }
     }
 
@@ -113,7 +119,7 @@ struct CalendarSuggestionsSection: View {
 
     @ViewBuilder
     private var introductionActions: some View {
-        Button("Turn On") { Task { await store.enable() } }
+        Button("Turn On") { Task { await store.enable(includingEventKeys: importedEventKeys) } }
             .buttonStyle(.bordered)
             .accessibilityLabel("Turn on Calendar suggestions")
             .accessibilityIdentifier("calendar-suggestions-enable")
@@ -134,7 +140,7 @@ struct CalendarSuggestionsSection: View {
                 Spacer(minLength: TrainTrackerSpacing.space8)
                 Menu {
                     Button("Calendars and Dates") { showsOptions = true }
-                    Button("Refresh") { Task { await store.refresh() } }
+                    Button("Refresh") { Task { await store.refresh(includingEventKeys: importedEventKeys) } }
                     Button("Turn Off Suggestions", role: .destructive) { store.disable() }
                         .accessibilityIdentifier("calendar-suggestions-disable")
                 } label: {
@@ -162,10 +168,10 @@ struct CalendarSuggestionsSection: View {
                 Text("Allow Calendar access to see suggestions.")
                     .font(.subheadline)
                     .foregroundStyle(Color.ttTextSecondary)
-                Button("Allow Calendar Access") { Task { await store.enable() } }
+                Button("Allow Calendar Access") { Task { await store.enable(includingEventKeys: importedEventKeys) } }
                     .buttonStyle(.bordered)
             } else {
-                Button("Check Calendar") { Task { await store.refresh() } }
+                Button("Check Calendar") { Task { await store.refresh(includingEventKeys: importedEventKeys) } }
                     .buttonStyle(.bordered)
             }
         case .requestingAccess:
@@ -209,7 +215,7 @@ struct CalendarSuggestionsSection: View {
             Label("Couldn't read Calendar. \(message)", systemImage: "exclamationmark.triangle")
                 .font(.subheadline)
                 .foregroundStyle(Color.ttStatusDelayed)
-            Button("Try Again") { Task { await store.refresh() } }
+            Button("Try Again") { Task { await store.refresh(includingEventKeys: importedEventKeys) } }
                 .buttonStyle(.bordered)
         }
     }

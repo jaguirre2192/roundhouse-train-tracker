@@ -33,7 +33,7 @@ struct TicketRouteReviewView: View {
         _origin = State(initialValue: suggestion.originGuess ?? "")
         _destination = State(initialValue: suggestion.destinationGuess ?? "")
         _trainNumber = State(initialValue: suggestion.trainNumberGuess ?? "")
-        _departureDate = State(initialValue: suggestion.departureDate ?? .now)
+        _departureDate = State(initialValue: suggestion.calendarLocalDeparture?.date(in: .gmt) ?? suggestion.departureDate ?? .now)
         _departureTimeConfirmed = State(initialValue: !suggestion.requiresDepartureTime)
     }
 
@@ -79,17 +79,18 @@ struct TicketRouteReviewView: View {
                     TextField("Destination", text: $destination)
                         .textInputAutocapitalization(.words)
                         .accessibilityLabel("Destination station or city")
-                    DatePicker("Departure", selection: $departureDate)
-                        .environment(\.timeZone, reviewTimeZone)
-                        .accessibilityHint("Adjust if this isn't the right departure date or time")
-                    Text("Time zone: \(reviewTimeZone.identifier.replacingOccurrences(of: "_", with: " "))")
+                    if suggestion.requiresDepartureTime {
+                        DatePicker("Travel date", selection: $departureDate, displayedComponents: .date)
+                            .environment(\.timeZone, reviewTimeZone)
+                        CalendarReviewTimeField(date: $departureDate, confirmed: $departureTimeConfirmed, zone: reviewTimeZone)
+                    } else {
+                        DatePicker("Departure", selection: $departureDate)
+                            .environment(\.timeZone, reviewTimeZone)
+                    }
+                    Text(suggestion.usesBoardingStationTime ? "Local time at the departure station" :
+                            "Time zone: \(reviewTimeZone.identifier.replacingOccurrences(of: "_", with: " "))")
                         .font(.caption)
                         .foregroundStyle(Color.ttTextSecondary)
-                    if suggestion.requiresDepartureTime {
-                        Text("This is an all-day event. Set the train's departure time, then confirm it below.")
-                            .font(.subheadline)
-                        Toggle("Departure time checked", isOn: $departureTimeConfirmed)
-                    }
                     TextField("Train number (optional)", text: $trainNumber)
                         .textInputAutocapitalization(.characters)
                 } header: {
@@ -123,11 +124,11 @@ struct TicketRouteReviewView: View {
                 }
                 ToolbarItem(placement: .confirmationAction) {
                     Button("Find Trains") {
-                        onConfirm(suggestion.journeySearchRequest(
+                        onConfirm(suggestion.requestFromDatePicker(
                             origin: origin.trimmingCharacters(in: .whitespacesAndNewlines),
                             destination: destination.trimmingCharacters(in: .whitespacesAndNewlines),
                             trainNumber: trainNumber,
-                            departureDate: departureDate
+                            value: departureDate
                         ))
                         if dismissesOnAction { dismiss() }
                     }
@@ -139,7 +140,8 @@ struct TicketRouteReviewView: View {
     }
 
     private var reviewTimeZone: TimeZone {
-        suggestion.departureTimeZoneIdentifier.flatMap(TimeZone.init(identifier:)) ?? .autoupdatingCurrent
+        if suggestion.usesBoardingStationTime { return .gmt }
+        return suggestion.departureTimeZoneIdentifier.flatMap(TimeZone.init(identifier:)) ?? .autoupdatingCurrent
     }
 
     private func confidenceLabel(_ confidence: TicketRouteConfidence) -> String {
@@ -154,5 +156,53 @@ struct TicketRouteReviewView: View {
         case .high: "checkmark.seal.fill"
         case .medium: "questionmark.circle.fill"
         }
+    }
+}
+
+private struct CalendarReviewTimeField: View {
+    @Binding var date: Date
+    @Binding var confirmed: Bool
+    let zone: TimeZone
+    @State private var isChoosing = false
+
+    var body: some View {
+        LabeledContent("Departure time") {
+            Button(confirmed ? date.formatted(format) : "Set Time") { isChoosing = true }
+            .accessibilityIdentifier("calendarDepartureTime")
+            .popover(isPresented: $isChoosing) {
+                CalendarReviewTimePicker(choice: date, format: format) { time in
+                    date = time
+                    confirmed = true
+                    isChoosing = false
+                }
+                .presentationCompactAdaptation(.popover)
+            }
+        }
+    }
+
+    private var format: Date.FormatStyle {
+        var format = Date.FormatStyle(date: .omitted, time: .shortened)
+        format.timeZone = zone
+        return format
+    }
+}
+
+private struct CalendarReviewTimePicker: View {
+    @State var choice: Date
+    let format: Date.FormatStyle
+    let onConfirm: (Date) -> Void
+
+    var body: some View {
+        VStack {
+            DatePicker("Departure time", selection: $choice, displayedComponents: .hourAndMinute)
+                .datePickerStyle(.wheel)
+                .environment(\.timeZone, format.timeZone)
+                .labelsHidden()
+            Button("Use \(choice.formatted(format))") { onConfirm(choice) }
+                .buttonStyle(.borderedProminent)
+                .tint(Color.ttBackgroundBrand)
+                .accessibilityIdentifier("calendarApplyDepartureTime")
+        }
+        .padding()
     }
 }

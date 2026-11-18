@@ -2,7 +2,7 @@
 set -euo pipefail
 
 provider_base_url="${TRAIN_TRACKER_US_PROVIDER_BASE_URL:-https://api.amtraker.com/v3}"
-provider_user_agent="Roundhouse/1.8.3 (+https://gettraintracker.com/support)"
+provider_user_agent="Roundhouse/1.8.4 (+https://gettraintracker.com/support)"
 
 for required_command in curl jq; do
   if ! command -v "$required_command" >/dev/null 2>&1; then

@@ -6,6 +6,8 @@ enum TicketRouteTextParser {
     private static let separators = [#"\s*(?:→|->)\s*"#, #"\s+to\s+"#, #"\s+[—–-]\s+"#]
     private static let metadata = #"(?:train\s*(?:no\.?|number|#)?\s*[a-z]*[0-9]|seat\b|coach\b|platform\b|track\b|booking\b|confirmation\b|reservation\b|pnr\b|departure\b|arrival\b|address\b)"#
     private static let trimCharacters = CharacterSet.whitespacesAndNewlines.union(CharacterSet(charactersIn: ",:;|—–-!?"))
+    private static let departureLabel = #"^(?:departure(?:\s+station)?|origin|from|fra|von|abfahrtsbahnhof|(?:estaci[oó]n\s+de\s+)?origen|(?:gare\s+de\s+)?d[ée]part)\s*:\s*(.+)$"#
+    private static let arrivalLabel = #"^(?:arrival(?:\s+station)?|destination|to|til|nach|zielbahnhof|(?:estaci[oó]n\s+de\s+)?destino|(?:gare\s+d['’])?arriv[ée]e)\s*:\s*(.+)$"#
     // Event schedules also use arrows. Reject bounded event phrases, not bare words such
     // as Summit or Exhibition that can legitimately name a station.
     private static let eventPhrase = #"\b(?:summit|conference|congress|symposium|seminar|convention)\s+(?:19|20)[0-9]{2}\b|\b(?:speakers?|delegates?|sponsors?|welcome|farewell|networking|gala|evening|board|team|working|annual|vip)(?:['’]s|['’])?\s+(?:dinner|lunch|breakfast|reception|banquet)\b|^(?:dinner|lunch|breakfast|reception|banquet)$"#
@@ -15,6 +17,11 @@ enum TicketRouteTextParser {
         guard !requiresMultipleJourneyReview(from: text) else { return nil }
         if let route = labelledRoute(in: lines) { return route }
         for line in lines {
+            if let route = TicketLocalizedRailText.inlineRoute(in: line) {
+                let origin = cleanOrigin(route.origin)
+                let destination = cleanDestination(route.destination)
+                if validPair(origin, destination) { return (origin, destination) }
+            }
             for separator in separators {
                 for range in TicketTextPattern.ranges(separator, in: line) {
                     let origin = cleanOrigin(String(line[..<range.lowerBound]))
@@ -45,11 +52,11 @@ enum TicketRouteTextParser {
         var origins: [String] = []
         var destinations: [String] = []
         for line in lines {
-            if let value = TicketTextPattern.firstCapture(#"^(?:departure(?:\s+station)?|origin|from)\s*:\s*(.+)$"#, in: line) {
+            if let value = TicketTextPattern.firstCapture(departureLabel, in: line) {
                 let station = cleanDestination(value)
                 if plausiblePlace(station) { origins.append(station) }
             }
-            if let value = TicketTextPattern.firstCapture(#"^(?:arrival(?:\s+station)?|destination|to)\s*:\s*(.+)$"#, in: line) {
+            if let value = TicketTextPattern.firstCapture(arrivalLabel, in: line) {
                 let station = cleanDestination(value)
                 if plausiblePlace(station) { destinations.append(station) }
             }
@@ -107,6 +114,9 @@ enum TicketRouteTextParser {
 
     private static func cleanDestination(_ text: String) -> String {
         var value = text.trimmingCharacters(in: trimCharacters)
+        if let purpose = TicketTextPattern.ranges(#"\s+for\s+(?:(?:a|an|the|my|our|client|team|business|work)\s+)*(?:meeting|conference|dinner)\b"#, in: value).first {
+            value = String(value[..<purpose.lowerBound])
+        }
         // Cut labelled ticket metadata, including comma-separated Train/Seat fields, while
         // preserving punctuation in Washington, DC and St. Louis.
         let boundary = #"(?:[,;|]\s*|\s+[—–-]\s+|\s+)(?="# + metadata + #")"#

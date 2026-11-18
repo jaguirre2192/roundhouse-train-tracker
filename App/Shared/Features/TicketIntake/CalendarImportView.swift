@@ -131,9 +131,9 @@ struct CalendarImportView: View {
 
     private func candidateList(_ candidates: [CalendarJourneyCandidate]) -> some View {
         let needsReview = candidates.filter { disposition(for: $0) == .changed || ($0.snapshot.isCancelled && savedPlan(for: $0) != nil) }
-        let available = candidates.filter { disposition(for: $0) == .newJourney }
+        let available = candidates.filter { disposition(for: $0) == .newJourney && !$0.retainedForSavedJourney }
         let added = candidates.filter { disposition(for: $0) == .alreadyAdded }
-        let cancelled = candidates.filter { $0.snapshot.isCancelled && savedPlan(for: $0) == nil }
+        let cancelled = candidates.filter { $0.snapshot.isCancelled && savedPlan(for: $0) == nil && !$0.retainedForSavedJourney }
         return List {
             Section {
                 Button { showsOptions = true } label: {
@@ -221,7 +221,10 @@ struct CalendarImportView: View {
     }
 
     private func savedPlan(for candidate: CalendarJourneyCandidate) -> TrackedJourneyPlan? {
-        planLibrary.plan(importedFrom: candidate.id)
+        if let plan = planLibrary.plan(importedFrom: candidate.id) { return plan }
+        guard let plan = planLibrary.plan(importedFrom: candidate.snapshot.legacyImportSource.eventKey),
+              let source = plan.calendarSource, candidate.snapshot.acceptsLegacyRevision(source.revision) else { return nil }
+        return plan
     }
 
     private func disposition(for candidate: CalendarJourneyCandidate) -> CalendarImportDisposition {

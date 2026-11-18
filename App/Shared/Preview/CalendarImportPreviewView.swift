@@ -25,7 +25,10 @@ struct CalendarImportPreviewView: View {
 
     var body: some View {
         if let library {
-            CalendarImportView(store: CalendarImportStore(client: client, preferences: CalendarImportPreferences(defaults: nil))) { _, _ in }
+            CalendarImportView(store: CalendarImportStore(
+                client: client, preferences: CalendarImportPreferences(defaults: nil),
+                now: { CalendarImportPreviewClient.fixtureDate }
+            )) { _, _ in }
                 .environment(library)
                 .environment(tripLibrary)
         }
@@ -51,8 +54,10 @@ private struct CalendarImportPreviewClient: CalendarImportClientProtocol {
         }.compactMap { CalendarImportClient.candidate(for: $0, includingEventKeys: includingEventKeys) }
     }
 
+    static let fixtureDate = ISO8601DateFormatter().date(from: "2026-09-15T13:30:00Z")!
+
     static var events: [CalendarEventSnapshot] {
-        let start = ISO8601DateFormatter().date(from: "2026-09-15T13:30:00Z")!
+        let start = fixtureDate
         return [
             "Amtrak 176: Washington, DC → New York, NY",
             "Eurostar 9032: London St. Pancras → Paris Gare du Nord",

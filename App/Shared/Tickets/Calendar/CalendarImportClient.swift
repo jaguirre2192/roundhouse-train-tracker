@@ -122,7 +122,8 @@ actor CalendarImportClient: CalendarImportClientProtocol {
                 originGuess: nil,
                 destinationGuess: nil,
                 trainNumberGuess: nil
-            )
+            ),
+            retainedForSavedJourney: true
         )
     }
 }

@@ -12,16 +12,46 @@ extension CalendarEventSnapshot {
     /// zone; travelling must not make them look edited.
     var importSource: CalendarJourneySource {
         CalendarJourneySource(
-            eventKey: Self.digest([
-                eventIdentifier,
-                isRecurring ? occurrenceDate.map { String($0.timeIntervalSince1970) } ?? "single" : "single"
-            ]),
+            eventKey: Self.digest([eventIdentifier, occurrenceKey]),
             revision: Self.digest([
                 title, notes ?? "", location ?? "",
                 revisionDate(startDate), revisionDate(endDate),
                 String(isAllDay), timeZoneIdentifier ?? "floating", String(isCancelled)
             ])
         )
+    }
+
+    var hasFloatingOccurrence: Bool { isRecurring && (isAllDay || timeZoneIdentifier == nil) }
+
+    private var occurrenceKey: String {
+        guard isRecurring else { return "single" }
+        let original = occurrenceDate ?? startDate
+        guard hasFloatingOccurrence else { return String(original.timeIntervalSince1970) }
+        // EventKit expresses a floating occurrence in the device's current zone. The
+        // local calendar date and clock identify this occurrence even after travelling.
+        return "local:" + String(localSeconds(original))
+    }
+
+    private func localSeconds(_ date: Date) -> TimeInterval {
+        date.timeIntervalSince1970 + TimeInterval(readTimeZone.secondsFromGMT(for: date))
+    }
+
+    /// Past releases hashed floating occurrences as absolute instants. If a traveller
+    /// upgrades in another zone, recognise the old hash only when the saved revision
+    /// still describes this exact local occurrence. A hash match alone is ambiguous
+    /// across adjacent occurrences of a frequent series.
+    func priorFloatingKey(among keysWithMatchingRevision: Set<String>) -> String? {
+        guard hasFloatingOccurrence, let occurrenceDate,
+              !keysWithMatchingRevision.isEmpty else { return nil }
+        let clock = localSeconds(occurrenceDate)
+        let offsets = Set(TimeZone.knownTimeZoneIdentifiers.compactMap {
+            TimeZone(identifier: $0)?.secondsFromGMT(for: occurrenceDate)
+        })
+        let matches = offsets.compactMap { offset -> String? in
+            let key = Self.digest([eventIdentifier, String(clock - TimeInterval(offset))])
+            return keysWithMatchingRevision.contains(key) ? key : nil
+        }
+        return matches.count == 1 ? matches.first : nil
     }
 
     /// The identity and revision written before 2026-09-30, used to recognise journeys saved then.
@@ -44,11 +74,17 @@ extension CalendarEventSnapshot {
         revision == importSource.revision || revision == legacyImportSource.revision
     }
 
+    /// The same absolute instant can be adjacent local occurrences in two different
+    /// zones. For old floating keys, require the revision as independent evidence.
+    func acceptsLegacyRevision(_ revision: String) -> Bool {
+        !hasFloatingOccurrence || matchesRevision(revision)
+    }
+
     private func revisionDate(_ date: Date) -> String {
         guard isAllDay || timeZoneIdentifier == nil else { return String(date.timeIntervalSince1970) }
         // Floating times read in the device's zone; their wall-clock value is the event.
         var calendar = Calendar(identifier: .gregorian)
-        calendar.timeZone = NSTimeZone.default
+        calendar.timeZone = readTimeZone
         let parts = calendar.dateComponents([.year, .month, .day, .hour, .minute], from: date)
         let time = isAllDay ? "" : String(format: "T%02d:%02d", parts.hour ?? 0, parts.minute ?? 0)
         return String(format: "local:%04d-%02d-%02d", parts.year ?? 0, parts.month ?? 0, parts.day ?? 0) + time

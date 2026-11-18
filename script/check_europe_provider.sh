@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-user_agent='Roundhouse/1.8.3 (+https://gettraintracker.com/support)'
+user_agent='Roundhouse/1.8.4 (+https://gettraintracker.com/support)'
 transitous='https://api.transitous.org'
 
 health=$(curl -fsS -H "User-Agent: ${user_agent}" "${transitous}/api/v1/health")

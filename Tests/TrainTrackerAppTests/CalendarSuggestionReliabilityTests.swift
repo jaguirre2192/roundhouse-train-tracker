@@ -29,6 +29,67 @@ final class CalendarSuggestionReliabilityTests: XCTestCase {
                        "Recurring keys keep the pre-fix format")
     }
 
+    func testFloatingRecurringOccurrenceKeepsItsIdentityAfterTravelAndMigratesTheOlderKey() async throws {
+        let originalZone = NSTimeZone.default
+        defer { NSTimeZone.default = originalZone }
+        func instance(day: Int, allDay: Bool = false) throws -> CalendarJourneyCandidate {
+            var calendar = Calendar(identifier: .gregorian)
+            calendar.timeZone = NSTimeZone.default
+            let local = try XCTUnwrap(calendar.date(from: DateComponents(year: 2032, month: 5, day: day, hour: allDay ? 0 : 9)))
+            let event = CalendarEventSnapshot(
+                eventIdentifier: allDay ? "days" : "commute", calendarTitle: "Travel", title: "Amtrak 171",
+                notes: nil, location: nil, startDate: local, endDate: local.addingTimeInterval(3_600),
+                isAllDay: allDay, occurrenceDate: local, isRecurring: true)
+            return CalendarJourneyCandidate(snapshot: event, classification: classification())
+        }
+        NSTimeZone.default = try XCTUnwrap(TimeZone(identifier: "America/Los_Angeles"))
+        let before = try instance(day: 4)
+        let allDayBefore = try instance(day: 4, allDay: true)
+        // Prior to this fix, recurring keys used the absolute occurrence date alongside the
+        // contemporary revision, which was already based on local clock values.
+        let older = CalendarJourneySource(eventKey: before.snapshot.legacyImportSource.eventKey, revision: before.snapshot.importSource.revision)
+        let context = try JourneyPlanTestFixtures.makeTripLibrary()
+        defer { context.cleanup() }
+        let archive = RecordingJourneyPlanArchive()
+        let library = try JourneyPlanLibrary(tripLibrary: context.library, archive: archive)
+        let draft = JourneyPlanTestFixtures.makeDraft(id: UUID())
+        let saved = try library.track(draft: JourneyPlanDraft(id: draft.id, origin: draft.origin, destination: draft.destination,
+            outbound: draft.outbound, returnOption: nil, calendarSource: older),
+            resolution: JourneyPlanTestFixtures.makeResolution(outboundTrips: [JourneyPlanTestFixtures.makeTrips()[0]]))
+
+        NSTimeZone.default = try XCTUnwrap(TimeZone(identifier: "Europe/Paris"))
+        let after = try instance(day: 4)
+        let nextWeek = try instance(day: 11)
+        XCTAssertEqual(before.snapshot.importSource, after.snapshot.importSource)
+        XCTAssertEqual(allDayBefore.snapshot.importSource, try instance(day: 4, allDay: true).snapshot.importSource)
+        XCTAssertNotEqual(after.id, nextWeek.id)
+        XCTAssertNotEqual(older.eventKey, after.snapshot.legacyImportSource.eventKey)
+        XCTAssertNil(nextWeek.snapshot.priorFloatingKey(among: [older.eventKey]))
+        library.adoptStableCalendarKeys(for: [nextWeek, after])
+        let reloaded = try JourneyPlanLibrary(tripLibrary: context.library, archive: archive)
+        XCTAssertEqual(reloaded.plans.count, 1)
+        XCTAssertEqual(reloaded.plan(importedFrom: after.id)?.id, saved.id)
+        XCTAssertEqual(reloaded.plan(importedFrom: after.id)?.calendarSource?.revision, after.snapshot.importSource.revision)
+
+        let suite = "CalendarSuggestionReliabilityTests.travel.\(UUID().uuidString)"
+        let defaults = try XCTUnwrap(UserDefaults(suiteName: suite))
+        defer { defaults.removePersistentDomain(forName: suite) }
+        defaults.set([older.eventKey + ":" + older.revision], forKey: "calendarSuggestions.v1.dismissed")
+        let store = CalendarSuggestionStore(client: CalendarImportTestClient(fetchResult: .success([after, nextWeek])),
+                                            preferences: CalendarImportPreferences(defaults: nil), defaults: defaults)
+        await store.enable()
+        XCTAssertEqual(store.candidates(savedPlans: []).map(\.id), [nextWeek.id])
+
+        // These local dates are 24 hours apart in two zones but have the same old
+        // absolute key. A scan containing only the following day must keep it distinct.
+        NSTimeZone.default = try XCTUnwrap(TimeZone(identifier: "Pacific/Kiritimati"))
+        let followingDay = try instance(day: 5)
+        NSTimeZone.default = try XCTUnwrap(TimeZone(identifier: "Pacific/Honolulu"))
+        let priorDay = try instance(day: 4)
+        XCTAssertEqual(priorDay.snapshot.legacyImportSource.eventKey, followingDay.snapshot.legacyImportSource.eventKey)
+        XCTAssertFalse(followingDay.snapshot.acceptsLegacyRevision(priorDay.snapshot.importSource.revision))
+    }
+
     // MARK: Revision
 
     func testAllDayRevisionSurvivesATimeZoneChange() throws {
@@ -71,14 +132,87 @@ final class CalendarSuggestionReliabilityTests: XCTestCase {
         XCTAssertEqual(store.candidates(savedPlans: []).map(\.id), [work.id])
     }
 
-    func testTripAlreadySavedByHandIsNotSuggested() async {
-        let suggestion = candidate(id: "manual-duplicate")
+    func testSuggestionsRecogniseExactSavedServiceButKeepOtherDeparturesAndStations() async throws {
+        let event = snapshot(start: start, occurrence: start, id: "service", title: "Amtrak 171", location: "Boston South Station to New York Penn Station")
+        let suggestion = try XCTUnwrap(CalendarImportClient.candidate(for: event, includingEventKeys: []))
         let store = await enabledStore(with: [suggestion])
-        let manual = savedPlan(origin: "Boston South Station", destination: "New York Penn Station",
-                               departure: start.addingTimeInterval(20 * 60))
-        XCTAssertTrue(store.candidates(savedPlans: [manual]).isEmpty)
-        let otherDay = savedPlan(origin: "Boston", destination: "New York", departure: start.addingTimeInterval(86_400))
-        XCTAssertEqual(store.candidates(savedPlans: [otherDay]).map(\.id), [suggestion.id])
+        func plan(_ service: String, delayMinutes: Int = 0, origin: String = "Boston South Station") -> TrackedJourneyPlan {
+            savedPlan(origin: origin, destination: "New York Penn Station", departure: start.addingTimeInterval(Double(delayMinutes) * 60),
+                      service: service)
+        }
+        XCTAssertTrue(store.candidates(savedPlans: [plan("Amtrak 171")]).isEmpty)
+        for other in [plan("Amtrak 173"), plan("Amtrak 171", delayMinutes: 20), plan("Amtrak 171", origin: "Boston North Station")] {
+            XCTAssertEqual(store.candidates(savedPlans: [other]).map(\.id), [suggestion.id])
+        }
+        // Old plans without a known service cannot positively identify a different calendar entry.
+        XCTAssertEqual(store.candidates(savedPlans: [savedPlan()]).map(\.id), [suggestion.id])
+    }
+
+    func testFloatingCalendarSuggestionUsesTheBoardingClockBeforeSuppressingASavedService() throws {
+        let originalZone = NSTimeZone.default
+        defer { NSTimeZone.default = originalZone }
+        NSTimeZone.default = try XCTUnwrap(TimeZone(identifier: "Europe/Paris"))
+        var clock = Calendar(identifier: .gregorian)
+        clock.timeZone = NSTimeZone.default
+        let local = DateComponents(year: 2032, month: 5, day: 4, hour: 9)
+        let phoneTime = try XCTUnwrap(clock.date(from: local))
+        let snapshot = snapshot(start: phoneTime, occurrence: phoneTime, zone: nil, title: "Amtrak 171",
+                                location: "Boston South Station to New York Penn Station")
+        let candidate = try XCTUnwrap(CalendarImportClient.candidate(for: snapshot, includingEventKeys: []))
+        clock.timeZone = try XCTUnwrap(TimeZone(identifier: "America/New_York"))
+        let boardingTime = try XCTUnwrap(clock.date(from: local))
+        func plan(_ time: Date) -> TrackedJourneyPlan {
+            savedPlan(origin: "Boston South Station", destination: "New York Penn Station", departure: time, service: "Amtrak 171")
+        }
+        NSTimeZone.default = try XCTUnwrap(TimeZone(identifier: "America/Chicago"))
+        XCTAssertFalse(CalendarSuggestionMatching.duplicatesSavedPlan(candidate, in: [plan(phoneTime)]))
+        XCTAssertTrue(CalendarSuggestionMatching.duplicatesSavedPlan(candidate, in: [plan(boardingTime)]))
+    }
+
+    func testDismissingCopiedDepartureAcrossCalendarsSurvivesRestartAndAllowsAnEdit() async throws {
+        let suite = "CalendarSuggestionReliabilityTests.copies.\(UUID().uuidString)"
+        let defaults = try XCTUnwrap(UserDefaults(suiteName: suite))
+        defer { defaults.removePersistentDomain(forName: suite) }
+        func copy(_ id: String, title: String, startDate: Date = Date(timeIntervalSince1970: 1_800_000_000)) -> CalendarEventSnapshot {
+            snapshot(start: startDate, occurrence: startDate, id: id, calendar: id, title: title, location: "Boston to New York")
+        }
+        let first = copy("Personal", title: "Amtrak 171")
+        let second = copy("Work", title: "Train 171")
+        func suggestions(_ snapshots: [CalendarEventSnapshot]) -> CalendarSuggestionStore {
+            CalendarSuggestionStore(client: CalendarImportTestClient(snapshots: snapshots),
+                                    preferences: CalendarImportPreferences(defaults: nil), defaults: defaults)
+        }
+        let store = suggestions([first, second])
+        await store.enable()
+        let visible = store.candidates(savedPlans: [])
+        XCTAssertEqual(visible.count, 1)
+        store.dismiss(try XCTUnwrap(visible.first))
+        XCTAssertTrue(store.candidates(savedPlans: []).isEmpty)
+
+        let moved = copy("Work", title: "Train 171", startDate: start.addingTimeInterval(7_200))
+        let reopened = suggestions([first, moved, copy("Another", title: "Amtrak 171")])
+        await reopened.refresh()
+        XCTAssertEqual(reopened.candidates(savedPlans: []).map(\.id), [moved.importSource.eventKey])
+    }
+
+    func testHomeFetchKeepsRenamedAndCancelledSavedEventsAndUpdatesCachedKeys() async {
+        let original = snapshot(start: start, occurrence: start, id: "changed")
+        let cancelledOriginal = snapshot(start: start, occurrence: start, id: "cancelled")
+        let renamed = snapshot(start: start, occurrence: start, id: "changed", title: "Travel plans changed")
+        let cancelled = snapshot(start: start, occurrence: start, id: "cancelled", cancelled: true, title: "Cancelled")
+        let unrelated = snapshot(start: start, occurrence: start, id: "other", title: "Team meeting")
+        let client = CalendarImportTestClient(snapshots: [renamed, cancelled, unrelated])
+        let store = CalendarSuggestionStore(client: client, preferences: CalendarImportPreferences(defaults: nil), defaults: nil)
+        let plans = [original, cancelledOriginal].map { savedPlan(source: $0.importSource) }
+        let keys = Set(plans.compactMap { $0.calendarSource?.eventKey })
+        await store.enable(includingEventKeys: [original.importSource.eventKey])
+        XCTAssertEqual(store.changedSavedEvents(savedPlans: plans).map(\.id), [renamed.importSource.eventKey])
+        await store.refreshIfStale(includingEventKeys: keys)
+        XCTAssertEqual(Set(store.changedSavedEvents(savedPlans: plans).map(\.id)), keys)
+        XCTAssertTrue(store.candidates(savedPlans: plans).isEmpty)
+        await store.refresh(includingEventKeys: keys)
+        let reads = await client.includedEventKeys
+        XCTAssertEqual(reads, [[original.importSource.eventKey], keys, keys])
     }
 
     func testLegacyKeyedSavedJourneyHidesItsSuggestionAndSurfacesChanges() async {
@@ -214,11 +348,12 @@ final class CalendarSuggestionReliabilityTests: XCTestCase {
 
     private func snapshot(
         start: Date, occurrence: Date?, recurring: Bool = false, zone: String? = "America/New_York",
-        id: String = "event-1", calendar: String = "Travel", cancelled: Bool = false
+        id: String = "event-1", calendar: String = "Travel", cancelled: Bool = false,
+        title: String = "Amtrak Boston to New York", location: String? = nil
     ) -> CalendarEventSnapshot {
         CalendarEventSnapshot(
-            eventIdentifier: id, calendarTitle: calendar, title: "Amtrak Boston to New York",
-            notes: nil, location: nil, startDate: start, endDate: start.addingTimeInterval(4 * 3_600),
+            eventIdentifier: id, calendarTitle: calendar, title: title,
+            notes: nil, location: location, startDate: start, endDate: start.addingTimeInterval(4 * 3_600),
             isAllDay: false, timeZoneIdentifier: zone, isCancelled: cancelled,
             occurrenceDate: occurrence, isRecurring: recurring
         )
@@ -251,7 +386,7 @@ final class CalendarSuggestionReliabilityTests: XCTestCase {
 
     private func savedPlan(
         origin: String = "Boston", destination: String = "New York",
-        departure: Date? = nil, source: CalendarJourneySource? = nil
+        departure: Date? = nil, source: CalendarJourneySource? = nil, service: String? = nil
     ) -> TrackedJourneyPlan {
         let tripID = RailIdentifier(rawValue: "us:amtrak:\(UUID().uuidString)")
         return TrackedJourneyPlan(
@@ -259,7 +394,8 @@ final class CalendarSuggestionReliabilityTests: XCTestCase {
             origin: place(origin), destination: place(destination),
             outbound: JourneyPlanDirection(
                 fingerprint: UUID().uuidString, departure: departure ?? start,
-                arrival: (departure ?? start).addingTimeInterval(4 * 3_600), childTripIDs: [tripID]
+                arrival: (departure ?? start).addingTimeInterval(4 * 3_600), childTripIDs: [tripID],
+                selectedSegments: service.map { [JourneyPlanSegment(id: "leg", kind: .rail, from: place(origin), to: place(destination), serviceName: $0)] }
             ),
             returnDirection: nil, preExistingChildTripIDs: [], calendarSource: source
         )

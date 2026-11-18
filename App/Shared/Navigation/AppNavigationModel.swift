@@ -12,6 +12,13 @@ struct TicketJourneySearchRequest: Identifiable, Equatable {
     let prefersDirectReview: Bool
     let originPlace: RailPlace?
     let destinationPlace: RailPlace?
+    /// A floating Calendar departure can acquire its instant only after station lookup.
+    let localCalendarTiming: LocalCalendarTiming?
+
+    struct LocalCalendarTiming: Equatable {
+        let isAllDay: Bool
+        let eventTimeZoneIdentifier: String?
+    }
 
     init(
         id: UUID = UUID(),
@@ -22,7 +29,8 @@ struct TicketJourneySearchRequest: Identifiable, Equatable {
         calendarSource: CalendarJourneySource? = nil,
         prefersDirectReview: Bool = false,
         originPlace: RailPlace? = nil,
-        destinationPlace: RailPlace? = nil
+        destinationPlace: RailPlace? = nil,
+        localCalendarTiming: LocalCalendarTiming? = nil
     ) {
         self.id = id
         self.originName = originName
@@ -33,6 +41,7 @@ struct TicketJourneySearchRequest: Identifiable, Equatable {
         self.prefersDirectReview = prefersDirectReview
         self.originPlace = Self.recognizedStation(originPlace, named: originName)
         self.destinationPlace = Self.recognizedStation(destinationPlace, named: destinationName)
+        self.localCalendarTiming = localCalendarTiming
     }
 
     /// A selected ID belongs only to the displayed name it was chosen for.

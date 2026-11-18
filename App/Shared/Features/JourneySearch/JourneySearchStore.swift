@@ -88,6 +88,7 @@ final class JourneySearchStore {
         do {
             let prefill = try await ImportedJourneyPrefill.resolve(request, using: client)
             guard ticketPrefillRequestID == requestID else { return }
+            calendarSource = prefill.calendarSource
             form.origin = prefill.origin
             form.destination = prefill.destination
             if let requestedTime = prefill.departureTime {

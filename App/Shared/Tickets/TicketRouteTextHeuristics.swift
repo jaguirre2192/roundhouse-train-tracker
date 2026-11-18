@@ -63,23 +63,38 @@ enum TicketRouteTextHeuristics {
     /// Requires an explicit rail reference or a service number supported by a route. Number
     /// extraction alone is not journey evidence: short product names also occur in addresses
     /// and unrelated codes (for example, "Ave 416" or "EC 2026").
-    static func match(title: String, supportingText: [String?]) -> TicketRouteMatch? {
-        let fields = ([title] + supportingText.compactMap { $0 })
-            .map { String($0.prefix(8_000)) }
-            .filter { !$0.isEmpty }
-        guard !fields.isEmpty else { return nil }
+    static func match(title: String, supportingText: [String?], location: String? = nil) -> TicketRouteMatch? {
+        // Keep the heading slot even when the title is empty. A note then retains the
+        // weaker evidence rules for supporting text. The booking outranks a venue address.
+        let title = String(title.prefix(8_000))
+        var fields = [title] + supportingText.compactMap { $0 }.map { String($0.prefix(8_000)) }
+        var routeFields = fields
+        if let location, !location.isEmpty {
+            let place = String(location.prefix(8_000))
+            routeFields.append(place)
+            let placeHeading = String(place.prefix { !$0.isNewline })
+            let railHeading = #"^\s*(?:"# + TicketTrainNumberParser.operators + #"|train|rail)\b"#
+            if TicketTrainNumberParser.locationIdentifiesService(placeHeading)
+                || (TicketTextPattern.contains(railHeading, in: placeHeading) && extractRoute(from: place) != nil) {
+                fields.append(placeHeading)
+            }
+        }
+        guard fields.contains(where: { !$0.isEmpty }) else { return nil }
         let lowercasedFields = fields.map { $0.lowercased() }
         // An operator's meeting, workshop, or project notice is not a passenger journey.
         // Only inspect the heading; booking notes can legitimately mention meetings en route.
         let heading = title.components(separatedBy: .newlines).first ?? title
         let nonJourney = #"\b(?:meeting|workshop|webinar|training|project|presentation|renovation|conference\s+call)\b"#
-        guard !TicketTextPattern.contains(nonJourney, in: heading) else { return nil }
+        guard !TicketTextPattern.contains(nonJourney, in: heading)
+                || TicketTrainNumberParser.startsWithPassengerJourney(heading) else { return nil }
+        let localRailHeading = TicketLocalizedRailText.isItineraryHeading(heading)
 
         var evidence: [String] = []
         var hasExplicitRailSignal = false
-        // The bare word "train" or "rail" is journey evidence in the title. In notes or a
-        // location ("dinner by the train station") it only supports a route or train number.
+        // A rail mention in supporting text needs a route in that field or a service number.
+        // An unrelated route elsewhere must not acquire a train from casual venue directions.
         var mentionsTrainOutsideTitle = false
+        var hasRailModeLabel = false
         for (index, field) in lowercasedFields.enumerated() {
             for (keyword, reason) in sortedStrongKeywords where TicketTextPattern.containsWord(keyword, in: field) {
                 if !evidence.contains(reason) { evidence.append(reason) }
@@ -92,15 +107,21 @@ enum TicketRouteTextHeuristics {
                     hasExplicitRailSignal = true
                 } else {
                     mentionsTrainOutsideTitle = true
+                    if ["train", "rail"].contains(field.trimmingCharacters(in: .whitespacesAndNewlines)) {
+                        hasRailModeLabel = true
+                    }
                 }
             }
         }
-        let trainNumber = fields.lazy.compactMap { extractTrainNumber(from: $0) }.first
+        let headingNumber = localRailHeading ? TicketLocalizedRailText.serviceNumber(in: heading) : nil
+        let trainNumber = headingNumber ?? fields.lazy.compactMap { field in
+            extractTrainNumber(from: field) ?? (localRailHeading ? TicketLocalizedRailText.serviceNumber(in: field) : nil)
+        }.first
         let trainEvidence = TicketTrainNumberParser.matchingEvidence(for: trainNumber, in: fields.joined(separator: "\n"))
         if trainNumber != nil {
             evidence.append("Recognized a train number")
         }
-        guard hasExplicitRailSignal || trainNumber != nil || mentionsTrainOutsideTitle else { return nil }
+        guard hasExplicitRailSignal || trainNumber != nil || mentionsTrainOutsideTitle || localRailHeading else { return nil }
 
         for field in lowercasedFields {
             for (keyword, reason) in sortedSupportingKeywords where TicketTextPattern.containsWord(keyword, in: field) {
@@ -110,17 +131,27 @@ enum TicketRouteTextHeuristics {
 
         var origin: String?
         var destination: String?
-        for field in fields {
+        var routeMentionsTrain = false
+        for field in routeFields {
             if let route = extractRoute(from: field) {
                 origin = route.origin
                 destination = route.destination
                 evidence.append("Recognized a route pattern")
+                if mentionsTrainOutsideTitle {
+                    routeMentionsTrain = TicketTextPattern.contains(#"\b(?:train|rail)\b"#, in: field)
+                }
                 break
             }
         }
 
         let hasRoute = origin != nil && destination != nil
-        if mentionsTrainOutsideTitle, hasRoute || trainNumber != nil { hasExplicitRailSignal = true }
+        if localRailHeading && hasRoute {
+            hasExplicitRailSignal = true
+            evidence.append("Recognized a railway itinerary heading")
+        }
+        if mentionsTrainOutsideTitle, routeMentionsTrain || trainNumber != nil || (hasRailModeLabel && hasRoute) {
+            hasExplicitRailSignal = true
+        }
         guard hasExplicitRailSignal || (trainNumber != nil && hasRoute) else { return nil }
         let confidence: TicketRouteConfidence = hasRoute ? .high : .medium
         return TicketRouteMatch(

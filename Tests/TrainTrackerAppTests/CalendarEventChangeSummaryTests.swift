@@ -94,6 +94,21 @@ final class CalendarEventChangeSummaryTests: XCTestCase {
         XCTAssertEqual(summary.explanation, .unrecordedChange)
     }
 
+    func testFloatingDepartureComparesStationClockToCalendarClockWhenTravelling() throws {
+        let clock = TicketWallClock(year: 2027, month: 1, day: 20, hour: 23, minute: 15)
+        let ny = try XCTUnwrap(TimeZone(identifier: "America/New_York"))
+        let boarding = try XCTUnwrap(clock.exactTime(in: ny))
+        let eventDate = try XCTUnwrap(clock.exactTime(in: NSTimeZone.default))
+        let reviewed = CalendarJourneyDetails(
+            originName: "Boston", destinationName: "New York", trainNumber: "176",
+            departureDate: boarding, timeZoneIdentifier: nil, isAllDay: false, boardingTimeZoneIdentifier: ny.identifier
+        )
+        let same = candidate(departure: eventDate.timeIntervalSince1970, zone: nil)
+        XCTAssertTrue(summary(same, details: reviewed).changes.isEmpty)
+        let delayed = candidate(departure: eventDate.timeIntervalSince1970 + 900, zone: nil)
+        XCTAssertEqual(summary(delayed, details: reviewed).changes.map(\.field), [.departure])
+    }
+
     private func summary(_ candidate: CalendarJourneyCandidate, details: CalendarJourneyDetails) -> CalendarEventChangeSummary {
         CalendarEventChangeSummary(
             candidate: candidate,
@@ -110,7 +125,7 @@ final class CalendarEventChangeSummaryTests: XCTestCase {
 
     private func candidate(
         origin: String? = "Boston", destination: String? = "New York", train: String? = "176",
-        departure: TimeInterval = 1_800_000_000, zone: String = "America/New_York",
+        departure: TimeInterval = 1_800_000_000, zone: String? = "America/New_York",
         allDay: Bool = false, notes: String? = nil
     ) -> CalendarJourneyCandidate {
         CalendarJourneyCandidate(

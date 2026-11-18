@@ -1,5 +1,6 @@
 import EventKit
 import Foundation
+import TrainTrackerCore
 import XCTest
 @testable import TrainTracker
 
@@ -144,7 +145,6 @@ final class CalendarImportEventKitTests: XCTestCase {
         #endif
     }
 
-    #if targetEnvironment(simulator)
     /// Rescheduling a one-off trip must keep the same import identity, so the saved journey
     /// stays linked and the importer reports it as changed rather than as a new event.
     func testMovingASingleEventKeepsItsImportKey() async throws {
@@ -195,6 +195,106 @@ final class CalendarImportEventKitTests: XCTestCase {
         #else
         throw XCTSkip("Uses the simulator's local EventKit source.")
         #endif
+    }
+
+    func testReviewingAnOvernightCalendarTrainSavesItsStopsAndSourceOnlyAfterConfirmation() async throws {
+        #if targetEnvironment(simulator)
+        guard EKEventStore.authorizationStatus(for: .event) == .fullAccess else {
+            throw XCTSkip("Grant Calendar full access to the simulator test host to run this integration.")
+        }
+        let eventStore = EKEventStore()
+        guard let local = eventStore.sources.first(where: { $0.sourceType == .local }) else {
+            throw XCTSkip("Requires a local simulator calendar source for the temporary fixture.")
+        }
+        let title = "Roundhouse QA Overnight \(UUID().uuidString)"
+        let calendar = EKCalendar(for: .event, eventStore: eventStore)
+        calendar.title = title
+        calendar.source = local
+        try eventStore.saveCalendar(calendar, commit: true)
+        let calendarID = calendar.calendarIdentifier
+        defer {
+            if let owned = eventStore.calendar(withIdentifier: calendarID),
+               owned.title == title, owned.source.sourceType == .local {
+                XCTAssertNoThrow(try eventStore.removeCalendar(owned, commit: true))
+            }
+        }
+
+        // The synthetic timetable crosses both midnight and the change from CEST to CET.
+        let start = JourneySearchStoreFixtures.date("2027-10-30T21:55:00Z")
+        let end = JourneySearchStoreFixtures.date("2027-10-31T03:35:00Z")
+        let zone = try XCTUnwrap(TimeZone(identifier: "Europe/Paris"))
+        _ = try seedEvent(in: eventStore, calendar: calendar, title: "Eurostar 9315 Paris → Amsterdam",
+                          start: start, duration: end.timeIntervalSince(start), timeZone: zone)
+
+        let context = try JourneyPlanTestFixtures.makeTripLibrary(now: { start })
+        defer { context.cleanup() }
+        let preferences = CalendarImportPreferences(defaults: context.defaults)
+        try preferences.save(CalendarImportOptions(selectedCalendarIDs: [calendarID]))
+        let importer = CalendarImportStore(preferences: preferences, window: {
+            DateInterval(start: start.addingTimeInterval(-3600), end: end)
+        })
+        await importer.beginImport()
+        guard case let .loaded(candidates) = importer.state else { return XCTFail("The seeded calendar was not imported") }
+        XCTAssertEqual(candidates.count, 1)
+        let candidate = try XCTUnwrap(candidates.first)
+        XCTAssertTrue(CalendarCandidateActionPolicy.canFindDirectly(candidate))
+
+        let trip = overnightTrip(start: start, end: end)
+        let option = JourneySearchStoreFixtures.option(id: "overnight", fingerprint: "overnight",
+                                                      start: start, end: end, tripID: trip.id.rawValue)
+        let resolution = JourneySearchStoreFixtures.resolution(outbound: option, outboundTrips: [trip])
+        let provider = ScriptedJourneySearchClient(
+            places: [.success([JourneySearchStoreFixtures.paris]), .success([JourneySearchStoreFixtures.amsterdam])],
+            pages: [.success(JourneySearchStoreFixtures.page(options: [option]))], resolutions: [.success(resolution)]
+        )
+        let archive = JourneyPlanArchive(defaults: context.defaults)
+        let library = try JourneyPlanLibrary(tripLibrary: context.library, archive: archive)
+        let review = SmartJourneyReviewStore(suggestion: candidate.routeSuggestion, client: provider,
+                                             planTracker: library, plans: { library.plans },
+                                             now: { start.addingTimeInterval(-3600) })
+        review.start()
+        await waitUntil { review.search.phase == .reviewing }
+        let request = await provider.journeyRequests.first
+        XCTAssertEqual(request?.requestedTime, start)
+        review.search.resolveSelection()
+        await waitUntil { review.search.resolvedPlan != nil }
+        XCTAssertTrue(library.plans.isEmpty)
+        XCTAssertTrue(context.library.trips.isEmpty)
+        XCTAssertTrue(review.search.trackResolvedPlan())
+
+        guard case let .completed(id) = review.search.phase else { return XCTFail("Tracking did not complete") }
+        let reopened = try JourneyPlanLibrary(tripLibrary: context.library, archive: archive)
+        XCTAssertEqual(reopened.plans.count, 1)
+        let saved = try XCTUnwrap(reopened.plan(importedFrom: candidate.id))
+        XCTAssertEqual(saved.id, id)
+        XCTAssertEqual(saved.outbound.departure, start)
+        XCTAssertEqual(saved.outbound.arrival, end)
+        XCTAssertEqual(saved.calendarSource?.revision, candidate.snapshot.importSource.revision)
+        XCTAssertEqual(saved.calendarSource?.details?.departureDate, start)
+        XCTAssertEqual(saved.calendarSource?.details?.timeZoneIdentifier, zone.identifier)
+        XCTAssertEqual(context.archive.load().map(\.stopTimes), [trip.stopTimes])
+        XCTAssertEqual(CalendarImportDisposition(candidate: candidate, savedPlan: saved), .alreadyAdded)
+        #else
+        throw XCTSkip("Calendar import integration fixtures are permitted only in an iOS simulator.")
+        #endif
+    }
+
+    #if targetEnvironment(simulator)
+    private func overnightTrip(start: Date, end: Date) -> TrainTrip {
+        func station(_ place: RailPlace) -> Station {
+            Station(id: place.id, names: [LocalizedStationName(place.displayName)], location: place.location,
+                    countryCode: place.countryCode, timeZoneIdentifier: place.timeZoneIdentifier)
+        }
+        return TrainTrip(
+            id: RailIdentifier(rawValue: "eu:transitous:calendar-qa-9315"), source: "Transitous", serviceDate: start,
+            operatorName: "Eurostar", product: "Eurostar 9315", headsign: "Amsterdam",
+            stopTimes: [
+                StopTime(station: station(JourneySearchStoreFixtures.paris), sequence: 0, scheduledDeparture: start),
+                StopTime(station: station(JourneySearchStoreFixtures.amsterdam), sequence: 1, scheduledArrival: end)
+            ],
+            capabilities: RealtimeCapabilities(hasPositions: false, hasPlatforms: false, hasRealtimeDelays: false,
+                                               hasAlerts: false, granularity: .tripOnly)
+        )
     }
 
     private func seedEvent(

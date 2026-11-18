@@ -8,6 +8,7 @@ final class CalendarCandidateActionPolicyTests: XCTestCase {
         XCTAssertFalse(CalendarCandidateActionPolicy.canFindDirectly(candidate(allDay: true)))
         XCTAssertFalse(CalendarCandidateActionPolicy.canFindDirectly(candidate(cancelled: true)))
         XCTAssertFalse(CalendarCandidateActionPolicy.canFindDirectly(candidate(confidence: .medium)))
+        XCTAssertFalse(CalendarCandidateActionPolicy.canFindDirectly(candidate(conflictingProducts: true)))
         XCTAssertFalse(CalendarCandidateActionPolicy.canFindDirectly(candidate(origin: nil)))
         XCTAssertFalse(CalendarCandidateActionPolicy.canFindDirectly(candidate(destination: " ")))
         XCTAssertFalse(CalendarCandidateActionPolicy.canFindDirectly(candidate(destination: " Boston ")))
@@ -16,7 +17,7 @@ final class CalendarCandidateActionPolicyTests: XCTestCase {
     }
 
     private func candidate(
-        allDay: Bool = false, cancelled: Bool = false,
+        allDay: Bool = false, cancelled: Bool = false, conflictingProducts: Bool = false,
         confidence: TicketRouteConfidence = .high,
         origin: String? = "Boston", destination: String? = "New York", number: String? = "176"
     ) -> CalendarJourneyCandidate {
@@ -28,7 +29,7 @@ final class CalendarCandidateActionPolicyTests: XCTestCase {
             ),
             classification: CalendarJourneyClassification(
                 confidence: confidence, evidence: [], originGuess: origin,
-                destinationGuess: destination, trainNumberGuess: number
+                destinationGuess: destination, trainNumberGuess: number, hasConflictingTrainProducts: conflictingProducts
             )
         )
     }

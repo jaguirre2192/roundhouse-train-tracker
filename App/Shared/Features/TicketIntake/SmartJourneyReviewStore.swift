@@ -16,6 +16,7 @@ final class SmartJourneyReviewStore {
     enum Notice: Equatable, Sendable {
         case missingDetails
         case pastDeparture
+        case invalidLocalTime
         case stationNotFound(origin: Bool, destination: Bool)
         case lookupFailed
         case sameStation
@@ -44,7 +45,7 @@ final class SmartJourneyReviewStore {
     /// Preserve explicit offsets through repeated DST hours until the person changes the time.
     private var departureInstant: Date?
     private(set) var timeChecked: Bool
-    /// Calendar events carry a zone. Ticket wall-clock times use the boarding station's zone.
+    /// Only an explicitly zoned departure fixes the instant before station lookup.
     let knownTimeZone: TimeZone?
     private let ticketLackedTime: Bool
 
@@ -77,7 +78,11 @@ final class SmartJourneyReviewStore {
         destinationPlace = TicketJourneySearchRequest.recognizedStation(suggestion.destinationPlace, named: suggestion.destinationGuess ?? "")
         trainNumber = suggestion.trainNumberGuess ?? ""
         let initialDeparture: TicketWallClock?
-        if suggestion.calendarSource != nil || (suggestion.departureWallClock == nil && suggestion.departureDate != nil) {
+        if suggestion.usesBoardingStationTime {
+            knownTimeZone = nil
+            departureInstant = nil
+            initialDeparture = suggestion.calendarLocalDeparture
+        } else if suggestion.departureWallClock == nil && suggestion.departureDate != nil {
             let zone = suggestion.departureTimeZoneIdentifier.flatMap(TimeZone.init(identifier:)) ?? .autoupdatingCurrent
             knownTimeZone = zone
             departureInstant = suggestion.requiresDepartureTime ? nil : suggestion.departureDate
@@ -113,7 +118,7 @@ final class SmartJourneyReviewStore {
             fields.append(.destination)
         }
         if departure == nil { fields.append(.date) }
-        if departure?.hasTime != true || !timeChecked { fields.append(.time) }
+        if departure?.hasTime != true || !timeChecked || invalidLocalTime { fields.append(.time) }
         return fields
     }
 
@@ -135,6 +140,12 @@ final class SmartJourneyReviewStore {
     }
 
     var isComplete: Bool { missingFields.isEmpty }
+
+    private var invalidLocalTime: Bool {
+        guard suggestion.usesBoardingStationTime, let departure, departure.hasTime,
+              let zone = departureTimeZone else { return false }
+        return departure.exactTime(in: zone) == nil
+    }
 
     /// Approximate instant used only to warn about a date that has already passed.
     var estimatedDeparture: Date? {
@@ -254,6 +265,8 @@ final class SmartJourneyReviewStore {
             stage = .existing(planID: existing.id)
         } else if suggestion.routeReviewReason == .multipleJourneys {
             stage = .details(.multipleJourneys)
+        } else if invalidLocalTime {
+            stage = .details(.invalidLocalTime)
         } else if !isComplete {
             stage = .details(.missingDetails)
         } else if isPastDeparture {
@@ -376,10 +389,10 @@ final class SmartJourneyReviewStore {
                 originPlace: originPlace, destinationPlace: destinationPlace
             )
         }
-        return TicketJourneySearchRequest(
-            originName: from, destinationName: to, departureTime: departure.requestValue,
-            trainNumber: number.isEmpty ? nil : number, prefersDirectReview: suggestion.routeReviewReason != .ambiguousTrain,
-            originPlace: originPlace, destinationPlace: destinationPlace
+        return suggestion.localTimeRequest(
+            origin: from, destination: to, trainNumber: number, departure: departure,
+            originPlace: originPlace, destinationPlace: destinationPlace,
+            prefersDirectReview: suggestion.routeReviewReason != .ambiguousTrain
         )
     }
 
@@ -400,6 +413,10 @@ final class SmartJourneyReviewStore {
                 revealStationField(.destination)
                 stage = .details(.sameStation)
                 draftChanged()
+            } else if suggestion.usesBoardingStationTime, let from = search.form.origin {
+                originPlace = from
+                revealedFields.insert(.time)
+                stage = .details(invalidLocalTime ? .invalidLocalTime : .missingDetails)
             } else {
                 stage = .details(.missingDetails)
             }
@@ -421,7 +438,9 @@ final class SmartJourneyReviewStore {
             originPlace: .some(originPlace), destinationPlace: .some(destinationPlace),
             originWasReviewed: originWasReviewed, destinationWasReviewed: destinationWasReviewed
         )
-        if case .details(.missingDetails) = stage, isComplete { stage = .details(nil) }
+        if case .details(let notice) = stage, isComplete, notice == .missingDetails || notice == .invalidLocalTime {
+            stage = .details(nil)
+        }
         onDraftChange?(suggestion)
     }
 }

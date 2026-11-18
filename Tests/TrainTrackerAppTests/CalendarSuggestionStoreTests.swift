@@ -70,7 +70,7 @@ final class CalendarSuggestionStoreTests: XCTestCase {
     func testRefreshingRemovesAnUnimportedFalsePositiveButPreservesExplicitSavedEventReview() async throws {
         let event = CalendarEventSnapshot(
             eventIdentifier: "synthetic-old-false-positive", calendarTitle: "Test Calendar",
-            title: "FT Future of AI Summit 2026 → Speakers' Dinner", notes: nil,
+            title: "AB Future of Design Summit 2026 → Speakers' Dinner", notes: nil,
             location: "Example Hall, London EC2N 2HE",
             startDate: Date(timeIntervalSince1970: 1_800_000_000),
             endDate: Date(timeIntervalSince1970: 1_800_003_600), isAllDay: false
@@ -79,7 +79,7 @@ final class CalendarSuggestionStoreTests: XCTestCase {
             snapshot: event,
             classification: CalendarJourneyClassification(
                 confidence: .high, evidence: ["Recognized a train number", "Recognized a route pattern"],
-                originGuess: "FT Future of AI Summit 2026", destinationGuess: "Speakers' Dinner", trainNumberGuess: "2N"
+                originGuess: "AB Future of Design Summit 2026", destinationGuess: "Speakers' Dinner", trainNumberGuess: "2N"
             )
         )
         let client = CalendarImportTestClient(suspendsFetch: true)

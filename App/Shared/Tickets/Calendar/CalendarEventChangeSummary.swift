@@ -65,7 +65,9 @@ struct CalendarEventChangeSummary: Equatable, Sendable {
             self.init(explanation: .previousDetailsUnavailable)
             return
         }
-        guard previousSource.eventKey == candidate.id else {
+        let snapshot = candidate.snapshot
+        guard previousSource.eventKey == candidate.id || (previousSource.eventKey == snapshot.legacyImportSource.eventKey
+                && snapshot.acceptsLegacyRevision(previousSource.revision)) else {
             self.init(explanation: .differentEvent)
             return
         }
@@ -73,7 +75,7 @@ struct CalendarEventChangeSummary: Equatable, Sendable {
             self.init(explanation: .previousDetailsUnavailable)
             return
         }
-        guard previousSource.revision != candidate.snapshot.importSource.revision else {
+        guard !candidate.snapshot.matchesRevision(previousSource.revision) else {
             self.init(explanation: .unchanged)
             return
         }
@@ -91,7 +93,7 @@ struct CalendarEventChangeSummary: Equatable, Sendable {
         if !Self.sameDeparture(details, event) {
             differences.append(Change(
                 field: .departure,
-                previouslyImported: .departure(details.departureDate, timeZoneIdentifier: details.timeZoneIdentifier, includesTime: true),
+                previouslyImported: .departure(details.departureDate, timeZoneIdentifier: details.boardingTimeZoneIdentifier ?? details.timeZoneIdentifier, includesTime: true),
                 calendarEvent: .departure(event.startDate, timeZoneIdentifier: event.timeZoneIdentifier, includesTime: !event.isAllDay)
             ))
         }
@@ -123,6 +125,12 @@ struct CalendarEventChangeSummary: Equatable, Sendable {
     }
 
     private static func sameDeparture(_ details: CalendarJourneyDetails, _ event: CalendarEventSnapshot) -> Bool {
+        if let boardingZone = details.boardingTimeZoneIdentifier.flatMap(TimeZone.init(identifier:)),
+           details.isAllDay == event.isAllDay, event.isAllDay || event.timeZoneIdentifier == nil {
+            let saved = TicketWallClock(date: details.departureDate, timeZone: boardingZone, includesTime: !details.isAllDay)
+            let current = TicketWallClock(date: event.startDate, timeZone: event.readTimeZone, includesTime: !event.isAllDay)
+            return saved == current
+        }
         if details.isAllDay && event.isAllDay {
             var oldCalendar = Calendar(identifier: .gregorian)
             oldCalendar.timeZone = details.timeZoneIdentifier.flatMap(TimeZone.init(identifier:)) ?? .autoupdatingCurrent

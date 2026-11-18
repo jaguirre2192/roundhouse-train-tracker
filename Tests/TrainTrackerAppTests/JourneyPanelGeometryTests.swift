@@ -36,7 +36,7 @@ final class JourneyPanelGeometryTests: XCTestCase {
         var space = geometry(width: 1100, height: 760)
         space.leadingFoldBoundary = 530
         space.trailingFoldBoundary = 570
-        XCTAssertEqual(space.panelWidth, 396)
+        XCTAssertEqual(space.panelWidth, TrainTrackerDevice.isDuo ? 360 : 396)
         XCTAssertEqual(space.mapLeadingInset, 570)
         XCTAssertLessThan(space.panelWidth + 2 * JourneyPanelGeometry.margin, space.leadingFoldBoundary!)
     }

@@ -22,6 +22,7 @@ actor CalendarImportTestClient: CalendarImportClientProtocol {
     private let accessResult: Result<Bool, Error>
     private let authorizationAfterRequest: EKAuthorizationStatus
     private let fetchResult: Result<[CalendarJourneyCandidate], Error>
+    private let snapshots: [CalendarEventSnapshot]?
     private let calendarResult: Result<[CalendarDescriptor], Error>
     private var accessContinuation: CheckedContinuation<Bool, Error>?
     private var fetchContinuations: [Int: CheckedContinuation<[CalendarJourneyCandidate], Error>] = [:]
@@ -40,6 +41,7 @@ actor CalendarImportTestClient: CalendarImportClientProtocol {
         accessResult: Result<Bool, Error> = .success(true),
         authorizationAfterRequest: EKAuthorizationStatus = .fullAccess,
         fetchResult: Result<[CalendarJourneyCandidate], Error> = .success([]),
+        snapshots: [CalendarEventSnapshot]? = nil,
         calendarResult: Result<[CalendarDescriptor], Error> = .success([]),
         suspendsAccess: Bool = false,
         suspendsFetch: Bool = false,
@@ -49,6 +51,7 @@ actor CalendarImportTestClient: CalendarImportClientProtocol {
         self.accessResult = accessResult
         self.authorizationAfterRequest = authorizationAfterRequest
         self.fetchResult = fetchResult
+        self.snapshots = snapshots
         self.calendarResult = calendarResult
         self.suspendsAccess = suspendsAccess
         self.suspendsFetch = suspendsFetch
@@ -90,6 +93,9 @@ actor CalendarImportTestClient: CalendarImportClientProtocol {
         if suspendsFetch {
             // Deliberately ignore cancellation to model callbacks that arrive after reset.
             return try await withCheckedThrowingContinuation { fetchContinuations[index] = $0 }
+        }
+        if let snapshots {
+            return snapshots.compactMap { CalendarImportClient.candidate(for: $0, includingEventKeys: includingEventKeys) }
         }
         return try fetchResult.get()
     }

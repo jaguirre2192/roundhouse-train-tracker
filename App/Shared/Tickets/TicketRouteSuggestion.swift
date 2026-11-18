@@ -21,8 +21,7 @@ struct TicketRouteSuggestion: Identifiable, Sendable, Hashable, Codable {
     let requiresDepartureTime: Bool
     let departureTimeZoneIdentifier: String?
     let calendarSource: CalendarJourneySource?
-    /// A ticket's printed local date/time, used when the boarding station's zone is not yet known.
-    /// It takes precedence over `departureDate` for imports that are not from Calendar.
+    /// Civil time printed on a ticket or read from a floating Calendar event.
     let departureWallClock: TicketWallClock?
     /// The Calendar event's own all-day flag, kept after the person supplies a departure time.
     let isAllDayEvent: Bool?
@@ -102,6 +101,46 @@ struct TicketRouteSuggestion: Identifiable, Sendable, Hashable, Codable {
         )
     }
 
+    var usesBoardingStationTime: Bool {
+        calendarSource != nil && ((isAllDayEvent ?? requiresDepartureTime)
+            || departureTimeZoneIdentifier.flatMap(TimeZone.init(identifier:)) == nil)
+    }
+
+    var calendarLocalDeparture: TicketWallClock? {
+        guard usesBoardingStationTime else { return nil }
+        // New drafts already captured the civil components when EventKit was read.
+        return departureWallClock ?? departureDate.map {
+            TicketWallClock(date: $0, timeZone: NSTimeZone.default, includesTime: !requiresDepartureTime)
+        }
+    }
+
+    func localTimeRequest(
+        origin: String, destination: String, trainNumber: String?, departure: TicketWallClock,
+        originPlace: RailPlace?, destinationPlace: RailPlace?, prefersDirectReview: Bool = false
+    ) -> TicketJourneySearchRequest {
+        let number = trainNumber?.trimmingCharacters(in: .whitespacesAndNewlines)
+        return TicketJourneySearchRequest(
+            originName: origin, destinationName: destination, departureTime: departure.requestValue,
+            trainNumber: number?.isEmpty == false ? number : nil, calendarSource: calendarSource,
+            prefersDirectReview: prefersDirectReview, originPlace: originPlace, destinationPlace: destinationPlace,
+            localCalendarTiming: calendarSource.map { _ in
+                .init(isAllDay: isAllDayEvent ?? requiresDepartureTime, eventTimeZoneIdentifier: departureTimeZoneIdentifier)
+            }
+        )
+    }
+
+    /// For civil time the date picker uses GMT solely as a stable calendar for its number wheels.
+    func requestFromDatePicker(origin: String, destination: String, trainNumber: String?, value: Date) -> TicketJourneySearchRequest {
+        guard usesBoardingStationTime else {
+            return journeySearchRequest(origin: origin, destination: destination, trainNumber: trainNumber, departureDate: value)
+        }
+        return localTimeRequest(
+            origin: origin, destination: destination, trainNumber: trainNumber,
+            departure: TicketWallClock(date: value, timeZone: .gmt, includesTime: true),
+            originPlace: originPlace, destinationPlace: destinationPlace
+        )
+    }
+
     /// Returns a copy with reviewed values. Identity, source and provenance are preserved.
     func revised(
         id: UUID? = nil,
@@ -149,7 +188,10 @@ struct TicketRouteSuggestion: Identifiable, Sendable, Hashable, Codable {
 
 extension CalendarJourneyCandidate {
     var routeSuggestion: TicketRouteSuggestion {
-        TicketRouteSuggestion(
+        let localClock = snapshot.isAllDay || snapshot.timeZoneIdentifier.flatMap(TimeZone.init(identifier:)) == nil
+            ? TicketWallClock(date: snapshot.startDate, timeZone: snapshot.readTimeZone, includesTime: !snapshot.isAllDay)
+            : nil
+        return TicketRouteSuggestion(
             sourceDescription: snapshot.calendarTitle,
             subtitle: snapshot.title,
             originGuess: classification.originGuess,
@@ -161,6 +203,7 @@ extension CalendarJourneyCandidate {
             requiresDepartureTime: snapshot.isAllDay,
             departureTimeZoneIdentifier: snapshot.timeZoneIdentifier,
             calendarSource: snapshot.importSource,
+            departureWallClock: localClock,
             isAllDayEvent: snapshot.isAllDay,
             routeReviewReason: classification.hasConflictingTrainProducts ? .ambiguousTrain : nil
         )
@@ -171,6 +214,7 @@ extension TicketRouteSuggestion {
     /// Carries a detail-reviewed Calendar request into the same smart review as every import.
     init(reviewed request: TicketJourneySearchRequest, from base: TicketRouteSuggestion) {
         let date = request.departureTime.flatMap { ISO8601DateFormatter().date(from: $0) }
+        let localClock = request.departureTime.flatMap(TicketWallClock.init(requestValue:))
         self.init(
             id: base.id, sourceDescription: base.sourceDescription, subtitle: base.subtitle,
             originGuess: request.originName, destinationGuess: request.destinationName,
@@ -179,7 +223,7 @@ extension TicketRouteSuggestion {
             // The detail review already required an all-day event's time to be checked.
             requiresDepartureTime: false,
             departureTimeZoneIdentifier: base.departureTimeZoneIdentifier,
-            calendarSource: base.calendarSource, departureWallClock: nil,
+            calendarSource: base.calendarSource, departureWallClock: localClock,
             isAllDayEvent: base.isAllDayEvent,
             originPlace: request.originPlace ?? base.originPlace,
             destinationPlace: request.destinationPlace ?? base.destinationPlace,

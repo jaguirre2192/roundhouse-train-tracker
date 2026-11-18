@@ -4,6 +4,81 @@ import XCTest
 
 final class JourneySearchCalendarSourceTests: XCTestCase {
     @MainActor
+    func testSkippedSpringHourRequestsACorrectionBeforeSearching() async throws {
+        let ny = JourneySearchStoreFixtures.place(id: "us:nyp", name: "New York Penn", kind: .station, country: "US", timeZone: "America/New_York")
+        let dc = JourneySearchStoreFixtures.place(id: "us:was", name: "Washington Union", kind: .station, country: "US", timeZone: "America/New_York")
+        let suggestion = TicketRouteSuggestion(
+            sourceDescription: "QA", originGuess: ny.displayName, destinationGuess: dc.displayName,
+            calendarSource: CalendarJourneySource(eventKey: "spring-departure", revision: "first"),
+            departureWallClock: TicketWallClock(year: 2027, month: 3, day: 14, hour: 2, minute: 30)
+        )
+        let client = ScriptedJourneySearchClient(places: [.success([ny]), .success([dc])])
+        let store = SmartJourneyReviewStore(suggestion: suggestion, client: client, planTracker: RecordingJourneyPlanTracker(), plans: { [] },
+                                            now: { Date(timeIntervalSince1970: 0) })
+        store.start()
+        await waitUntil { store.stage == .details(.invalidLocalTime) }
+        XCTAssertEqual(store.stage, .details(.invalidLocalTime))
+        XCTAssertTrue(store.visibleFields.contains(.time))
+        XCTAssertNil(store.makeRequest())
+        store.setTime(hour: 3, minute: 30)
+        XCTAssertTrue(store.canBeginMatching)
+        XCTAssertEqual(store.stage, .details(nil))
+    }
+
+    @MainActor
+    func testFloatingCalendarDepartureResolvesAtBoardingStationAndKeepsCalendarLink() async throws {
+        let clock = TicketWallClock(year: 2027, month: 1, day: 20, hour: 8, minute: 0)
+        let source = CalendarJourneySource(eventKey: "floating", revision: "first")
+        let dayZone = try XCTUnwrap(TimeZone(identifier: "Africa/Cairo"))
+        let eastCoast = JourneySearchStoreFixtures.place(
+            id: "us:nyp", name: "New York Penn", kind: .station, country: "US", timeZone: "America/New_York"
+        )
+        let destination = JourneySearchStoreFixtures.place(
+            id: "us:was", name: "Washington Union", kind: .station, country: "US", timeZone: "America/New_York"
+        )
+        let suggestion = TicketRouteSuggestion(
+            sourceDescription: "QA", originGuess: eastCoast.displayName, destinationGuess: destination.displayName,
+            trainNumberGuess: "171", departureDate: clock.date(in: dayZone), calendarSource: source,
+            departureWallClock: clock, isAllDayEvent: false, originPlace: eastCoast, destinationPlace: destination
+        )
+        let client = ScriptedJourneySearchClient()
+        let store = SmartJourneyReviewStore(suggestion: suggestion, client: client, planTracker: RecordingJourneyPlanTracker(), plans: { [] })
+        let request = try XCTUnwrap(store.makeRequest())
+        XCTAssertEqual(request.departureTime, "2027-01-20T08:00:00")
+        let result = try await ImportedJourneyPrefill.resolve(request, using: client)
+        let expected = JourneySearchStoreFixtures.date("2027-01-20T13:00:00Z")
+        XCTAssertEqual(result.departureTime, expected)
+        let saved = try XCTUnwrap(result.calendarSource)
+        XCTAssertEqual(saved.eventKey, source.eventKey)
+        XCTAssertEqual(saved.revision, source.revision)
+        XCTAssertEqual(saved.details?.departureDate, expected)
+        XCTAssertEqual(saved.details?.boardingTimeZoneIdentifier, "America/New_York")
+        XCTAssertNil(saved.details?.timeZoneIdentifier)
+    }
+
+    @MainActor
+    func testManualAllDayTimeSurvivesDatePickerAndDraftRelaunchBeforeStationLookup() async throws {
+        let source = CalendarJourneySource(eventKey: "all-day", revision: "first")
+        let base = TicketRouteSuggestion(
+            sourceDescription: "QA", requiresDepartureTime: true, calendarSource: source,
+            departureWallClock: TicketWallClock(year: 2027, month: 1, day: 20), isAllDayEvent: true
+        )
+        let pickerValue = JourneySearchStoreFixtures.date("2027-01-20T08:00:00Z")
+        let edited = base.requestFromDatePicker(origin: "New York Penn", destination: "Washington Union", trainNumber: "171", value: pickerValue)
+        let reviewed = TicketRouteSuggestion(reviewed: edited, from: base)
+        let reopened = try JSONDecoder().decode(TicketRouteSuggestion.self, from: JSONEncoder().encode(reviewed))
+        let ny = JourneySearchStoreFixtures.place(id: "us:nyp", name: "New York Penn", kind: .station, country: "US", timeZone: "America/New_York")
+        let dc = JourneySearchStoreFixtures.place(id: "us:was", name: "Washington Union", kind: .station, country: "US", timeZone: "America/New_York")
+        let client = ScriptedJourneySearchClient(places: [.success([ny]), .success([dc])])
+        let store = SmartJourneyReviewStore(suggestion: reopened, client: client, planTracker: RecordingJourneyPlanTracker(), plans: { [] })
+        XCTAssertFalse(store.requiresTimeCheck, "The rider already confirmed a departure time")
+        let result = try await ImportedJourneyPrefill.resolve(try XCTUnwrap(store.makeRequest()), using: client)
+        XCTAssertEqual(result.departureTime, JourneySearchStoreFixtures.date("2027-01-20T13:00:00Z"))
+        XCTAssertEqual(result.calendarSource?.details?.isAllDay, true)
+        XCTAssertEqual(result.calendarSource?.eventKey, source.eventKey)
+    }
+
+    @MainActor
     func testCalendarSourceSurvivesReviewThenClearsForFollowingManualSearch() async throws {
         let option = journeyOutboundOption()
         let source = CalendarJourneySource(eventKey: "event-hash", revision: "revision-hash")

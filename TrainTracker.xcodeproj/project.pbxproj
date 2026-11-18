@@ -287,6 +287,7 @@
 		7A363DF2F33EC9D151ABB675 /* LocalJourneyTicketStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27800BCF813099B99E7ACF57 /* LocalJourneyTicketStore.swift */; };
 		7A5BEB9700996EAAE85F5E95 /* JourneyTrackingHeaderPresentationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 89531C05DFC327CF84BC5E0A /* JourneyTrackingHeaderPresentationTests.swift */; };
 		7A64DCBE7F4FEBFF92F3F39F /* JourneyRouteTimeline.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAD9C29AF9B6F664F32BCD44 /* JourneyRouteTimeline.swift */; };
+		7A8708A2ED57EC4C13D12FEE /* TicketLocalizedRailText.swift in Sources */ = {isa = PBXBuildFile; fileRef = 10A7FBE34C757883F28674B2 /* TicketLocalizedRailText.swift */; };
 		7A894778F34A664726C98B1A /* JourneySearchResetTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16278246585896EEB9C6A295 /* JourneySearchResetTests.swift */; };
 		7BA3B6E939709DFD5FD402DC /* AmtrakerAttributionLinkTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A145347F6E7EA7D17FBBABEB /* AmtrakerAttributionLinkTests.swift */; };
 		7BD7A03324759C332CD4250C /* NextTrainControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3CFFBC6298AAB40C50DB688E /* NextTrainControl.swift */; };
@@ -356,6 +357,7 @@
 		9A3700611D6054AE57A46D92 /* JourneySearchFormState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8DF0C4338D8DCD806D7B5714 /* JourneySearchFormState.swift */; };
 		9A64BDED2E133823B0FF869E /* JourneyPlanLibrary.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0D9FBC7B737F20F85F52A39 /* JourneyPlanLibrary.swift */; };
 		9B787482AAC71197B1686FBA /* MeetTrainComposer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 110C323B6CC5D9328F1F4AAE /* MeetTrainComposer.swift */; };
+		9B9B81D470B4BDD762801A6E /* SmartJourneyReviewNotice.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1ED4BD9BA1913E60D7AB835 /* SmartJourneyReviewNotice.swift */; };
 		9BABB2241C4DC24E0DFEA572 /* TrainPositionStatus.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A92CAFE13695697141C2195 /* TrainPositionStatus.swift */; };
 		9F2987C7EFA26F62B3BDE1A5 /* TrainLiveActivitySelection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EA9F78404C4911D5B28AD0D /* TrainLiveActivitySelection.swift */; };
 		9F7093B3E70A2AA26E3F9EE4 /* JourneyJapanesePreviewFixture.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45754F9BFE9BFDD389E572EE /* JourneyJapanesePreviewFixture.swift */; };
@@ -694,6 +696,7 @@
 		0F7AD06A7BA3D5D9BA144018 /* JourneyHistoryTicketRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JourneyHistoryTicketRow.swift; sourceTree = "<group>"; };
 		0FAF67B66278B22DF57085DD /* AddJourneySearchAction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddJourneySearchAction.swift; sourceTree = "<group>"; };
 		0FB690A2175AEC87F23B3C37 /* RoundhouseNativeCapture.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoundhouseNativeCapture.swift; sourceTree = "<group>"; };
+		10A7FBE34C757883F28674B2 /* TicketLocalizedRailText.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TicketLocalizedRailText.swift; sourceTree = "<group>"; };
 		110C323B6CC5D9328F1F4AAE /* MeetTrainComposer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MeetTrainComposer.swift; sourceTree = "<group>"; };
 		11D83392853FDA2216146F58 /* ProviderAccessLiveFlowTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProviderAccessLiveFlowTests.swift; sourceTree = "<group>"; };
 		11DD469E98B846ADE84346BE /* JourneyCoverage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JourneyCoverage.swift; sourceTree = "<group>"; };
@@ -994,6 +997,7 @@
 		A145347F6E7EA7D17FBBABEB /* AmtrakerAttributionLinkTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AmtrakerAttributionLinkTests.swift; sourceTree = "<group>"; };
 		A1C106CA2CF4752BD6CE8847 /* TrainActivityPresentation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrainActivityPresentation.swift; sourceTree = "<group>"; };
 		A1D3FD51D239266A6BD5AE54 /* JourneyExperiencePresentationTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JourneyExperiencePresentationTests.swift; sourceTree = "<group>"; };
+		A1ED4BD9BA1913E60D7AB835 /* SmartJourneyReviewNotice.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SmartJourneyReviewNotice.swift; sourceTree = "<group>"; };
 		A239BC83D83A1339C1511D2D /* JourneyPlanPreviewData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JourneyPlanPreviewData.swift; sourceTree = "<group>"; };
 		A27B038C5D4C9E0AA8FBD4AA /* CalendarImportOptionsTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarImportOptionsTests.swift; sourceTree = "<group>"; };
 		A2C0352A13C5AF4F9C232DF1 /* TrainTrackerSettingsReadinessTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrainTrackerSettingsReadinessTests.swift; sourceTree = "<group>"; };
@@ -1399,6 +1403,7 @@
 				5C6B3369D57E35B5552B1104 /* TicketAttachmentPreview.swift */,
 				CBF1CB649ECCF8CCAACFEAC2 /* TicketBarcodeScanner.swift */,
 				1CC214182F2AB49355812212 /* TicketInbox.swift */,
+				10A7FBE34C757883F28674B2 /* TicketLocalizedRailText.swift */,
 				06C5D66602535B4FA4356659 /* TicketRouteReviewPolicy.swift */,
 				178DF8DB7D7ABFE437616828 /* TicketRouteSuggestion.swift */,
 				F96DD37BF28388983C53D121 /* TicketRouteTextHeuristics.swift */,
@@ -1678,6 +1683,7 @@
 				2303CDD2462EC3B1210097D9 /* JourneyIntakeUndoBanner.swift */,
 				E54C1FE52956D53483B40A65 /* LocalTicketDetailView.swift */,
 				334CF94F0DBB72E54D1BCD7E /* PlatformBoardOriginal.swift */,
+				A1ED4BD9BA1913E60D7AB835 /* SmartJourneyReviewNotice.swift */,
 				BA78A61AF16A192C15471BE8 /* SmartJourneyReviewStore.swift */,
 				B442CDA4BC8E41F113F48415 /* SmartJourneyReviewView.swift */,
 				9F6549F9C68D75B10D63D44E /* TicketIntakeLoadingView.swift */,
@@ -2633,6 +2639,7 @@
 				751693B5B3647772C526AB65 /* ShareImportParser.swift in Sources */,
 				A3289DAB9EC8FC62F47D99F7 /* ShareManifest.swift in Sources */,
 				D4E8A9D5CB2BF24915ACCB3D /* ShareStagingStore.swift in Sources */,
+				9B9B81D470B4BDD762801A6E /* SmartJourneyReviewNotice.swift in Sources */,
 				139A5807B48E52B00B2B1857 /* SmartJourneyReviewStore.swift in Sources */,
 				1054BE4C5BBB2359E44945EB /* SmartJourneyReviewView.swift in Sources */,
 				5DA80FF9C89A9B8E04F051C8 /* StartTrainLiveActivityIntent.swift in Sources */,
@@ -2653,6 +2660,7 @@
 				FBAB1AAA20E1B00B94CAA0C8 /* TicketInbox.swift in Sources */,
 				32171B3FCAA796EA5E93074E /* TicketIntakeLoadingView.swift in Sources */,
 				E41FC6BC63873C3B5807899D /* TicketJourneySearchPrefill.swift in Sources */,
+				7A8708A2ED57EC4C13D12FEE /* TicketLocalizedRailText.swift in Sources */,
 				CE06B7B79D4A0F0A4B1B2874 /* TicketPerforation.swift in Sources */,
 				3E772D6E03127DD235D9BCDC /* TicketPrint.swift in Sources */,
 				8AE1CD95168F5A41AA8C2234 /* TicketPurchaseItinerary.swift in Sources */,
@@ -3168,7 +3176,7 @@
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				CODE_SIGN_STYLE = Automatic;
 				COPY_PHASE_STRIP = NO;
-				CURRENT_PROJECT_VERSION = 38;
+				CURRENT_PROJECT_VERSION = 39;
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
@@ -3188,7 +3196,7 @@
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 18.0;
-				MARKETING_VERSION = 1.8.3;
+				MARKETING_VERSION = 1.8.4;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
@@ -3256,7 +3264,7 @@
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				CODE_SIGN_STYLE = Automatic;
 				COPY_PHASE_STRIP = NO;
-				CURRENT_PROJECT_VERSION = 38;
+				CURRENT_PROJECT_VERSION = 39;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
@@ -3270,7 +3278,7 @@
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 18.0;
-				MARKETING_VERSION = 1.8.3;
+				MARKETING_VERSION = 1.8.4;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				PRODUCT_NAME = "$(TARGET_NAME)";
